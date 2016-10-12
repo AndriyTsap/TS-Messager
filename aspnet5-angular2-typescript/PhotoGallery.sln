@@ -12,7 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PhotoGallery", "src\PhotoGallery\PhotoGallery.xproj", "{33F89712-732C-4800-9051-3D89A2E5A1D9}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "ConsoleApp1", "src\ConsoleApp1\ConsoleApp1.xproj", "{751E0882-4103-4B4D-8B45-D4BFC0F14C9B}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Adminka", "src\ConsoleApp1\Adminka.xproj", "{751E0882-4103-4B4D-8B45-D4BFC0F14C9B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
