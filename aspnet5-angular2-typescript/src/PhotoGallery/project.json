@@ -63,15 +63,15 @@
         }
     },
 
-    "frameworks": {
-        "netcoreapp1.0": {
-            "imports": [
-                "dotnet5.6",
-                "dnxcore50",
-                "portable-net45+win8"
-            ]
-        }
-    },
+  "frameworks": {
+    "netcoreapp1.0": {
+      "imports": [
+        "dotnet4.5.1",
+        "dnxcore50",
+        "portable-net45+win8"
+      ]
+    }
+  },
 
     "runtimeOptions": {
         "gcServer": true,
