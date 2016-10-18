@@ -23,7 +23,7 @@ namespace ConsoleApp1
             
 
             //userRepository.Add(new User {Username = "Rostik", DateCreated = DateTime.Now, Email = "email", HashedPassword = "13abe32211", Salt = "234234234"});
-            userRepository.Commit();
+            //userRepository.Commit();
 
             var users = userRepository.GetAll().ToList();
 
