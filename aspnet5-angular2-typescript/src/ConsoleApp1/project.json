@@ -11,7 +11,8 @@
       "type": "platform",
       "version": "1.0.1"
     },
-    "PhotoGallery": "2.0.0-*"
+    "PhotoGallery": "2.0.0-*",
+    "ServiceStack.Text.Core": "1.0.23"
   },
 
   "frameworks": {
