@@ -11,8 +11,11 @@
       "type": "platform",
       "version": "1.0.1"
     },
+    "Microsoft.VisualStudio.Validation": "12.0.0",
     "PhotoGallery": "2.0.0-*",
-    "ServiceStack.Text.Core": "1.0.23"
+    "ServiceStack.Text.Core": "1.0.23",
+    "System.Xml.XmlSerializer": "4.0.11",
+    "Validation": "2.3.7"
   },
 
   "frameworks": {
