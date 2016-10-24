@@ -14,10 +14,10 @@ namespace ConsoleApp1.Contracts.Enities
         public LogEntry(LoggingEventType severity, string message, Exception exception = null)
         {
             Requires.NotNullOrEmpty(message, "message");
-            Requires.That(Enum.TryParse(severity.ToString(), out Severity), "severity", "some message");
-            this.Severity = severity;
-            this.Message = message;
-            this.Exception = exception;
+            Requires.That(Enum.IsDefined(typeof (LoggingEventType), severity), "severity", "some message");
+            Severity = severity;
+            Message = message;
+            Exception = exception;
         }
     }
 }

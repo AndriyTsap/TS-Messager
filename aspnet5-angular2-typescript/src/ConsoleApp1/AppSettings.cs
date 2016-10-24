@@ -10,7 +10,7 @@
         {
             get
             {
-                if(Instance == null)
+                if(_instance == null)
                     _instance = new AppSettings();
                 return _instance;
             }
@@ -34,6 +34,11 @@
         public string UserGroupsFilePath
         {
             get { return "../Data/User.xml"; }
+        }
+
+        public string ConnectionString
+        {
+            get { return @"Server = (localdb)\MSSQLLocalDB; Database = PhotoGalery; Trusted_Connection = True; MultipleActiveResultSets = true"; }
         }
     }
 }

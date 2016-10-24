@@ -66,7 +66,7 @@ namespace PhotoGallery
             services.AddScoped<IMessageRepository, MessageRepository>();
             services.AddScoped<IGroupUserRepository, GroupUserRepository>();
             services.AddScoped<ILoggingRepository, LoggingRepository>();
-
+            
             // Services
             services.AddScoped<IMembershipService, MembershipService>();
             services.AddScoped<IEncryptionService, EncryptionService>();
