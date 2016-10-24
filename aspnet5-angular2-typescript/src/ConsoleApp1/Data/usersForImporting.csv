@@ -1,0 +1,3 @@
+Id,Username,Email,Phone,BirthDate,HashedPassword,Salt,IsLocked,DateCreated,UserRoles,GroupUsers,Messages
+10,igor,igor.was@meta.ua,0978059695,,132abc,dddd,False,2016-10-17,[],[],[]
+11,vasy,vasy@mail.ru,0424000000,,132abc,dddd,False,2016-10-17,[],[],[]
