@@ -16,5 +16,12 @@ namespace PhotoGallery.Entities
 
         public virtual User User { get; set; }
         public virtual Group Group { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            var message = obj as Message;
+            return message != null && Id == message.Id && Text == message.Text && Date == message.Date &&
+                   SenderId == message.SenderId && GroupId == message.GroupId;
+        }
     }
 }

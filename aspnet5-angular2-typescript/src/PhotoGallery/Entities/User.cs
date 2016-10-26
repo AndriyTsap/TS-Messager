@@ -23,8 +23,14 @@ namespace PhotoGallery.Entities
         public bool IsLocked { get; set; }
         public DateTime DateCreated { get; set; }
 
-        public virtual ICollection<UserRole> UserRoles { get; set; }
-        public virtual ICollection<GroupUser> GroupUsers { get; set; }
-        public virtual ICollection<Message> Messages { get; set; }
+        public virtual List<UserRole> UserRoles { get; set; }
+        public virtual List<GroupUser> GroupUsers { get; set; }
+        public virtual List<Message> Messages { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            var user = obj as User;
+            return user != null && Id == user.Id && Username == user.Username;
+        }
     }
 }
