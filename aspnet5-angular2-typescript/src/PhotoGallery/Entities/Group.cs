@@ -17,7 +17,13 @@ namespace PhotoGallery.Entities
         public string Name { get; set; }
         public string DateCreated { get; set; }
 
-        public virtual ICollection<GroupUser> GroupUsers { get; set; }
-        public virtual ICollection<Message> Messages { get; set; }
+        public virtual List<GroupUser> GroupUsers { get; set; }
+        public virtual List<Message> Messages { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            var group = obj as Group;
+            return group != null && Id == group.Id && Name == group.Name && DateCreated == group.DateCreated;
+        }
     }
 }
