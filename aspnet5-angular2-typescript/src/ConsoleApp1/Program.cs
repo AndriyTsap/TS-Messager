@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ConsoleApp1.Contracts.Services;
 using Microsoft.EntityFrameworkCore;
 using PhotoGallery.Entities;
 using PhotoGallery.Infrastructure;
@@ -20,7 +21,7 @@ namespace ConsoleApp1
             var users = userRepository.GetAll().ToList();
             
             Console.WriteLine(users.Last().Username);
-
+            
             Console.ReadLine();
         }
     }

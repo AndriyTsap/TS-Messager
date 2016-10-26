@@ -1,4 +1,6 @@
 ﻿using System;
+using ConsoleApp1.Contracts.Services;
+using ConsoleApp1.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using PhotoGallery.Infrastructure;
@@ -25,9 +27,16 @@ namespace ConsoleApp1
             _services.AddDbContext<PhotoGalleryContext>(options =>
                 options.UseSqlServer(AppSettings.Instance.ConnectionString));
 
+            //Repositories
             _services.AddScoped<IUserRepository, UserRepository>();
             _services.AddScoped<IUserRoleRepository, UserRoleRepository>();
             _services.AddScoped<IRoleRepository, RoleRepository>();
+            _services.AddScoped<IMessageRepository, MessageRepository>();
+            _services.AddScoped<IRoleRepository, RoleRepository>();
+
+            //Services
+            _services.AddScoped<ISerializer, Serializer>();
+            _services.AddScoped<IStorageSystem, StorageSystem>();
 
             _provider = _services.BuildServiceProvider();
         }
