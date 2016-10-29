@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using ConsoleApp1.Contracts.Enities;
 using NUnit.Framework;
 using PhotoGallery.Entities;
 
@@ -103,6 +104,26 @@ namespace AdminkaTests2
                 GroupId = 0,
                 User = new User(),
                 Group = new Group()
+            }
+        };
+
+        public List<Error> Errors = new List<Error>
+        {
+            new Error
+            {
+                Id = 0,
+                DateCreated = DateTime.Now,
+                Message = "Information message 1",
+                Severity = LoggingEventType.Information.ToString(),
+                StackTrace = ""
+            },
+            new Error
+            {
+                Id = 1,
+                DateCreated = DateTime.Now,
+                Message = "Error message 1",
+                Severity = LoggingEventType.Error.ToString(),
+                StackTrace = ""
             }
         };
     }
