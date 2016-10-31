@@ -28,7 +28,7 @@
     "Microsoft.Extensions.Configuration.Json": "1.0.0",
     "Microsoft.Extensions.Configuration.UserSecrets": "1.0.0",
     "Microsoft.Extensions.FileProviders.Physical": "1.0.0",
-    "Microsoft.NETCore.App": "1.0.1"
+    "Microsoft.NETCore.App":{"version": "1.0.1", "type" : "platform" }
   },
 
   "tools": {
@@ -68,10 +68,6 @@
         "portable-net45+win8"
       ]
     }
-  },
-
-  "runtimes": {
-    "win10-x64": {}
   },
 
   "runtimeOptions": {

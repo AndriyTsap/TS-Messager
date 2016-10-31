@@ -3,18 +3,19 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using ConsoleApp1.Contracts.Services;
 using ConsoleApp1.Services;
 using PhotoGallery.Entities;
 using ServiceStack.Text;
 
 namespace ConsoleApp1.Services
 {
-    public class CSVManager
+    public class CsvManager : ICsvManager
     {
         private FileManager _fileManager;
-        public CSVManager(FileManager fileManager)
+        public CsvManager()
         {
-            _fileManager = fileManager;
+            _fileManager = new FileManager();
         }
         public List<User> ImportUsers(string path)
         {
@@ -26,8 +27,7 @@ namespace ConsoleApp1.Services
         public void ExportUsersToCSV(List<User> listUsers, string path)
         {
             var csv = CsvSerializer.SerializeToCsv(listUsers);           
-            FileManager fileManager=new FileManager();
-            fileManager.WriteToFile(csv,path);
+            _fileManager.WriteToFile(csv,path);
         }
     }
 }

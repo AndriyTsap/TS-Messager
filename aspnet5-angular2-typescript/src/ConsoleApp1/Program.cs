@@ -29,18 +29,19 @@ namespace ConsoleApp1
             //userRepository.Add(new User {Username = "Rostik", DateCreated = DateTime.Now, Email = "email", HashedPassword = "13abe32211", Salt = "234234234"});
             //userRepository.Commit();
 
-            CSVManager csvManager = new CSVManager(new FileManager());
-
+            CsvManager csvManager = new CsvManager();
+            AppSettings appSettings = AppSettings.Instance;
             var users = userRepository.GetAll().ToList();
             try
             {
-                users.AddRange(csvManager.ImportUsers("..//ConsoleApp1//Data//usersForImporting.csv"));
+                users.AddRange(csvManager.ImportUsers(appSettings.UserFilePathForImport));
+                csvManager.ExportUsersToCSV(users, appSettings.UserFilePathForExport);
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message + "");
             }
-            csvManager.ExportUsersToCSV(users, "..//ConsoleApp1//Data//usersExported.csv");
+            
             Console.WriteLine(users.Last().Username);
             Console.ReadLine();
         }
