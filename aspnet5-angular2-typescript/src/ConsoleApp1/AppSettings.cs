@@ -1,4 +1,7 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using System.Reflection;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Hosting.Internal;
 using Microsoft.Extensions.Configuration;
 
@@ -11,12 +14,13 @@ namespace ConsoleApp1
 
         private AppSettings()
         {
+            //_currentDirectory = Path.GetFullPath(Path.GetDirectoryName(Directory.GetCurrentDirectory()))+@"\ConsoleApp1";
             _currentDirectory = Directory.GetCurrentDirectory();
+            Console.WriteLine(_currentDirectory);
             var builder = new ConfigurationBuilder()
                 .SetBasePath(_currentDirectory)
                 .AddJsonFile(@"appsettings.json");
 
-            string path = Directory.GetCurrentDirectory();
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
         }
