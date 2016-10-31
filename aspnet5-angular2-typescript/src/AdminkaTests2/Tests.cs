@@ -7,11 +7,14 @@ using NUnit.Framework;
 using NUnit.Framework.Internal;
 using PhotoGallery.Entities;
 using System.Linq;
+using System.Security.Cryptography;
 using ConsoleApp1;
 using ConsoleApp1.Contracts.Enities;
 using ConsoleApp1.Contracts.Services;
 using Moq;
 using PhotoGallery.Infrastructure.Repositories;
+using PhotoGallery.ViewModels;
+using PhotoGallery.Infrastructure.Services;
 
 namespace AdminkaTests2
 {   
@@ -125,11 +128,55 @@ namespace AdminkaTests2
             logger.Log(new LogEntry(LoggingEventType.Information, mockErrors[0].Message));
             var errors = mockErrorRepository.Object.GetAll().ToList();
 
-            mockErrors.ForEach(error=>Console.WriteLine($"Id = {error.Id} message = {error.Message} severiry = {error.Severity}"));
-
-
             //assert
             Assert.That(errors.LastOrDefault().Message == mockErrors.FirstOrDefault().Message);
         }
+
+        [Test]
+        public void MustBeSuccess_IfAcountService_LoginAndRegisterUsers()
+        {
+            //arrange
+            var data = new MockData();
+
+            var mockUserRepository = new Mock<IUserRepository>();
+            mockUserRepository.Setup(repo => repo.GetSingleByUsername(It.IsAny<string>()))
+                .Returns(new User()
+                {
+                    HashedPassword = "VfBM7WAgmlJhA25K7CMOqOcME8H/fXgI3bD9OSUB+00=",
+                    Salt = "/E3qadielrSMtyT7YEpb2w=="
+                });
+
+            var mockEncriptionService = new Mock<IEncryptionService>();
+            mockEncriptionService.Setup(encryptionService => encryptionService.EncryptPassword(It.IsAny<string>(), It.IsAny<string>()))
+                .Returns("VfBM7WAgmlJhA25K7CMOqOcME8H/fXgI3bD9OSUB+00=");
+            mockEncriptionService.Setup(encryptionService => encryptionService.CreateSalt())
+                .Returns("/E3qadielrSMtyT7YEpb2w==");
+
+            int id = 0;
+            var mockRoleRepository = new Mock<IRoleRepository>();
+            mockRoleRepository.Setup(repo => repo.GetAll()).Returns(data.Roles);
+            mockRoleRepository.Setup(repo => repo.GetSingle(id))
+                .Returns(data.Roles.SingleOrDefault(role => role.Id == id));
+
+            var mockUserRoleRepository = new Mock<IUserRoleRepository>();
+            mockUserRoleRepository.Setup(repo => repo.GetAll()).Returns(data.UserRoles);
+            mockUserRoleRepository.Setup(repo => repo.GetSingle(id))
+                .Returns(data.UserRoles.SingleOrDefault(userRole => userRole.Id == id));
+
+            AccountService service = new AccountService(mockUserRepository.Object, mockRoleRepository.Object,
+                mockUserRoleRepository.Object, mockEncriptionService.Object);
+            
+            //act
+            var loginResult =
+                service.Login(new LoginViewModel() {Password = "kazantip", Username = "Andriy", RememberMe = true});
+
+            var registerResult =
+                service.Register(new RegistrationViewModel() {Username = "Misha", Email = "choliy.misha2gmail.com", Password = "mishacholiy"}, new []{0,1});
+            
+            //assert
+            Assert.That(loginResult.Succeeded && registerResult.Succeeded);
+            
+        }
+
     }
 }
