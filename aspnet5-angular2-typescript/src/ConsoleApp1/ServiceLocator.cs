@@ -4,6 +4,7 @@ using ConsoleApp1.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using PhotoGallery.Entities;
+
 using PhotoGallery.Infrastructure;
 using PhotoGallery.Infrastructure.Repositories;
 

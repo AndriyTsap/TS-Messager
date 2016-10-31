@@ -57,6 +57,16 @@ namespace ConsoleApp1
             get { return _currentDirectory + Configuration["Data:XmlFiles:UserGroupFilePath"]; }
         }
 
+        public string UserFilePathForExport
+        {
+            get { return _currentDirectory +"\\"+Configuration["Data:CsvFiles:UserFilePathForExport"]; }
+        }
+
+        public string UserFilePathForImport
+        {
+            get { return _currentDirectory + "\\" + Configuration["Data:CsvFiles:UserFilePathForImport"]; }
+        }
+
         public string ConnectionString
         {
             get { return Configuration["Data:DBConnection:ConnectionString"]; }

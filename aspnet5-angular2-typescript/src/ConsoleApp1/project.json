@@ -7,6 +7,10 @@
   "dependencies": {
     "Microsoft.EntityFrameworkCore": "1.0.1",
     "Microsoft.EntityFrameworkCore.SqlServer": "1.0.1",
+    "Microsoft.NETCore.App": {
+      "version": "1.0.1",
+      "type": "platform"
+    },
     "PhotoGallery": "2.0.0-*",
     "ServiceStack.Text.Core": "1.0.23",
     "System.Xml.XmlSerializer": "4.0.11",

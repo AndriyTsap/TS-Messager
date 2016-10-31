@@ -15,6 +15,7 @@
     "NUnitLite": "3.5.0"
   },
 
+
   "frameworks": {
     "netcoreapp1.0": {
       "imports": "dnxcore50"

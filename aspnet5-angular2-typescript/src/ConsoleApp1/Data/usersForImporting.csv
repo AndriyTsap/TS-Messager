@@ -1,0 +1,4 @@
+Id,Username,Email,Phone,BirthDate,HashedPassword,Salt,IsLocked,DateCreated,UserRoles,GroupUsers,Messages
+0,Andriy,tsap.andriy@gmail.com,0990920654,16.10.1996,VfBM7WAgmlJhA25K7CMOqOcME8H/fXgI3bD9OSUB+00=,/E3qadielrSMtyT7YEpb2w==,False,2016-10-31T19:05:54.4417811+03:00,[],[],[]
+1,Ivan,Ivan.Kogut@gmail.com,0666777333,12.10.1993,9wsmLgYM5Gu4zA/BSpxK2GIBEWzqMPKs8wl2WDBzH/4=,GTtKxJA6xJuj3ifJtTXn9Q==,False,2016-10-31T19:05:54.4437812+03:00,[],[],[]
+
