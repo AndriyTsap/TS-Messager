@@ -6,19 +6,23 @@ using PhotoGallery.Entities;
 
 namespace ConsoleApp1.Services
 {
-    public class StorageSystem: IStorageSystem
+    public class StorageSystem<T>: IStorageSystem<T> where T: IEntityBase
     {
-        private ISerializer _serializer;
-        private readonly string _filePath;
+        private readonly ISerializer _serializer;
+        private string _filePath;
 
-        public StorageSystem(ISerializer serializer, string filePath)
+        public StorageSystem(ISerializer serializer)
+        {
+            _serializer = serializer;
+        }
+
+        public void SetFilePath(string filePath)
         {
             _filePath = filePath;
-            _serializer = serializer;
             Initialize();
         }
 
-        public void Add(IEntityBase entity)
+        public void Add(T entity)
         {
             var entities = GetAll().ToList();
             entity.Id = entities.Select(t => t.Id).Max() + 1;
@@ -26,7 +30,7 @@ namespace ConsoleApp1.Services
             SaveChanges(entities);
         }
 
-        public void Edit(IEntityBase entity)
+        public void Edit(T entity)
         {
             var entities = GetAll().ToList();
             var removeTarget = entities.FirstOrDefault(t => t.Id == entity.Id);
@@ -51,16 +55,16 @@ namespace ConsoleApp1.Services
             SaveChanges(entities);
         }
 
-        public IEntityBase Get(int id)
+        public T Get(int id)
         {
             var tasks = GetAll();
             var task = tasks.FirstOrDefault(t => t.Id == id);
             return task;
         }
 
-        public IEnumerable<IEntityBase> GetAll()
+        public IEnumerable<T> GetAll()
         {
-            var entities = _serializer.Deserialize<List<IEntityBase>>(_filePath);
+            var entities = _serializer.Deserialize<List<T>>(_filePath);
             return entities;
         }
 
@@ -70,12 +74,12 @@ namespace ConsoleApp1.Services
             {
                 return;
             }
-            var entities = new List<IEntityBase>();
+            var entities = new List<T>();
             
             SaveChanges(entities);
         }
 
-        private void SaveChanges(IEnumerable<IEntityBase> entities)
+        private void SaveChanges(IEnumerable<T> entities)
         {
             var serialized = _serializer.Serialize(entities.ToList());
             File.WriteAllText(_filePath, serialized);

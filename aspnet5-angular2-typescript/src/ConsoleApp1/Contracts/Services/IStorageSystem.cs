@@ -3,12 +3,13 @@ using PhotoGallery.Entities;
 
 namespace ConsoleApp1.Contracts.Services
 {
-    public interface IStorageSystem
+    public interface IStorageSystem<T> where T: IEntityBase
     {
-        IEnumerable<IEntityBase> GetAll();
-        IEntityBase Get(int id);
-        void Add(IEntityBase entity);
-        void Edit(IEntityBase entity);
+        void SetFilePath(string filePath);
+        IEnumerable<T> GetAll();
+        T Get(int id);
+        void Add(T entity);
+        void Edit(T entity);
         void DeleteById(int id);
     }
 }

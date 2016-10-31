@@ -3,6 +3,10 @@ using ConsoleApp1.Contracts.Services;
 using ConsoleApp1.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
+<<<<<<< HEAD
+=======
+using PhotoGallery.Entities;
+>>>>>>> a63993ebd0d3d69079347393ae9b54975c2e3665
 using PhotoGallery.Infrastructure;
 using PhotoGallery.Infrastructure.Repositories;
 
@@ -36,7 +40,11 @@ namespace ConsoleApp1
 
             //Services
             _services.AddScoped<ISerializer, Serializer>();
+<<<<<<< HEAD
             _services.AddScoped<IStorageSystem, StorageSystem>();
+=======
+            _services.AddTransient(typeof(IStorageSystem<>), typeof(StorageSystem<>));
+>>>>>>> a63993ebd0d3d69079347393ae9b54975c2e3665
 
             _provider = _services.BuildServiceProvider();
         }

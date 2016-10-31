@@ -7,14 +7,21 @@
   "dependencies": {
     "Microsoft.EntityFrameworkCore": "1.0.1",
     "Microsoft.EntityFrameworkCore.SqlServer": "1.0.1",
+<<<<<<< HEAD
     "Microsoft.NETCore.App": {
       "version": "1.0.1",
       "type": "platform"
     },
+=======
+>>>>>>> a63993ebd0d3d69079347393ae9b54975c2e3665
     "PhotoGallery": "2.0.0-*",
     "ServiceStack.Text.Core": "1.0.23",
     "System.Xml.XmlSerializer": "4.0.11",
-    "Validation": "2.3.7"
+    "Validation": "2.3.7",
+    "Microsoft.NETCore.App": {
+      "version": "1.0.1",
+      "type": "platform"
+    }
   },
 
   "frameworks": {
