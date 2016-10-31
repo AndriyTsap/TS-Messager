@@ -67,7 +67,7 @@ namespace PhotoGallery.Infrastructure.Services
             };
 
             _userRepository.Add(user);
-
+            
             _userRepository.Commit();
 
             if (roles != null || roles.Length > 0)

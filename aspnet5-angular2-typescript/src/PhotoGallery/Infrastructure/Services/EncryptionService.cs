@@ -13,7 +13,7 @@ namespace PhotoGallery.Infrastructure.Services
         {
             var data = new byte[0x10];
 
-            var cryptoServiceProvider = System.Security.Cryptography.RandomNumberGenerator.Create();
+            var cryptoServiceProvider = RandomNumberGenerator.Create();
             cryptoServiceProvider.GetBytes(data);
             return Convert.ToBase64String(data);
         }
@@ -22,7 +22,7 @@ namespace PhotoGallery.Infrastructure.Services
         {
             using (var sha256 = SHA256.Create())
             {
-                var saltedPassword = string.Format("{0}{1}", salt, password);
+                var saltedPassword = $"{salt}{password}";
                 byte[] saltedPasswordAsBytes = Encoding.UTF8.GetBytes(saltedPassword);
                 return Convert.ToBase64String(sha256.ComputeHash(saltedPasswordAsBytes));
             }
