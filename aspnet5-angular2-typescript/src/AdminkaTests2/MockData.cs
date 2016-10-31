@@ -126,5 +126,44 @@ namespace AdminkaTests2
                 StackTrace = ""
             }
         };
+
+        public List<Role> Roles = new List<Role>()
+        {
+            new Role()
+            {
+                Id = 0,
+                Name = "Admin"
+            },
+            new Role()
+            {
+                Id = 1,
+                Name = "User"
+            }
+        };
+
+        public List<UserRole> UserRoles = new List<UserRole>()
+        {
+            new UserRole()
+            {
+                Id = 0,
+                UserId = 0,
+                RoleId = 0,
+                Role = new Role()
+            },
+            new UserRole()
+            {
+                Id = 1,
+                UserId = 1,
+                RoleId = 0,
+                Role = new Role()
+            },
+            new UserRole()
+            {
+                Id = 2,
+                UserId = 1,
+                RoleId = 1,
+                Role = new Role()
+            }
+        };
     }
 }
