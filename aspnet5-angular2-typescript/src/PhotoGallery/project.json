@@ -74,10 +74,6 @@
     }
   },
 
-  //"runtimes": {
-  //  "win10-x64": {}
-  //},
-
   "runtimeOptions": {
     "gcServer": true,
     "gcConcurrent": true
