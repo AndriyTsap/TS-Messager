@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-<<<<<<< HEAD
-=======
 using ConsoleApp1.Contracts.Enities;
->>>>>>> a63993ebd0d3d69079347393ae9b54975c2e3665
 using NUnit.Framework;
 using PhotoGallery.Entities;
 
@@ -109,8 +106,6 @@ namespace AdminkaTests2
                 Group = new Group()
             }
         };
-<<<<<<< HEAD
-=======
 
         public List<Error> Errors = new List<Error>
         {
@@ -131,6 +126,5 @@ namespace AdminkaTests2
                 StackTrace = ""
             }
         };
->>>>>>> a63993ebd0d3d69079347393ae9b54975c2e3665
     }
 }

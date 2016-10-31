@@ -49,7 +49,6 @@ namespace ConsoleApp1
         }
 
         public string UserGroupFilePath
-<<<<<<< HEAD
         {
             get { return _currentDirectory + Configuration["Data:XmlFiles:UserGroupFilePath"]; }
         }
@@ -58,13 +57,10 @@ namespace ConsoleApp1
         {
             get { return _currentDirectory +"\\"+Configuration["Data:CsvFiles:UserFilePathForExport"]; }
         }
+
         public string UserFilePathForImport
         {
-            get { return _currentDirectory +"\\"+Configuration["Data:CsvFiles:UserFilePathForImport"]; }
-=======
-        {
-            get { return _currentDirectory + Configuration["Data:XmlFiles:UserGroupFilePath"]; }
->>>>>>> a63993ebd0d3d69079347393ae9b54975c2e3665
+            get { return _currentDirectory + "\\" + Configuration["Data:CsvFiles:UserFilePathForImport"]; }
         }
 
         public string ConnectionString

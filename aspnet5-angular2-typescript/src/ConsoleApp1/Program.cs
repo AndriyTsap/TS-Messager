@@ -1,21 +1,17 @@
 ﻿using System;
 using System.Linq;
-<<<<<<< HEAD
-=======
+
 using System.Threading.Tasks;
 using ConsoleApp1.Contracts.Services;
->>>>>>> a63993ebd0d3d69079347393ae9b54975c2e3665
+
 using Microsoft.EntityFrameworkCore;
 using PhotoGallery.Infrastructure;
 using PhotoGallery.Infrastructure.Repositories;
-<<<<<<< HEAD
 using Microsoft.Extensions.DependencyInjection;
-
 using ConsoleApp1.Services;
-=======
+
 using ServiceStack.Text;
-using ConsoleApp1.CSVManager;
->>>>>>> a63993ebd0d3d69079347393ae9b54975c2e3665
+using ConsoleApp1.Services;
 
 namespace ConsoleApp1
 {
@@ -23,9 +19,17 @@ namespace ConsoleApp1
     {
         public static void Main(string[] args)
         {
-            var userRepository = ServiceLocator.Instance.Resolve<IUserRepository>();
-            
-<<<<<<< HEAD
+            IServiceCollection services = new ServiceCollection();
+
+            services.AddDbContext<PhotoGalleryContext>(options =>
+                options.UseSqlServer(AppSettings.Instance.ConnectionString));
+
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IUserRoleRepository, UserRoleRepository>();
+            services.AddScoped<IRoleRepository, RoleRepository>();
+
+            IServiceProvider provider = services.BuildServiceProvider();
+
             var userRepository = provider.GetService<IUserRepository>();
             
             //userRepository.Add(new User {Username = "Rostik", DateCreated = DateTime.Now, Email = "email", HashedPassword = "13abe32211", Salt = "234234234"});
@@ -43,14 +47,9 @@ namespace ConsoleApp1
             {
                 Console.WriteLine(ex.Message + "");
             }
-            
+          
             Console.WriteLine(users.Last().Username);
-=======
-            var users = userRepository.GetAll().ToList();
-            
-            Console.WriteLine(users.Last().Username);
-            
->>>>>>> a63993ebd0d3d69079347393ae9b54975c2e3665
+
             Console.ReadLine();
         }
     }

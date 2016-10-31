@@ -11,6 +11,5 @@ namespace ConsoleApp1.Contracts.Services
         List<User> ImportUsers(string path);
 
         void ExportUsersToCSV(List<User> listUsers, string path);
-
     }
 }

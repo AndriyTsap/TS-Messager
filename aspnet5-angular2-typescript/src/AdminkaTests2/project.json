@@ -10,23 +10,16 @@
       "type": "platform",
       "version": "1.0.1"
     },
-<<<<<<< HEAD
-=======
     "Moq": "4.6.36-alpha",
->>>>>>> a63993ebd0d3d69079347393ae9b54975c2e3665
     "NUnit": "3.5.0",
     "NUnitLite": "3.5.0"
   },
 
-<<<<<<< HEAD
-  "runtimes": {
-    "win10-x64": {}
-  },
-=======
+
   //"runtimes": {
   //  "win10-x64": {}
   //},
->>>>>>> a63993ebd0d3d69079347393ae9b54975c2e3665
+
 
   "frameworks": {
     "netcoreapp1.0": {

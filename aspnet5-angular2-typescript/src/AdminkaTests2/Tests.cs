@@ -7,14 +7,11 @@ using NUnit.Framework;
 using NUnit.Framework.Internal;
 using PhotoGallery.Entities;
 using System.Linq;
-<<<<<<< HEAD
-=======
 using ConsoleApp1;
 using ConsoleApp1.Contracts.Enities;
 using ConsoleApp1.Contracts.Services;
 using Moq;
 using PhotoGallery.Infrastructure.Repositories;
->>>>>>> a63993ebd0d3d69079347393ae9b54975c2e3665
 
 namespace AdminkaTests2
 {   
@@ -66,8 +63,6 @@ namespace AdminkaTests2
             //Assert
             Assert.That(!usersString.Equals("") && !groupsString.Equals("") && !groupUsersString.Equals("") && !messagesString.Equals(""));
         }
-<<<<<<< HEAD
-=======
 
         [Test]
         public void Must_Be_Success_IfStorageSystemClass_WriteObjectsToFIles()
@@ -136,6 +131,5 @@ namespace AdminkaTests2
             //assert
             Assert.That(errors.LastOrDefault().Message == mockErrors.FirstOrDefault().Message);
         }
->>>>>>> a63993ebd0d3d69079347393ae9b54975c2e3665
     }
 }

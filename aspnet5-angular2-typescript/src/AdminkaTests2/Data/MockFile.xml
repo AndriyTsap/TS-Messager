@@ -1,5 +1,1 @@
-<<<<<<< HEAD
-<ArrayOfUser xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><User><Id>0</Id><Username>Andriy</Username><Email>tsap.andriy@gmail.com</Email><Phone>0990920654</Phone><BirthDate>16.10.1996</BirthDate><HashedPassword>VfBM7WAgmlJhA25K7CMOqOcME8H/fXgI3bD9OSUB+00=</HashedPassword><Salt>/E3qadielrSMtyT7YEpb2w==</Salt><IsLocked>false</IsLocked><DateCreated>2016-10-29T16:59:23.8654089+03:00</DateCreated><UserRoles /><GroupUsers /><Messages /></User><User><Id>1</Id><Username>Ivan</Username><Email>Ivan.Kogut@gmail.com</Email><Phone>0666777333</Phone><BirthDate>12.10.1993</BirthDate><HashedPassword>9wsmLgYM5Gu4zA/BSpxK2GIBEWzqMPKs8wl2WDBzH/4=</HashedPassword><Salt>GTtKxJA6xJuj3ifJtTXn9Q==</Salt><IsLocked>false</IsLocked><DateCreated>2016-10-29T16:59:23.8654089+03:00</DateCreated><UserRoles /><GroupUsers /><Messages /></User></ArrayOfUser>
-=======
 some string
->>>>>>> a63993ebd0d3d69079347393ae9b54975c2e3665

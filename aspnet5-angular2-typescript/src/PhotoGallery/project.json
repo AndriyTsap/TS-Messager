@@ -19,10 +19,7 @@
     "Microsoft.AspNetCore.Server.Kestrel": "1.0.1",
     "Microsoft.AspNetCore.StaticFiles": "1.0.0",
     "Microsoft.EntityFrameworkCore": "1.0.1",
-<<<<<<< HEAD
-=======
     "Microsoft.EntityFrameworkCore.InMemory": "1.0.1",
->>>>>>> a63993ebd0d3d69079347393ae9b54975c2e3665
     "Microsoft.EntityFrameworkCore.SqlServer": "1.0.1",
     "Microsoft.EntityFrameworkCore.Tools": {
       "version": "1.0.0-preview2-final",
@@ -32,14 +29,13 @@
     "Microsoft.Extensions.Configuration.Json": "1.0.0",
     "Microsoft.Extensions.Configuration.UserSecrets": "1.0.0",
     "Microsoft.Extensions.FileProviders.Physical": "1.0.0",
-<<<<<<< HEAD
-    "Microsoft.NETCore.App":{"version": "1.0.1", "type" : "platform" }
-=======
+    //"Microsoft.NETCore.App":{"version": "1.0.1", "type" : "platform" },
+
     "Microsoft.NETCore.App": {
       "version": "1.0.0",
       "type": "platform"
     }
->>>>>>> a63993ebd0d3d69079347393ae9b54975c2e3665
+
   },
 
   "tools": {
@@ -50,7 +46,7 @@
     "Microsoft.AspNetCore.Server.IISIntegration.Tools": {
       "version": "1.0.0-preview2-final",
       "imports": "portable-net45+win8+dnxcore50"
-<<<<<<< HEAD
+
     },
     "Microsoft.EntityFrameworkCore.Tools": {
       "version": "1.0.0-preview2-final",
@@ -59,8 +55,7 @@
         "portable-net45+win8"
       ]
     },
-=======
-    },
+
     "Microsoft.EntityFrameworkCore.Tools": {
       "version": "1.0.0-preview2-final",
       "imports": [
@@ -68,7 +63,7 @@
         "portable-net45+win8"
       ]
     },
->>>>>>> a63993ebd0d3d69079347393ae9b54975c2e3665
+
     "Microsoft.Extensions.SecretManager.Tools": {
       "version": "1.0.0-preview2-final",
       "imports": "portable-net45+win8+dnxcore50"
@@ -92,28 +87,6 @@
     }
   },
 
-<<<<<<< HEAD
-  "runtimeOptions": {
-    "gcServer": true,
-    "gcConcurrent": true
-  },
-
-  "publishOptions": {
-    "include": [
-      "wwwroot",
-      "Views",
-      "appsettings.json",
-      "web.config"
-    ],
-    "exclude": [
-      "node_modules"
-    ]
-  },
-
-=======
-  //"runtimes": {
-  //  "win10-x64": {}
-  //},
 
   "runtimeOptions": {
     "gcServer": true,
@@ -132,7 +105,6 @@
     ]
   },
 
->>>>>>> a63993ebd0d3d69079347393ae9b54975c2e3665
   "scripts": {
     "postpublish": [ "dotnet publish-iis --publish-folder %publish:OutputPath% --framework %publish:FullTargetFramework%" ]
   }
