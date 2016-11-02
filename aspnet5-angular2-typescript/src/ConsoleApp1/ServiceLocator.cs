@@ -7,6 +7,7 @@ using PhotoGallery.Entities;
 
 using PhotoGallery.Infrastructure;
 using PhotoGallery.Infrastructure.Repositories;
+using PhotoGallery.Infrastructure.Services;
 
 namespace ConsoleApp1
 {
@@ -35,10 +36,15 @@ namespace ConsoleApp1
             _services.AddScoped<IRoleRepository, RoleRepository>();
             _services.AddScoped<IMessageRepository, MessageRepository>();
             _services.AddScoped<IRoleRepository, RoleRepository>();
+            _services.AddScoped<ILoggingRepository, LoggingRepository>();
+           
+
 
             //Services
             _services.AddScoped<ISerializer, Serializer>();
             _services.AddTransient(typeof(IStorageSystem<>), typeof(StorageSystem<>));
+            _services.AddScoped<ILogger, Logger>();
+            _services.AddScoped<IEncryptionService, EncryptionService>();
 
             _provider = _services.BuildServiceProvider();
         }

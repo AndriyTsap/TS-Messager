@@ -27,6 +27,7 @@ namespace ConsoleApp1
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserRoleRepository, UserRoleRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
+            services.AddTransient(typeof(IStorageSystem<>), typeof(StorageSystem<>));
 
             IServiceProvider provider = services.BuildServiceProvider();
 
@@ -35,22 +36,27 @@ namespace ConsoleApp1
             //userRepository.Add(new User {Username = "Rostik", DateCreated = DateTime.Now, Email = "email", HashedPassword = "13abe32211", Salt = "234234234"});
             //userRepository.Commit();
 
-            CsvManager csvManager = new CsvManager();
-            AppSettings appSettings = AppSettings.Instance;
-            var users = userRepository.GetAll().ToList();
-            try
-            {
-                users.AddRange(csvManager.ImportUsers(appSettings.UserFilePathForImport));
-                csvManager.ExportUsersToCSV(users, appSettings.UserFilePathForExport);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message + "");
-            }
+            //CsvManager csvManager = new CsvManager();
+            //AppSettings appSettings = AppSettings.Instance;
+            //var users = userRepository.GetAll().ToList();
+            //try
+            //{
+            //    users.AddRange(csvManager.ImportUsers(appSettings.UserFilePathForImport));
+            //    //csvManager.ExportUsersToCSV(users, appSettings.UserFilePathForExport);
+            //}
+            //catch (Exception ex)
+            //{
+            //    Console.WriteLine(ex.Message + "");
+            //}
           
-            Console.WriteLine(users.Last().Username);
+            //Console.WriteLine(users.Last().Username);
 
-            Console.ReadLine();
+            CommandExecuter commandExecuter=new CommandExecuter();
+            while (true)
+            {
+                commandExecuter.Execute(Console.ReadLine());
+            }
+
         }
     }
 }
