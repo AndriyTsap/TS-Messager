@@ -13,7 +13,7 @@ namespace AdminkaTests2
     [TestFixture]
     public class FileManagerTests
     {
-        private FileManager _fileManager =new FileManager();
+        private FileManager _fileManager = new FileManager();
 
         [Test]
         public void IfFileForReadingNotExist_ShouldThrowFileNotFoundException()

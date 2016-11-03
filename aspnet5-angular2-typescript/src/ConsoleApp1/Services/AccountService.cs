@@ -21,7 +21,8 @@ namespace ConsoleApp1.Services
         private IEncryptionService _encriptionService;
         
 
-        public AccountService(IUserRepository userRepository, IRoleRepository roleRepository, IUserRoleRepository userRoleRepository,  IEncryptionService encriptionService)
+        public AccountService(IUserRepository userRepository, IRoleRepository roleRepository,
+            IUserRoleRepository userRoleRepository,  IEncryptionService encriptionService)
         {
             _userRepository = userRepository;
             _roleRepository = roleRepository;

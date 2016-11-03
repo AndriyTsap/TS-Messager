@@ -45,6 +45,8 @@ namespace ConsoleApp1
             _services.AddTransient(typeof(IStorageSystem<>), typeof(StorageSystem<>));
             _services.AddScoped<ILogger, Logger>();
             _services.AddScoped<IEncryptionService, EncryptionService>();
+            _services.AddScoped<IEncryptionService, EncryptionService>();
+            _services.AddScoped<IAccountService, AccountService>();
 
             _provider = _services.BuildServiceProvider();
         }

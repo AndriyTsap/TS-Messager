@@ -10,6 +10,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using PhotoGallery.Entities;
 using PhotoGallery.Infrastructure.Repositories;
 using PhotoGallery.Infrastructure.Services;
+using PhotoGallery.ViewModels;
 using ServiceStack;
 
 namespace ConsoleApp1.Services
@@ -21,11 +22,34 @@ namespace ConsoleApp1.Services
         private ISerializer _serializer = ServiceLocator.Instance.Resolve<ISerializer>();
         private CsvManager _csvManager= new CsvManager();
         private AppSettings _appSettings = AppSettings.Instance;
+        private IAccountService _accountService = ServiceLocator.Instance.Resolve<IAccountService>();
         private FileManager _fileManager;
+        private User _user; 
+
+        public CommandExecuter()
+        {
+            _user = new User();
+            while (true)
+            {
+                Console.WriteLine("Your login");
+                var login = Console.ReadLine();
+                Console.WriteLine("Your password:");
+                var password = Console.ReadLine();
+                var result = _accountService.Login(new LoginViewModel() { Username = login, Password = password, RememberMe = false });
+                Console.WriteLine(result.Message);
+                if (result.Succeeded)
+                {
+                    _user = _userRepository.GetSingleByUsername(login);
+                    break;
+                }
+                   
+            }
+        }
 
         public void Execute(string strCommand)
         {
             List<string> command;
+            
             command = strCommand.Split(' ').ToList();
             switch (command[0])
             {
@@ -144,7 +168,6 @@ namespace ConsoleApp1.Services
                     }
                     _userRepository.Commit();
                     Console.WriteLine("Users are imported from "+command[1]);
-                    _
                     break;
 
                 case "exportUsersToCsv":

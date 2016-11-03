@@ -25,39 +25,39 @@ namespace PhotoGallery.Controllers
 
         public AccountController(IMembershipService membershipService,
             IUserRepository userRepository,
-            ILoggingRepository _errorRepository)
+            ILoggingRepository errorRepository)
         {
             _membershipService = membershipService;
             _userRepository = userRepository;
-            _loggingRepository = _errorRepository;
+            _loggingRepository = errorRepository;
         }
 
 
         [HttpPost("authenticate")]
         public async Task<IActionResult> Login([FromBody] LoginViewModel user)
         {
-            IActionResult _result = new ObjectResult(false);
-            GenericResult _authenticationResult = null;
+            IActionResult result = new ObjectResult(false);
+            GenericResult authenticationResult = null;
 
             try
             {
-                MembershipContext _userContext = _membershipService.ValidateUser(user.Username, user.Password);
+                MembershipContext userContext = _membershipService.ValidateUser(user.Username, user.Password);
 
-                if (_userContext.User != null)
+                if (userContext.User != null)
                 {
-                    IEnumerable<Role> _roles = _userRepository.GetUserRoles(user.Username);
-                    List<Claim> _claims = new List<Claim>();
-                    foreach (Role role in _roles)
+                    var roles = _userRepository.GetUserRoles(user.Username);
+                    List<Claim> claims = new List<Claim>();
+                    foreach (Role role in roles)
                     {
-                        Claim _claim = new Claim(ClaimTypes.Role, "Admin", ClaimValueTypes.String, user.Username);
-                        _claims.Add(_claim);
+                        Claim claim = new Claim(ClaimTypes.Role, "Admin", ClaimValueTypes.String, user.Username);
+                        claims.Add(claim);
                     }
                     await HttpContext.Authentication.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
-                        new ClaimsPrincipal(new ClaimsIdentity(_claims, CookieAuthenticationDefaults.AuthenticationScheme)),
+                        new ClaimsPrincipal(new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme)),
                         new Microsoft.AspNetCore.Http.Authentication.AuthenticationProperties {IsPersistent = user.RememberMe });
 
 
-                    _authenticationResult = new GenericResult()
+                    authenticationResult = new GenericResult()
                     {
                         Succeeded = true,
                         Message = "Authentication succeeded"
@@ -65,7 +65,7 @@ namespace PhotoGallery.Controllers
                 }
                 else
                 {
-                    _authenticationResult = new GenericResult()
+                    authenticationResult = new GenericResult()
                     {
                         Succeeded = false,
                         Message = "Authentication failed"
@@ -74,7 +74,7 @@ namespace PhotoGallery.Controllers
             }
             catch (Exception ex)
             {
-                _authenticationResult = new GenericResult()
+                authenticationResult = new GenericResult()
                 {
                     Succeeded = false,
                     Message = ex.Message
@@ -84,8 +84,8 @@ namespace PhotoGallery.Controllers
                 _loggingRepository.Commit();
             }
 
-            _result = new ObjectResult(_authenticationResult);
-            return _result;
+            result = new ObjectResult(authenticationResult);
+            return result;
         }
 
         [HttpPost("logout")]
