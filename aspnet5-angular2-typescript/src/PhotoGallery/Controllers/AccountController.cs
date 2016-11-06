@@ -11,6 +11,8 @@ using PhotoGallery.Infrastructure.Core;
 using PhotoGallery.Infrastructure;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using PhotoGallery.Infrastructure.Repositories.Abstract;
+using PhotoGallery.Infrastructure.Services.Abstract;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -110,18 +112,18 @@ namespace PhotoGallery.Controllers
         [HttpPost]
         public IActionResult Register([FromBody] RegistrationViewModel user)
         {
-            IActionResult _result = new ObjectResult(false);
-            GenericResult _registrationResult = null;
+            IActionResult result = new ObjectResult(false);
+            GenericResult registrationResult = null;
 
             try
             {
                 if (ModelState.IsValid)
                 {
-                    User _user = _membershipService.CreateUser(user.Username, user.Email, user.Password, new int[] { 1 });
+                    User newUser = _membershipService.CreateUser(user.Username, user.Email, user.Password, new int[] { 1 });
 
-                    if (_user != null)
+                    if (newUser != null)
                     {
-                        _registrationResult = new GenericResult()
+                        registrationResult = new GenericResult()
                         {
                             Succeeded = true,
                             Message = "Registration succeeded"
@@ -130,7 +132,7 @@ namespace PhotoGallery.Controllers
                 }
                 else
                 {
-                    _registrationResult = new GenericResult()
+                    registrationResult = new GenericResult()
                     {
                         Succeeded = false,
                         Message = "Invalid fields."
@@ -139,7 +141,7 @@ namespace PhotoGallery.Controllers
             }
             catch (Exception ex)
             {
-                _registrationResult = new GenericResult()
+                registrationResult = new GenericResult()
                 {
                     Succeeded = false,
                     Message = ex.Message
@@ -149,8 +151,8 @@ namespace PhotoGallery.Controllers
                 _loggingRepository.Commit();
             }
 
-            _result = new ObjectResult(_registrationResult);
-            return _result;
+            result = new ObjectResult(registrationResult);
+            return result;
         }
     }
 }

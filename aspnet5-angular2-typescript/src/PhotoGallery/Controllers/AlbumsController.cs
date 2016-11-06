@@ -9,6 +9,7 @@ using AutoMapper;
 using PhotoGallery.Infrastructure.Repositories;
 using PhotoGallery.Infrastructure.Core;
 using Microsoft.AspNetCore.Authorization;
+using PhotoGallery.Infrastructure.Repositories.Abstract;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 

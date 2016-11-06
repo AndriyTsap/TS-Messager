@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using PhotoGallery.Infrastructure.Services.Abstract;
 
 namespace PhotoGallery.Infrastructure.Services
 {

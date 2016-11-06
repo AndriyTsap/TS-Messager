@@ -7,7 +7,9 @@ using PhotoGallery.Entities;
 
 using PhotoGallery.Infrastructure;
 using PhotoGallery.Infrastructure.Repositories;
+using PhotoGallery.Infrastructure.Repositories.Abstract;
 using PhotoGallery.Infrastructure.Services;
+using PhotoGallery.Infrastructure.Services.Abstract;
 
 namespace ConsoleApp1
 {

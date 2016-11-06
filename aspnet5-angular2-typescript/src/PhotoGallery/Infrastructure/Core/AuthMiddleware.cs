@@ -14,6 +14,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http.Authentication;
+using PhotoGallery.Infrastructure.Repositories.Abstract;
+using PhotoGallery.Infrastructure.Services.Abstract;
 
 namespace PhotoGallery.Infrastructure.Core
 {

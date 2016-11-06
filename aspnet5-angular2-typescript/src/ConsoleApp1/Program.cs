@@ -1,18 +1,8 @@
 ﻿using System;
-using System.Linq;
-
-using System.Threading.Tasks;
 using ConsoleApp1.Contracts.Enities;
 using ConsoleApp1.Contracts.Services;
-
-using Microsoft.EntityFrameworkCore;
-using PhotoGallery.Infrastructure;
-using PhotoGallery.Infrastructure.Repositories;
-using Microsoft.Extensions.DependencyInjection;
 using ConsoleApp1.Services;
-
-using ServiceStack.Text;
-using ConsoleApp1.Services;
+using PhotoGallery.Infrastructure.Repositories.Abstract;
 
 namespace ConsoleApp1
 {

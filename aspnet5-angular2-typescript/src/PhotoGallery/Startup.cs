@@ -19,6 +19,8 @@ using Microsoft.AspNetCore.StaticFiles;
 using System.IO;
 using Microsoft.Extensions.FileProviders;
 using Newtonsoft.Json.Serialization;
+using PhotoGallery.Infrastructure.Repositories.Abstract;
+using PhotoGallery.Infrastructure.Services.Abstract;
 
 namespace PhotoGallery
 {

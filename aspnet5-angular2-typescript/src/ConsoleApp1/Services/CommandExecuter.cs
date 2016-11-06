@@ -9,7 +9,9 @@ using ConsoleApp1.Contracts.Services;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using PhotoGallery.Entities;
 using PhotoGallery.Infrastructure.Repositories;
+using PhotoGallery.Infrastructure.Repositories.Abstract;
 using PhotoGallery.Infrastructure.Services;
+using PhotoGallery.Infrastructure.Services.Abstract;
 using PhotoGallery.ViewModels;
 using ServiceStack;
 

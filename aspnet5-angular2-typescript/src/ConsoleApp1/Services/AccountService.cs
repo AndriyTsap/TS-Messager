@@ -9,16 +9,18 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using Microsoft.AspNetCore.Identity;
+using PhotoGallery.Infrastructure.Repositories.Abstract;
 using PhotoGallery.Infrastructure.Services;
+using PhotoGallery.Infrastructure.Services.Abstract;
 
 namespace ConsoleApp1.Services
 {
     public class AccountService: IAccountService
     {
-        private IUserRepository _userRepository;
-        private IRoleRepository _roleRepository;
-        private IUserRoleRepository _userRoleRepository;
-        private IEncryptionService _encriptionService;
+        private readonly IUserRepository _userRepository;
+        private readonly IRoleRepository _roleRepository;
+        private readonly IUserRoleRepository _userRoleRepository;
+        private readonly IEncryptionService _encriptionService;
         
 
         public AccountService(IUserRepository userRepository, IRoleRepository roleRepository,
@@ -38,6 +40,11 @@ namespace ConsoleApp1.Services
 
 
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         public GenericResult Login(LoginViewModel user)
         {
             string salt = GetSalt(user.Username);

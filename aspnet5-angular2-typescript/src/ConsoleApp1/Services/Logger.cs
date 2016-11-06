@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using PhotoGallery.Entities;
 using PhotoGallery.Infrastructure;
 using PhotoGallery.Infrastructure.Repositories;
+using PhotoGallery.Infrastructure.Repositories.Abstract;
 
 namespace ConsoleApp1.Services
 {

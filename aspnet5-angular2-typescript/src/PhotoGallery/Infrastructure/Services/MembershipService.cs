@@ -5,6 +5,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
 using System.Threading.Tasks;
+using PhotoGallery.Infrastructure.Core;
+using PhotoGallery.Infrastructure.Repositories.Abstract;
+using PhotoGallery.Infrastructure.Services.Abstract;
 
 namespace PhotoGallery.Infrastructure.Services
 {
@@ -32,7 +35,7 @@ namespace PhotoGallery.Infrastructure.Services
             var membershipCtx = new MembershipContext();
 
             var user = _userRepository.GetSingleByUsername(username);
-            if (user != null && isUserValid(user, password))
+            if (user != null && IsUserValid(user, password))
             {
                 var userRoles = GetUserRoles(user.Username);
                 membershipCtx.User = user;
@@ -74,7 +77,7 @@ namespace PhotoGallery.Infrastructure.Services
             {
                 foreach (var role in roles)
                 {
-                    addUserToRole(user, role);
+                    AddUserToRole(user, role);
                 }
             }
 
@@ -90,7 +93,7 @@ namespace PhotoGallery.Infrastructure.Services
 
         public List<Role> GetUserRoles(string username)
         {
-            List<Role> _result = new List<Role>();
+            List<Role> result = new List<Role>();
 
             var existingUser = _userRepository.GetSingleByUsername(username);
 
@@ -98,16 +101,16 @@ namespace PhotoGallery.Infrastructure.Services
             {
                 foreach (var userRole in existingUser.UserRoles)
                 {
-                    _result.Add(userRole.Role);
+                    result.Add(userRole.Role);
                 }
             }
 
-            return _result.Distinct().ToList();
+            return result.Distinct().ToList();
         }
         #endregion
 
         #region Helper methods
-        private void addUserToRole(User user, int roleId)
+        private void AddUserToRole(User user, int roleId)
         {
             var role = _roleRepository.GetSingle(roleId);
             if (role == null)
@@ -123,14 +126,14 @@ namespace PhotoGallery.Infrastructure.Services
             _userRepository.Commit();
         }
 
-        private bool isPasswordValid(User user, string password)
+        private bool IsPasswordValid(User user, string password)
         {
             return string.Equals(_encryptionService.EncryptPassword(password, user.Salt), user.HashedPassword);
         }
 
-        private bool isUserValid(User user, string password)
+        private bool IsUserValid(User user, string password)
         {
-            if (isPasswordValid(user, password))
+            if (IsPasswordValid(user, password))
             {
                 return !user.IsLocked;
             }

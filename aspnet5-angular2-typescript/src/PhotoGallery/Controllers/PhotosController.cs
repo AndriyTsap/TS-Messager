@@ -8,6 +8,7 @@ using PhotoGallery.ViewModels;
 using AutoMapper;
 using PhotoGallery.Infrastructure.Repositories;
 using PhotoGallery.Infrastructure.Core;
+using PhotoGallery.Infrastructure.Repositories.Abstract;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -69,16 +70,16 @@ namespace PhotoGallery.Controllers
         [HttpDelete("{id:int}")]
         public IActionResult Delete(int id)
         {
-            IActionResult _result = new ObjectResult(false);
-            GenericResult _removeResult = null;
+            IActionResult result = new ObjectResult(false);
+            GenericResult removeResult = null;
 
             try
             {
-                Photo _photoToRemove = this._photoRepository.GetSingle(id);
-                this._photoRepository.Delete(_photoToRemove);
+                Photo photoToRemove = this._photoRepository.GetSingle(id);
+                this._photoRepository.Delete(photoToRemove);
                 this._photoRepository.Commit();
 
-                _removeResult = new GenericResult()
+                removeResult = new GenericResult()
                 {
                     Succeeded = true,
                     Message = "Photo removed."
@@ -86,7 +87,7 @@ namespace PhotoGallery.Controllers
             }
             catch (Exception ex)
             {
-                _removeResult = new GenericResult()
+                removeResult = new GenericResult()
                 {
                     Succeeded = false,
                     Message = ex.Message
@@ -96,8 +97,8 @@ namespace PhotoGallery.Controllers
                 _loggingRepository.Commit();
             }
 
-            _result = new ObjectResult(_removeResult);
-            return _result;
+            result = new ObjectResult(removeResult);
+            return result;
         }
     }
 }
