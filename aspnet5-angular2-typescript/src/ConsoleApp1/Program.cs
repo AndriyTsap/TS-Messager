@@ -11,8 +11,6 @@ namespace ConsoleApp1
         public static void Main(string[] args)
         { 
             
-            var userRepository = ServiceLocator.Instance.Resolve<IUserRepository>();
-
             var loger = ServiceLocator.Instance.Resolve<ILogger>();
 
             CommandExecuter commandExecuter = new CommandExecuter();

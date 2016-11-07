@@ -9,7 +9,6 @@ using PhotoGallery.Entities;
 using PhotoGallery.Infrastructure.Core;
 using PhotoGallery.Infrastructure.Repositories;
 using PhotoGallery.Infrastructure.Repositories.Abstract;
-using PhotoGallery.Infrastructure.Services.Abstract;
 using PhotoGallery.ViewModels;
 
 namespace PhotoGallery.Controllers
@@ -19,14 +18,12 @@ namespace PhotoGallery.Controllers
     {
         private readonly IMessageRepository _messageRepository;
         private readonly ILoggingRepository _loggingRepository;
-        private readonly IMessageFactory _messageFactory;
         private readonly IGroupRepository _groupRepository;
 
         public MessagesController(ILoggingRepository loggingRepository, IMessageRepository messageRepository,
-            IMessageFactory messageFactory, IGroupRepository groupRepository)
+            IGroupRepository groupRepository)
         {
             _groupRepository = groupRepository;
-            _messageFactory = messageFactory;
             _loggingRepository = loggingRepository;
             _messageRepository = messageRepository;
         }
@@ -39,17 +36,18 @@ namespace PhotoGallery.Controllers
 
 
 
-        [HttpGet("chats/{dialogId:int)")]
-        public IEnumerable<Group> GetTop20ChatsByChatId(int? dialogId)
+        [HttpGet("{chatId:int}")]
+        public IEnumerable<Message> GetMessagesByChatId(int? chatId)
         {
-            IEnumerable<Group> groups = null;
-            
+            IEnumerable<Message> messages = null;
+
             try
             {
-                groups = _groupRepository
+                messages = _messageRepository
                     .AllIncluding(m => m)
                     .OrderBy(m => m.Id)
-                    .Take(20);
+                    .Take(20)
+                    .Where(m => m.GroupId == chatId);
             }
             catch (Exception ex)
             {
@@ -62,7 +60,7 @@ namespace PhotoGallery.Controllers
                 _loggingRepository.Commit();
             }
 
-            return groups;
+            return messages;
         }
 
 
@@ -73,7 +71,12 @@ namespace PhotoGallery.Controllers
             IActionResult result = new ObjectResult(false);
             GenericResult removeResult = null;
 
-            var message = _messageFactory.CreateMessage(vMMessage.Text, vMMessage.SenderId, vMMessage.GroupId);
+            var message = new Message()
+            {
+                Text = vMMessage.Text,
+                SenderId = vMMessage.SenderId,
+                GroupId = vMMessage.GroupId
+            };
 
             try
             {
@@ -115,7 +118,7 @@ namespace PhotoGallery.Controllers
 
             try
             {
-                _messageRepository.Delete(new Message() {Id = messageId});
+                _messageRepository.Delete(new Message() { Id = messageId });
                 _messageRepository.Commit();
 
                 removeResult = new GenericResult()
