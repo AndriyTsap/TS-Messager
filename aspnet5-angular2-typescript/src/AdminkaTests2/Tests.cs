@@ -13,8 +13,10 @@ using ConsoleApp1.Contracts.Enities;
 using ConsoleApp1.Contracts.Services;
 using Moq;
 using PhotoGallery.Infrastructure.Repositories;
+using PhotoGallery.Infrastructure.Repositories.Abstract;
 using PhotoGallery.ViewModels;
 using PhotoGallery.Infrastructure.Services;
+using PhotoGallery.Infrastructure.Services.Abstract;
 
 namespace AdminkaTests2
 {   

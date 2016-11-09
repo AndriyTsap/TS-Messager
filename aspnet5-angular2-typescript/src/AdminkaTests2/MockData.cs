@@ -22,7 +22,7 @@ namespace AdminkaTests2
                 IsLocked = false,
                 Phone = "0990920654",
                 Salt = "/E3qadielrSMtyT7YEpb2w==",
-                GroupUsers = new List<GroupUser>(),
+                ChatUsers = new List<ChatUser>(),
                 Messages = new List<Message>(),
                 UserRoles = new List<UserRole>()
             },
@@ -37,29 +37,29 @@ namespace AdminkaTests2
                 IsLocked = false,
                 Phone = "0666777333",
                 Salt = "GTtKxJA6xJuj3ifJtTXn9Q==",
-                GroupUsers = new List<GroupUser>(),
+                ChatUsers = new List<ChatUser>(),
                 Messages = new List<Message>(),
                 UserRoles = new List<UserRole>(),
             }
         };
 
-        public List<Group> Grops = new List<Group>
+        public List<Chat> Grops = new List<Chat>
         {
-            new Group
+            new Chat
             {
                 Id = 0,
                 Name = "PIt-15-03 Dialog",
                 DateCreated = DateTime.Now.ToString(CultureInfo.InvariantCulture),
                 Messages = new List<Message>(),
-                GroupUsers = new List<GroupUser>()
+                ChatUsers = new List<ChatUser>()
             },
-            new Group
+            new Chat
             {
                 Id = 1,
                 Name = "Facken bursa",
                 DateCreated = DateTime.Now.ToString(CultureInfo.InvariantCulture),
                 Messages = new List<Message>(),
-                GroupUsers = new List<GroupUser>()
+                ChatUsers = new List<ChatUser>()
             }
         };
 
@@ -70,9 +70,9 @@ namespace AdminkaTests2
                 Id = 0,
                 Text = "Hi!",
                 Date = DateTime.Now.ToString(CultureInfo.InvariantCulture),
-                GroupId = 0,
+                ChatId = 0,
                 SenderId = 0,
-                Group = new Group(),
+                Chat = new Chat(),
                 User = new User()
             },
             new Message
@@ -80,30 +80,30 @@ namespace AdminkaTests2
                 Id = 1,
                 Text = "Hi! How are you?",
                 Date = DateTime.Now.ToString(CultureInfo.InvariantCulture),
-                GroupId = 0,
+                ChatId = 0,
                 SenderId = 1,
-                Group = new Group(),
+                Chat = new Chat(),
                 User = new User()
             }
         };
 
-        public List<GroupUser> GroupUsers = new List<GroupUser>
+        public List<ChatUser> GroupUsers = new List<ChatUser>
         {
-            new GroupUser
+            new ChatUser
             {
                 Id = 0,
                 UserId = 0,
-                GroupId = 0,
+                ChatId = 0,
                 User = new User(),
-                Group = new Group()
+                Chat = new Chat()
             },
-            new GroupUser
+            new ChatUser
             {
                 Id = 1,
                 UserId =1,
-                GroupId = 0,
+                ChatId = 0,
                 User = new User(),
-                Group = new Group()
+                Chat = new Chat()
             }
         };
 
