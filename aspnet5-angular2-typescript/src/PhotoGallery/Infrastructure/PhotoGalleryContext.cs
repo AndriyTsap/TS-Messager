@@ -17,9 +17,10 @@ namespace PhotoGallery.Infrastructure
         public DbSet<Role> Roles { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
         public DbSet<Message> Messages { get; set; }
-        public DbSet<Group> Groups { get; set; }
-        public DbSet<GroupUser> GroupUsers { get; set; }
+        public DbSet<Chat> Groups { get; set; }
+        public DbSet<ChatUser> GroupUsers { get; set; }
         public DbSet<Error> Errors { get; set; }
+        public DbSet<TemporaryUser> TemporaryUsers { get; set; }
 
         public PhotoGalleryContext(DbContextOptions options) : base(options)
         {
@@ -46,22 +47,22 @@ namespace PhotoGallery.Infrastructure
             modelBuilder.Entity<User>().Property(u => u.Email).IsRequired().HasMaxLength(200);
             modelBuilder.Entity<User>().Property(u => u.HashedPassword).IsRequired().HasMaxLength(200);
             modelBuilder.Entity<User>().Property(u => u.Salt).IsRequired().HasMaxLength(200);
-            modelBuilder.Entity<User>().HasMany(u => u.GroupUsers).WithOne(gu => gu.User);
+            modelBuilder.Entity<User>().HasMany(u => u.ChatUsers).WithOne(gu => gu.User);
             modelBuilder.Entity<User>().HasMany(u => u.Messages).WithOne(m => m.User);
 
             //Message
             modelBuilder.Entity<Message>().Property(m => m.Text).IsRequired().HasMaxLength(500);
-            modelBuilder.Entity<Message>().Property(m => m.GroupId).IsRequired();
+            modelBuilder.Entity<Message>().Property(m => m.ChatId).IsRequired();
             modelBuilder.Entity<Message>().Property(m => m.SenderId).IsRequired();
 
-            //Group
-            modelBuilder.Entity<Group>().Property(g => g.Name).IsRequired().HasMaxLength(100);
-            modelBuilder.Entity<Group>().HasMany(g => g.Messages).WithOne(m => m.Group);
-            modelBuilder.Entity<Group>().HasMany(g => g.GroupUsers).WithOne(gu => gu.Group);
+            //Chat
+            modelBuilder.Entity<Chat>().Property(g => g.Name).IsRequired().HasMaxLength(100);
+            modelBuilder.Entity<Chat>().HasMany(g => g.Messages).WithOne(m => m.Chat);
+            modelBuilder.Entity<Chat>().HasMany(g => g.ChatUsers).WithOne(gu => gu.Chat);
 
             //GroupUser
-            modelBuilder.Entity<GroupUser>().Property(gu => gu.GroupId).IsRequired();
-            modelBuilder.Entity<GroupUser>().Property(gu => gu.UserId).IsRequired();
+            modelBuilder.Entity<ChatUser>().Property(gu => gu.ChatId).IsRequired();
+            modelBuilder.Entity<ChatUser>().Property(gu => gu.UserId).IsRequired();
 
             // UserRole
             modelBuilder.Entity<UserRole>().Property(ur => ur.UserId).IsRequired();
@@ -69,6 +70,11 @@ namespace PhotoGallery.Infrastructure
 
             // Role
             modelBuilder.Entity<Role>().Property(r => r.Name).IsRequired().HasMaxLength(50);
+
+            //TemporaryUser
+            modelBuilder.Entity<TemporaryUser>().Property(tu => tu.Email).IsRequired().HasMaxLength(50);
+            modelBuilder.Entity<TemporaryUser>().Property(tu => tu.Username).IsRequired().HasMaxLength(50);
+            modelBuilder.Entity<TemporaryUser>().Property(tu => tu.ActivationCode).IsRequired().HasMaxLength(50);
         }
     }
 }

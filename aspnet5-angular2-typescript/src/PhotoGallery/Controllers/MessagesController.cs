@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting.Internal;
 using Microsoft.AspNetCore.Mvc;
 using PhotoGallery.Entities;
 using PhotoGallery.Infrastructure.Core;
 using PhotoGallery.Infrastructure.Repositories;
 using PhotoGallery.Infrastructure.Repositories.Abstract;
+using PhotoGallery.Infrastructure.Services;
 using PhotoGallery.ViewModels;
 
 namespace PhotoGallery.Controllers
@@ -18,20 +22,52 @@ namespace PhotoGallery.Controllers
     {
         private readonly IMessageRepository _messageRepository;
         private readonly ILoggingRepository _loggingRepository;
-        private readonly IGroupRepository _groupRepository;
-
+        private readonly IChatRepository _chatRepository;
+        private readonly IChatUserRepository _chatUserRepository;
+        private readonly IUserRepository _userRepository;
+        
         public MessagesController(ILoggingRepository loggingRepository, IMessageRepository messageRepository,
-            IGroupRepository groupRepository)
+            IChatRepository chatRepository, IChatUserRepository chatUserRepository, IUserRepository userRepository) 
         {
-            _groupRepository = groupRepository;
+            _chatRepository = chatRepository;
             _loggingRepository = loggingRepository;
             _messageRepository = messageRepository;
+            _chatUserRepository = chatUserRepository;
+            _userRepository = userRepository;
         }
 
-        [HttpGet("chats")]
-        public IEnumerable<Group> GetAllDialogs()
+
+        [Authorize]
+        [HttpGet]
+        public IEnumerable<Message> GetAll()
         {
-            return _groupRepository.GetAll();
+            var authenticationHeader = Request.Headers["Authorization"];
+            var token = authenticationHeader.FirstOrDefault().Split(' ')[1];
+            var jwtToken = new JwtSecurityToken(token);
+            var subject = jwtToken.Subject;
+
+            var user = _userRepository.GetSingleByUsername(subject);
+
+            var chats = _chatUserRepository.FindBy(cu => cu.UserId == user.Id).Select(cu => cu.ChatId);
+            var messages = _messageRepository.FindBy(message => chats.Contains(message.ChatId));
+            return messages;
+        }
+
+        [Authorize]
+        [HttpGet("chats")]
+        public IEnumerable<Chat> GetAllDialogs()
+        {
+            var authenticationHeader = Request.Headers["Authorization"];
+            var token = authenticationHeader.FirstOrDefault().Split(' ')[1];
+            var jwtToken = new JwtSecurityToken(token);
+            var subject = jwtToken.Subject;
+
+            var user = _userRepository.GetSingleByUsername(subject);
+
+            var chatIds = _chatUserRepository.FindBy(cu => cu.UserId == user.Id).Select(cu => cu.ChatId);
+            var chats = _chatRepository.FindBy(c => chatIds.Contains(c.Id));
+
+            return chats;
         }
 
 
@@ -47,7 +83,7 @@ namespace PhotoGallery.Controllers
                     .AllIncluding(m => m)
                     .OrderBy(m => m.Id)
                     .Take(20)
-                    .Where(m => m.GroupId == chatId);
+                    .Where(m => m.ChatId == chatId);
             }
             catch (Exception ex)
             {
@@ -75,7 +111,7 @@ namespace PhotoGallery.Controllers
             {
                 Text = vMMessage.Text,
                 SenderId = vMMessage.SenderId,
-                GroupId = vMMessage.GroupId
+                ChatId = vMMessage.GroupId
             };
 
             try

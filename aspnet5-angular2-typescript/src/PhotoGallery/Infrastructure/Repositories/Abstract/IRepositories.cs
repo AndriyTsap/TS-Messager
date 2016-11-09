@@ -13,9 +13,11 @@ namespace PhotoGallery.Infrastructure.Repositories.Abstract
 
     public interface IMessageRepository : IEntityBaseRepository<Message> { }
 
-    public interface IGroupRepository : IEntityBaseRepository<Group> { }
+    public interface IChatRepository : IEntityBaseRepository<Chat> { }
 
-    public interface IGroupUserRepository : IEntityBaseRepository<GroupUser> { }
+    public interface IChatUserRepository : IEntityBaseRepository<ChatUser> { }
+
+    public interface ITemporaryUserRepository : IEntityBaseRepository<TemporaryUser> { }
 
     public interface IUserRepository : IEntityBaseRepository<User>
     {

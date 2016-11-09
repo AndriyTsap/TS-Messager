@@ -7,9 +7,9 @@ using PhotoGallery.Infrastructure.Repositories.Abstract;
 
 namespace PhotoGallery.Infrastructure.Repositories
 {
-    public class GroupUserRepository :EntityBaseRepository<GroupUser>, IGroupUserRepository
+    public class TemporaryUserRepository : EntityBaseRepository<TemporaryUser>, ITemporaryUserRepository
     {
-        public GroupUserRepository(PhotoGalleryContext context)
+        public TemporaryUserRepository(PhotoGalleryContext context)
             : base(context)
         { }
     }

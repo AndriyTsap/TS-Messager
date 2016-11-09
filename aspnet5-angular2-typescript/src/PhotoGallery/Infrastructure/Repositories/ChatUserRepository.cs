@@ -7,9 +7,9 @@ using PhotoGallery.Infrastructure.Repositories.Abstract;
 
 namespace PhotoGallery.Infrastructure.Repositories
 {
-    public class GroupRepository :EntityBaseRepository<Group>, IGroupRepository
+    public class ChatUserRepository :EntityBaseRepository<ChatUser>, IChatUserRepository
     {
-        public GroupRepository(PhotoGalleryContext context)
+        public ChatUserRepository(PhotoGalleryContext context)
             : base(context)
         { }
     }

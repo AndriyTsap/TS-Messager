@@ -17,7 +17,10 @@ using PhotoGallery.Infrastructure.Core;
 using System.Security.Claims;
 using Microsoft.AspNetCore.StaticFiles;
 using System.IO;
+using System.Text;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Serialization;
 using PhotoGallery.Infrastructure.Repositories.Abstract;
 using PhotoGallery.Infrastructure.Services.Abstract;
@@ -64,9 +67,9 @@ namespace PhotoGallery
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserRoleRepository, UserRoleRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
-            services.AddScoped<IGroupRepository, GroupRepository>();
+            services.AddScoped<IChatRepository, ChatRepository>();
             services.AddScoped<IMessageRepository, MessageRepository>();
-            services.AddScoped<IGroupUserRepository, GroupUserRepository>();
+            services.AddScoped<IChatUserRepository, ChatUserRepository>();
             services.AddScoped<ILoggingRepository, LoggingRepository>();
             
             // Services
@@ -99,9 +102,35 @@ namespace PhotoGallery
             });
         }
 
+        private static string secretKey = "mysupersecret_secretkey!123";
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseStaticFiles();
+
+            var signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secretKey));
+
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                // The signing key must match!
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = signingKey,
+
+                // Validate the JWT Issuer (iss) claim
+                ValidateIssuer = true,
+                ValidIssuer = "ExampleIssuer",
+
+                // Validate the JWT Audience (aud) claim
+                ValidateAudience = true,
+                ValidAudience = "ExampleAudience",
+
+                // Validate the token expiry
+                ValidateLifetime = true,
+
+                // If you want to allow a certain amount of clock drift, set that here:
+                ClockSkew = TimeSpan.Zero
+            };
+
             // this will serve up wwwroot
             app.UseFileServer();
 
@@ -120,11 +149,29 @@ namespace PhotoGallery
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
                 AutomaticAuthenticate = true,
-                AutomaticChallenge = true
+                AutomaticChallenge = true,
+                AuthenticationScheme = "Cookie",
+                CookieName = "access_token",
+                TicketDataFormat = new CustomJwtDataFormat(
+                    SecurityAlgorithms.HmacSha256,
+                    tokenValidationParameters)
             });
 
-            // Custom authentication middleware
-            //app.UseMiddleware<AuthMiddleware>();
+            app.UseJwtBearerAuthentication(new JwtBearerOptions
+            {
+                AutomaticAuthenticate = true,
+                AutomaticChallenge = true,
+                TokenValidationParameters = tokenValidationParameters
+            });
+
+            var options = new TokenProviderOptions
+            {
+                Audience = "ExampleAudience",
+                Issuer = "ExampleIssuer",
+                SigningCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256),
+            };
+
+            app.UseMiddleware<TokenProviderMiddleware>(Options.Create(options));
 
             // Add MVC to the request pipeline.
             app.UseMvc(routes =>

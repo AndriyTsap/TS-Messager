@@ -10,7 +10,7 @@ namespace PhotoGallery.Entities
         public User()
         {
             UserRoles = new List<UserRole>();
-            GroupUsers = new List<GroupUser>();
+            ChatUsers = new List<ChatUser>();
             Messages = new List<Message>();
         }
         public int Id { get; set; }
@@ -22,15 +22,21 @@ namespace PhotoGallery.Entities
         public string Salt { get; set; }
         public bool IsLocked { get; set; }
         public DateTime DateCreated { get; set; }
+        public string Photo { get; set; }
 
         public virtual List<UserRole> UserRoles { get; set; }
-        public virtual List<GroupUser> GroupUsers { get; set; }
+        public virtual List<ChatUser> ChatUsers { get; set; }
         public virtual List<Message> Messages { get; set; }
 
         public override bool Equals(object obj)
         {
             var user = obj as User;
             return user != null && Id == user.Id && Username == user.Username;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
     }
 }

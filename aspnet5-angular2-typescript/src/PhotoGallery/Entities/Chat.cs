@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace PhotoGallery.Entities
 {
-    public class Group : IEntityBase
+    public class Chat : IEntityBase
     {
-        public Group ()
+        public Chat ()
         {
-            GroupUsers = new List<GroupUser>();
+            ChatUsers = new List<ChatUser>();
             Messages = new List<Message>();
         }
 
@@ -17,13 +17,18 @@ namespace PhotoGallery.Entities
         public string Name { get; set; }
         public string DateCreated { get; set; }
 
-        public virtual List<GroupUser> GroupUsers { get; set; }
+        public virtual List<ChatUser> ChatUsers { get; set; }
         public virtual List<Message> Messages { get; set; }
 
         public override bool Equals(object obj)
         {
-            var group = obj as Group;
-            return group != null && Id == group.Id && Name == group.Name && DateCreated == group.DateCreated;
+            var chat = obj as Chat;
+            return chat != null && Id == chat.Id && Name == chat.Name && DateCreated == chat.DateCreated;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
     }
 }
