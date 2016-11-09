@@ -153,7 +153,7 @@ namespace ConsoleApp1.Services
                     break;
 
                 case "importUsersFromCsv":
-                    List<User> importedUsers=_csvManager.ImportUsers(command[1]);
+                    IEnumerable<User> importedUsers=_csvManager.ImportUsers(command[1]);
                     foreach (var user in importedUsers)
                     {
                         _userRepository.Add(new User

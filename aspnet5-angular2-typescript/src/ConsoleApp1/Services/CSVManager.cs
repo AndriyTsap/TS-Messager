@@ -22,10 +22,10 @@ namespace ConsoleApp1.Services
         {
             _fileManager = new FileManager();
         }
-        public List<User> ImportUsers(string path)
+        public IEnumerable<User> ImportUsers(string path)
         {
             string strUsers=_fileManager.ReadFromFile(path);
-            List<User> listUsers = CsvSerializer.DeserializeFromString<List<User>>(strUsers);
+            IEnumerable<User> listUsers = CsvSerializer.DeserializeFromString<IEnumerable<User>>(strUsers);
             _loger.Log(new LogEntry(LoggingEventType.Information, "Users Imported from " + path));
             return listUsers;
         }
