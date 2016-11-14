@@ -5,6 +5,7 @@ import { HomeComponent } from './components/home.component';
 import { PhotosComponent } from './components/photos.component';
 import { AlbumsComponent } from './components/albums.component';
 import { AlbumPhotosComponent } from './components/album-photos.component';
+import { TestComponent } from './components/test.component';
 import { accountRoutes, accountRouting } from './components/account/routes';
 
 
@@ -21,6 +22,10 @@ const appRoutes: Routes = [
     {
         path: 'photos',
         component: PhotosComponent
+    },
+    {
+        path: 'test',
+        component: TestComponent
     },
     {
         path: 'albums',
