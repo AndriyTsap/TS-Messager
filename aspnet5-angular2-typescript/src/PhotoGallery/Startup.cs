@@ -75,6 +75,7 @@ namespace PhotoGallery
             // Services
             services.AddScoped<IMembershipService, MembershipService>();
             services.AddScoped<IEncryptionService, EncryptionService>();
+            services.AddScoped<IJwtFormater, JwtFormater>();
 
             services.AddAuthentication();
 
@@ -150,11 +151,6 @@ namespace PhotoGallery
             {
                 AutomaticAuthenticate = true,
                 AutomaticChallenge = true,
-                AuthenticationScheme = "Cookie",
-                CookieName = "access_token",
-                TicketDataFormat = new CustomJwtDataFormat(
-                    SecurityAlgorithms.HmacSha256,
-                    tokenValidationParameters)
             });
 
             app.UseJwtBearerAuthentication(new JwtBearerOptions
@@ -179,9 +175,6 @@ namespace PhotoGallery
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
-
-                // Uncomment the following line to add a route for porting Web API 2 controllers.
-                //routes.MapWebApiRoute("DefaultApi", "api/{controller}/{id?}");
             });
 
             DbInitializer.Initialize(app.ApplicationServices, _applicationPath);

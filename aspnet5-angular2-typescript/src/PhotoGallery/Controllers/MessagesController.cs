@@ -1,18 +1,13 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting.Internal;
 using Microsoft.AspNetCore.Mvc;
 using PhotoGallery.Entities;
 using PhotoGallery.Infrastructure.Core;
-using PhotoGallery.Infrastructure.Repositories;
 using PhotoGallery.Infrastructure.Repositories.Abstract;
-using PhotoGallery.Infrastructure.Services;
+using PhotoGallery.Infrastructure.Services.Abstract;
 using PhotoGallery.ViewModels;
 
 namespace PhotoGallery.Controllers
@@ -23,33 +18,53 @@ namespace PhotoGallery.Controllers
         private readonly IMessageRepository _messageRepository;
         private readonly ILoggingRepository _loggingRepository;
         private readonly IChatRepository _chatRepository;
+        private readonly IJwtFormater _jwtFormater;
         private readonly IChatUserRepository _chatUserRepository;
         private readonly IUserRepository _userRepository;
-        
+
+
+
         public MessagesController(ILoggingRepository loggingRepository, IMessageRepository messageRepository,
-            IChatRepository chatRepository, IChatUserRepository chatUserRepository, IUserRepository userRepository) 
+            IChatRepository chatRepository, IChatUserRepository chatUserRepository, IUserRepository userRepository,
+            IJwtFormater jwtFormater)
         {
             _chatRepository = chatRepository;
             _loggingRepository = loggingRepository;
             _messageRepository = messageRepository;
             _chatUserRepository = chatUserRepository;
             _userRepository = userRepository;
+            _jwtFormater = jwtFormater;
         }
-
 
         [Authorize]
         [HttpGet]
-        public IEnumerable<Message> GetAll()
+        public async Task<IEnumerable<Message>> GetAll()
         {
-            var authenticationHeader = Request.Headers["Authorization"];
-            var token = authenticationHeader.FirstOrDefault().Split(' ')[1];
-            var jwtToken = new JwtSecurityToken(token);
-            var subject = jwtToken.Subject;
+            var authenticationHeader = Request?.Headers["Authorization"];
+            var token = authenticationHeader?.FirstOrDefault().Split(' ')[1];
+            var subject = _jwtFormater.GetSubject(token);
 
             var user = _userRepository.GetSingleByUsername(subject);
 
-            var chats = _chatUserRepository.FindBy(cu => cu.UserId == user.Id).Select(cu => cu.ChatId);
-            var messages = _messageRepository.FindBy(message => chats.Contains(message.ChatId));
+            IEnumerable<Message> messages = new List<Message>();
+            try
+            {
+                var chats = await _chatUserRepository.FindByAsync(cu => cu.UserId == user.Id);
+                var chatIds = chats.Select(cu => cu.ChatId);
+                messages = await _messageRepository.FindByAsync(message => chatIds.Contains(message.ChatId));
+            }
+            catch (Exception ex)
+            {
+                _loggingRepository.Add(new Error()
+                {
+                    Severity = "Error",
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace,
+                    DateCreated = DateTime.Now
+                });
+                _loggingRepository.Commit();
+            }
+            
             return messages;
         }
 
@@ -57,10 +72,9 @@ namespace PhotoGallery.Controllers
         [HttpGet("chats")]
         public IEnumerable<Chat> GetAllDialogs()
         {
-            var authenticationHeader = Request.Headers["Authorization"];
-            var token = authenticationHeader.FirstOrDefault().Split(' ')[1];
-            var jwtToken = new JwtSecurityToken(token);
-            var subject = jwtToken.Subject;
+            var authenticationHeader = Request?.Headers["Authorization"];
+            var token = authenticationHeader?.FirstOrDefault().Split(' ')[1];
+            var subject = _jwtFormater.GetSubject(token);
 
             var user = _userRepository.GetSingleByUsername(subject);
 
@@ -71,24 +85,43 @@ namespace PhotoGallery.Controllers
         }
 
 
-
-        [HttpGet("{chatId:int}")]
-        public IEnumerable<Message> GetMessagesByChatId(int? chatId)
+        [Authorize]
+        [HttpGet("getByChatId")]
+        public async Task<IEnumerable<Message>> GetMessagesByChatId(int chatId)
         {
             IEnumerable<Message> messages = null;
 
+            var authenticationHeader = Request?.Headers["Authorization"];
+            var token = authenticationHeader?.FirstOrDefault().Split(' ')[1];
+            var subject = _jwtFormater.GetSubject(token);
+
+            var user = _userRepository.GetSingleByUsername(subject);
+
+            var userChats = await _chatUserRepository.FindByAsync(cu => cu.UserId == user.Id);
+            var chatIds = userChats.Select(uc => uc.ChatId).ToList();
+            
+            if (!chatIds.Contains(chatId))
+            {
+                _loggingRepository.Add(new Error()
+                {
+                    Severity = "Warning",
+                    Message = "Request from "+subject+" to not his chat",
+                    DateCreated = DateTime.Now
+                });
+                _loggingRepository.Commit();
+                throw new Exception("Access denied");
+            }
+
             try
             {
-                messages = _messageRepository
-                    .AllIncluding(m => m)
-                    .OrderBy(m => m.Id)
-                    .Take(20)
-                    .Where(m => m.ChatId == chatId);
+                messages =  await _messageRepository
+                    .FindByAsync(m => m.ChatId == chatId);
             }
             catch (Exception ex)
             {
                 _loggingRepository.Add(new Error()
                 {
+                    Severity = "Error",
                     Message = ex.Message,
                     StackTrace = ex.StackTrace,
                     DateCreated = DateTime.Now
@@ -102,16 +135,23 @@ namespace PhotoGallery.Controllers
 
 
         [HttpPost]
-        public IActionResult Send(MessageViewModel vMMessage)
+        [Authorize]
+        public IActionResult Send(MessageViewModel mVMessage)
         {
             IActionResult result = new ObjectResult(false);
             GenericResult removeResult = null;
 
+            var authenticationHeader = Request?.Headers["Authorization"];
+            var token = authenticationHeader?.FirstOrDefault().Split(' ')[1];
+            var subject = _jwtFormater.GetSubject(token);
+
+            var user = _userRepository.GetSingleByUsername(subject);
+
             var message = new Message()
             {
-                Text = vMMessage.Text,
-                SenderId = vMMessage.SenderId,
-                ChatId = vMMessage.GroupId
+                Text = mVMessage.Text,
+                SenderId = user.Id,
+                ChatId = mVMessage.ChatId
             };
 
             try
@@ -135,6 +175,7 @@ namespace PhotoGallery.Controllers
 
                 _loggingRepository.Add(new Error()
                 {
+                    Severity = "Error",
                     Message = ex.Message,
                     StackTrace = ex.StackTrace,
                     DateCreated = DateTime.Now
@@ -146,15 +187,48 @@ namespace PhotoGallery.Controllers
             return result;
         }
 
-        [HttpDelete("{messageId:int}")]
-        public IActionResult Delete(int messageId)
+        [Authorize]
+        [HttpDelete("delete")]
+        public async Task<IActionResult> Delete(int id)
         {
             IActionResult result = new ObjectResult(false);
             GenericResult removeResult = null;
 
+            var authenticationHeader = Request?.Headers["Authorization"];
+            var token = authenticationHeader?.FirstOrDefault().Split(' ')[1];
+            var subject = _jwtFormater.GetSubject(token);
+
+            var user = _userRepository.GetSingleByUsername(subject);
+
+            var userChats = await _chatUserRepository.FindByAsync(uc => uc.UserId == user.Id);
+            var messages = await _messageRepository.FindByAsync(m => m.Id == id);
+            var message = messages.FirstOrDefault();
+
+            var chatIds = userChats.Select(uc => uc.ChatId);
+
+            if (!chatIds.Contains(message.ChatId))
+            {
+                _loggingRepository.Add(new Error()
+                {
+                    Severity = "Warning",
+                    Message = "Request from " + subject + " to not his message",
+                    DateCreated = DateTime.Now
+                });
+
+                _loggingRepository.Commit();
+                removeResult = new GenericResult()
+                {
+                    Succeeded = false,
+                    Message = "Access denied"
+                };
+
+                result = new ObjectResult(removeResult);
+                return result;
+            }
+
             try
             {
-                _messageRepository.Delete(new Message() { Id = messageId });
+                _messageRepository.Delete(new Message() { Id = id });
                 _messageRepository.Commit();
 
                 removeResult = new GenericResult()

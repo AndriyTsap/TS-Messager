@@ -11,6 +11,8 @@ namespace PhotoGallery.Infrastructure
 {
     public class PhotoGalleryContext : DbContext
     {
+        private DbContextOptionsBuilder options;
+
         public DbSet<Photo> Photos { get; set; }
         public DbSet<Album> Albums { get; set; }
         public DbSet<User> Users { get; set; }
@@ -24,6 +26,11 @@ namespace PhotoGallery.Infrastructure
 
         public PhotoGalleryContext(DbContextOptions options) : base(options)
         {
+        }
+
+        public PhotoGalleryContext(DbContextOptionsBuilder options)
+        {
+            this.options = options;
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
