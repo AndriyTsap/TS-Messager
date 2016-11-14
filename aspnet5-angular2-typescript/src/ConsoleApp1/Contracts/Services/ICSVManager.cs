@@ -16,7 +16,7 @@ namespace ConsoleApp1.Contracts.Services
         /// </summary>
         /// <param name="path">Path to csv file</param>
         /// <returns>List of users</returns>
-        List<User> ImportUsers(string path);
+        IEnumerable<User> ImportUsers(string path);
 
         /// <summary>
         /// Export users to csv file
