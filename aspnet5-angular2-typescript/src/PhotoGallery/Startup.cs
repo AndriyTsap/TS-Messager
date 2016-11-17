@@ -73,6 +73,7 @@ namespace PhotoGallery
             services.AddScoped<ILoggingRepository, LoggingRepository>();
             
             // Services
+            services.AddScoped<IFriendsSearcher, FriendsSearcher>();
             services.AddScoped<IMembershipService, MembershipService>();
             services.AddScoped<IEncryptionService, EncryptionService>();
             services.AddScoped<IJwtFormater, JwtFormater>();

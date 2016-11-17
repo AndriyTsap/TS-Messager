@@ -9,6 +9,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using PhotoGallery.Entities;
 using PhotoGallery.Infrastructure.Core;
 using PhotoGallery.Infrastructure.Repositories.Abstract;
+using PhotoGallery.Infrastructure.Services.Abstract;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -18,12 +19,19 @@ namespace PhotoGallery.Controllers
     public class UsersController : Controller
     {
         private readonly IUserRepository _userRepository;
+        private readonly IChatRepository _chatRepository;
+        private readonly IChatUserRepository _chatUserRepository;
         private readonly ILoggingRepository _loggingRepository;
+        private readonly IFriendsSearcher _friendsSearcher;
 
-        public UsersController(IUserRepository userRepository, ILoggingRepository loggingRepository)
+        public UsersController(IUserRepository userRepository, ILoggingRepository loggingRepository,
+            IChatRepository chatRepository, IChatUserRepository chatUserRepository, IFriendsSearcher friendsSearcher)
         {
+            _chatUserRepository = chatUserRepository;
+            _chatRepository = chatRepository;
             _userRepository = userRepository;
             _loggingRepository = loggingRepository;
+            _friendsSearcher = friendsSearcher;
         }
 
         // GET: api/users
@@ -35,10 +43,23 @@ namespace PhotoGallery.Controllers
             return dataForView;
         }
 
-        // GET api/users?id=2
-        [HttpGet("getById")]
+        // GET api/users/2
+        [HttpGet("{id}")]
         public async Task<dynamic> Get(int id)
         {
+            //var isFriend = false;
+
+            /*var authenticationHeader = Request?.Headers["Authorization"];
+            
+            if(authenticationHeader?.Count!=0)
+            {
+                var token = authenticationHeader?.FirstOrDefault().Split(' ')[1];
+                var jwt = new JwtSecurityToken(token);
+                var subject = jwt?.Subject;           
+                var subjectId = _userRepository.GetSingleByUsername(subject).Id;
+                isFriend = _friendsSearcher.ValidateFriend(subjectId, id);
+            }*/
+                
             var repoUser = await _userRepository.FindByAsync(u => u.Id == id);
             var user = repoUser.FirstOrDefault();
             var dataForView = new {user.Username, user.BirthDate, user.Phone, user.Photo};
@@ -56,7 +77,7 @@ namespace PhotoGallery.Controllers
 
         [Authorize]
         [HttpPost("editPersonalData")]
-        public async Task<IActionResult> Post([FromBody] User user)
+        public IActionResult Post([FromBody] User user)
         {
             IActionResult result = new ObjectResult(false);
             GenericResult editResult = null;

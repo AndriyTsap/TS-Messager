@@ -61,7 +61,7 @@ gulp.task('setup-vendors', function (done) {
       'bower_components/components-font-awesome/fonts/fontawesome-webfont.svg',
       'bower_components/components-font-awesome/fonts/fontawesome-webfont.ttf',
       'bower_components/components-font-awesome/fonts/fontawesome-webfont.woff',
-      'bower_components/components-font-awesome/fonts/fontawesome-webfont.woff2',
+      'bower_components/components-font-awesome/fonts/fontawesome-webfont.woff2'
     ]).pipe(gulp.dest(paths.fontsVendors));
 });
 

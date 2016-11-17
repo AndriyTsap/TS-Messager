@@ -16,6 +16,7 @@ namespace PhotoGallery.Entities
         public int Id { get; set; }
         public string Name { get; set; }
         public string DateCreated { get; set; }
+        public string Type { get; set; }
 
         public virtual List<ChatUser> ChatUsers { get; set; }
         public virtual List<Message> Messages { get; set; }
