@@ -1,4 +1,4 @@
-﻿import { Http, Response } from '@angular/http';
+﻿import { Http, Response, Headers } from '@angular/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
@@ -17,8 +17,14 @@ export class DataService {
         this._pageSize = pageSize;
     }
 
-    get(page: number) {
-        var uri = this._baseUri + page.toString() + '/' + this._pageSize.toString();
+    get(page?: number) {
+        
+        if(page!=undefined){
+            var uri = this._baseUri + page.toString() + '/' + this._pageSize.toString();
+        }
+        else
+            var uri = this._baseUri;
+        
 
         return this.http.get(uri)
             .map(response => (<Response>response));
@@ -30,6 +36,20 @@ export class DataService {
                 .map(response => <any>(<Response>response).json());
         else
             return this.http.post(this._baseUri, data);
+    }
+
+    postAuthenticate(token:string, data?: any, mapJson: boolean = true){
+        var headers = new Headers();
+        headers.append("Authorization", "Bearer "+token)
+        if (mapJson)
+            return this.http.post(this._baseUri, data, {
+                headers:headers
+            })
+                .map(response => <any>(<Response>response).json());
+        else
+            return this.http.post(this._baseUri, data, {
+                headers:headers
+            });
     }
 
     delete(id: number) {

@@ -1,0 +1,11 @@
+<div class = "container-test">
+    <h1>Test component323</h1>
+    <input #msg type = "text" class="form-control" value = "message">
+    <input #token type = "text" class="form-control" value = "token">
+</div>
+<input type = "button" class=".btn" value="Відправити" (click)="sendMessage(msg.value, token.value)">
+<div class = "select-users">
+    <select>
+        <option *ngFor="let user of users">{{user.Username}}</option>
+    </select>
+</div>
