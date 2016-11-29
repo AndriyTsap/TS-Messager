@@ -15,6 +15,10 @@
 #nav-separator {
     margin-top: 60px;
 }
+.nav li a{
+    padding: 15px 10px;
+}
+
 
 footer {
     background-color: #F8F8F8;
@@ -23,6 +27,7 @@ footer {
 #account-menu {
     margin-right: 35px;
 }
+
 
 /* END */
 
@@ -210,3 +215,7 @@ footer {
         transform: rotate(360deg);
     }
 }
+
+
+
+
