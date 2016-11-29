@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using ConsoleApp1.Contracts.Enities;
 using ConsoleApp1.Contracts.Services;
-using ConsoleApp1.Services;
 using PhotoGallery.Entities;
-using PhotoGallery.Infrastructure.Repositories;
 using PhotoGallery.Infrastructure.Repositories.Abstract;
 using ServiceStack.Text;
+using LoggingEventType = ConsoleApp1.Contracts.Enities.LoggingEventType;
 
 namespace ConsoleApp1.Services
 {

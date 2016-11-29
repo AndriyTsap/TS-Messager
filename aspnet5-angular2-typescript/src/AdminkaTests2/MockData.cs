@@ -114,7 +114,7 @@ namespace AdminkaTests2
                 Id = 0,
                 DateCreated = DateTime.Now,
                 Message = "Information message 1",
-                Severity = LoggingEventType.Information.ToString(),
+                Severity = ConsoleApp1.Contracts.Enities.LoggingEventType.Information.ToString(),
                 StackTrace = ""
             },
             new Error
@@ -122,7 +122,7 @@ namespace AdminkaTests2
                 Id = 1,
                 DateCreated = DateTime.Now,
                 Message = "Error message 1",
-                Severity = LoggingEventType.Error.ToString(),
+                Severity = ConsoleApp1.Contracts.Enities.LoggingEventType.Error.ToString(),
                 StackTrace = ""
             }
         };

@@ -21,13 +21,13 @@ namespace ConsoleApp1
         private IServiceCollection _services;
         private IServiceProvider _provider;
 
-        public ServiceLocator()
+        private ServiceLocator()
         {
             _services = new ServiceCollection();
             Load();
         }
 
-        public void Load()
+        private void Load()
         {
             _services.AddDbContext<PhotoGalleryContext>(options =>
                 options.UseSqlServer(AppSettings.Instance.ConnectionString));
@@ -53,6 +53,11 @@ namespace ConsoleApp1
             _provider = _services.BuildServiceProvider();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public T Resolve<T>()
         {
             return _provider.GetService<T>();

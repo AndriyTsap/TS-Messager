@@ -127,7 +127,7 @@ namespace AdminkaTests2
             var logger = new ConsoleApp1.Services.Logger(mockErrorRepository.Object);
 
             //act 
-            logger.Log(new LogEntry(LoggingEventType.Information, mockErrors[0].Message));
+            logger.Log(new LogEntry(ConsoleApp1.Contracts.Enities.LoggingEventType.Information, mockErrors[0].Message));
             var errors = mockErrorRepository.Object.GetAll().ToList();
 
             //assert
