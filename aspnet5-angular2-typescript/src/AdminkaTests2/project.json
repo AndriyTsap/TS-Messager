@@ -6,7 +6,10 @@
 
   "dependencies": {
     "ConsoleApp1": "1.1.0-*",
-    "Microsoft.NETCore.App": "1.1.0",
+    "Microsoft.NETCore.App": {
+      "version": "1.1.0",
+      "type": "platform"
+    },
     "Moq": "4.6.36-alpha",
     "NUnit": "3.5.0",
     "NUnitLite": "3.5.0"
