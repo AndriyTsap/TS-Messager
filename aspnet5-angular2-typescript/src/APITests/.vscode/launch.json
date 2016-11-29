@@ -6,9 +6,9 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceRoot}\\bin\\Debug\\netcoreapp1.0\\APITests.dll",
+            "program": "C:\\Users\\pilor\\Desktop\\EleksCamp\\Slowpoke\\aspnet5-angular2-typescript\\src\\APITests\\bin\\Debug\\netcoreapp1.0\\APITests.dll",
             "args": [],
-            "cwd": "${workspaceRoot}",
+            "cwd": "C:\\Users\\pilor\\Desktop\\EleksCamp\\Slowpoke\\aspnet5-angular2-typescript\\src\\APITests",
             "externalConsole": false,
             "stopAtEntry": false,
             "internalConsoleOptions": "openOnSessionStart"

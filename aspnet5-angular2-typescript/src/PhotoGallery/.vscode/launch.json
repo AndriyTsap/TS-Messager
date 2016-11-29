@@ -6,9 +6,9 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceRoot}\\bin\\Debug\\netcoreapp1.0\\PhotoGallery.dll",
+            "program": "C:\\Users\\pilor\\Desktop\\EleksCamp\\Slowpoke\\aspnet5-angular2-typescript\\src\\PhotoGallery\\bin\\Debug\\netcoreapp1.0\\PhotoGallery.dll",
             "args": [],
-            "cwd": "${workspaceRoot}",
+            "cwd": "C:\\Users\\pilor\\Desktop\\EleksCamp\\Slowpoke\\aspnet5-angular2-typescript\\src\\PhotoGallery",
             "externalConsole": false,
             "stopAtEntry": false,
             "internalConsoleOptions": "openOnSessionStart"

@@ -1,15 +1,12 @@
 {
-  "version": "1.0.0-*",
+  "version": "1.1.0-*",
   "buildOptions": {
     "emitEntryPoint": true
   },
 
   "dependencies": {
-    "ConsoleApp1": "1.0.0-*",
-    "Microsoft.NETCore.App": {
-      "type": "platform",
-      "version": "1.0.1"
-    },
+    "ConsoleApp1": "1.1.0-*",
+    "Microsoft.NETCore.App": "1.1.0",
     "Moq": "4.6.36-alpha",
     "NUnit": "3.5.0",
     "NUnitLite": "3.5.0"
@@ -17,7 +14,7 @@
 
 
   "frameworks": {
-    "netcoreapp1.0": {
+    "netcoreapp1.1": {
       "imports": "dnxcore50"
     }
   }

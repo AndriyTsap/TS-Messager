@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using PhotoGallery.Entities;
 using PhotoGallery.Infrastructure.Core;
 using PhotoGallery.Infrastructure.Repositories.Abstract;
@@ -47,9 +46,9 @@ namespace PhotoGallery.Controllers
         [HttpGet("{id}")]
         public async Task<dynamic> Get(int id)
         {
-            //var isFriend = false;
+            /*var isFriend = false;
 
-            /*var authenticationHeader = Request?.Headers["Authorization"];
+            var authenticationHeader = Request?.Headers["Authorization"];
             
             if(authenticationHeader?.Count!=0)
             {
@@ -59,10 +58,23 @@ namespace PhotoGallery.Controllers
                 var subjectId = _userRepository.GetSingleByUsername(subject).Id;
                 isFriend = _friendsSearcher.ValidateFriend(subjectId, id);
             }*/
-                
+            
+            var authenticationHeader = Request?.Headers["Authorization"];
+            string subject = "someText";
+
+            if(authenticationHeader?.Count!=0)
+            {
+                var token = authenticationHeader?.FirstOrDefault().Split(' ')[1];
+                var jwt = new JwtSecurityToken(token);
+                subject = jwt?.Subject;           
+                /*var subjectId = _userRepository.GetSingleByUsername(subject).Id;
+                isFriend = _friendsSearcher.ValidateFriend(subjectId, id);*/
+            }
+            
+
             var repoUser = await _userRepository.FindByAsync(u => u.Id == id);
             var user = repoUser.FirstOrDefault();
-            var dataForView = new {user.Username, user.BirthDate, user.Phone, user.Photo};
+            var dataForView = new {user.Username, user.BirthDate, user.Phone, user.Photo, subject};
             return dataForView;
         }
 
