@@ -13,6 +13,7 @@ import { PhotosComponent } from './components/photos.component';
 import { AlbumsComponent } from './components/albums.component';
 import { TestComponent } from './components/test.component';
 import { ProfileComponent } from './components/profile.component';
+import { RegistrationDetailsComponent } from './components/account/registration-details.component';
 import { routing } from './routes';
 
 import { DataService } from './core/services/data.service';
@@ -40,7 +41,7 @@ class AppBaseRequestOptions extends BaseRequestOptions {
         routing,
         AccountModule
     ],
-    declarations: [AppComponent, AlbumPhotosComponent, HomeComponent, TestComponent, ProfileComponent, PhotosComponent, AlbumsComponent],
+    declarations: [AppComponent, AlbumPhotosComponent, HomeComponent, TestComponent, ProfileComponent, PhotosComponent, AlbumsComponent,RegistrationDetailsComponent],
     providers: [DataService, MembershipService, UtilityService, NotificationService, UserService, MessageService,
         { provide: LocationStrategy, useClass: HashLocationStrategy },
         { provide: RequestOptions, useClass: AppBaseRequestOptions }],

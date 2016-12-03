@@ -16,9 +16,18 @@
     margin-top: 60px;
 }
 .nav li a{
-    padding: 15px 10px;
+    padding: 15px 5px;
 }
 
+@media (min-width: 768px) {
+    .collapsing {
+        overflow: inherit;
+    }
+}
+.modal-content {
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
+}
 
 footer {
     background-color: #F8F8F8;
@@ -52,7 +61,7 @@ footer {
     margin-top: 80px;
 }
 
-#registerModal {
+#registerModal,#editModal {
     margin-top: 40px;
 }
 

@@ -1,14 +1,90 @@
-<div class="col-sm-10 col-sm-offset-2 col-md-10 col-md-offset-2 col-lg-9 col-lg-offset-3">
-    <div class="row">
-        <div class="col-sm-6 col-md-6 col-lg-6">
-            <img [src]="photoPath" alt="User's photo">
-        </div>
-        <div class="col-sm-6 col-md-6 col-lg-6">
-            <span>Username: {{username}}</span>
-            <span>Phone: {{phone}}</span>
-            <span>Email: {{email}}</span>
-            <span>Date of Birthday: {{birthDate}}</span>        
-        </div>
-
+<div id="profile-container" class="row">
+    <div class="col-sm-6 col-md-6 col-lg-6">
+        <img [src]="photoPath" alt="User's photo" />
     </div>
+    <div class="details col-sm-6 col-md-6 col-lg-6">
+        <span>Username: {{username}}</span>
+        <span>Phone: {{phone}}</span>
+        <span>Email: {{email}}</span>
+        <span>Date of Birthday: {{birthDate}}</span>
+        <button id="edit" type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#editModal">
+            Edit
+        </button>      
+    </div>
+    <div id="editModal" class="modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">x</span> <!--&times;-->
+                        </button>
+                    <h1 class="text-center">
+                        Profile
+                    </h1>
+                </div>
+                <div class="modal-body">
+                    <form class="form col-md-12 center-block" #registerForm="ngForm">
+                        <div class="form-group">
+                            <input type="text" class="form-control input-lg" placeholder="Username"  
+                                name="username"  required> <!--[(ngModel)]="_newUser.Username" #username="ngModel" -->
+                            <!--can't find valid 
+                            <div [hidden]="username.valid || username.untouched" class="alert alert-danger">
+                                Username is required
+                            </div>
+                            -->
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control input-lg" placeholder="New password"  
+                                name="password"  required> <!--[(ngModel)]="_newUser.Password" #password="ngModel" -->
+                             <!--can't find valid <!--can't find valid 
+                            <div [hidden]="password.valid || password.untouched" class="alert alert-danger">
+                                Password is required
+                            </div>
+                            -->
+                        </div>
+                        <div class="form-group">
+                            <input type="email" class="form-control input-lg" placeholder="Email" 
+                                name="email"  required><!--[(ngModel)]="_newUser.Email"  #email="ngModel" -->
+                            <!--
+                            <div [hidden]="email.valid || email.untouched" class="alert alert-danger">
+                                Email is required
+                            </div>
+                            -->
+                        </div>
+             
+                        <div class="form-group">
+                            <input type="text" class="form-control input-lg" placeholder="FirstName"  
+                                name="firstName" > <!--[(ngModel)]="_newUser.FirstName" #firstName="ngModel"  -->
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control input-lg" placeholder="LastName"  
+                                name="lastName"  > <!--[(ngModel)]="_newUser.LastName" #lastName="ngModel" -->
+                        </div>
+                        <div class="form-group">
+                            <input type="date" class="form-control input-lg" 
+                                name="birthDate"  > <!--[(ngModel)]="_newUser.BirthDate" #birthDate="ngModel"    -->
+                        </div>
+                        <div class="form-group">
+                            <input type="tel" class="form-control input-lg" placeholder="Phone"  
+                                name="phone" > <!--[(ngModel)]="_newUser.Phone"  #phone="ngModel"-->
+                        </div>
+                        <div class="form-group">
+                            <textarea class="form-control input-lg" placeholder="About"  
+                                name="about"  ></textarea> <!--[(ngModel)]="_newUser.About" #about="ngModel"-->
+                        </div>
+                     
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <div>
+                        <button type="button" class="btn btn-primary pull-left" data-dismiss="modal">Close</button>
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-primary pull-right" >Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
