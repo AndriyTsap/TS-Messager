@@ -15,7 +15,7 @@ namespace PhotoGallery.Controllers
     [Route("api/[controller]")]
     public class MessagesController : Controller
     {
-        private readonly IMessageRepository _messageRepository;     
+        private readonly IMessageRepository _messageRepository;    
         private readonly ILoggingRepository _loggingRepository;
         private readonly IChatRepository _chatRepository;
         private readonly IJwtFormater _jwtFormater;
@@ -34,9 +34,10 @@ namespace PhotoGallery.Controllers
             _jwtFormater = jwtFormater;
         }
 
+        // Get api/messages?offset=20
         [Authorize]
         [HttpGet]
-        public async Task<IEnumerable<Message>> GetAll()
+        public async Task<IEnumerable<Message>> GetAll(int offset = 0)
         {
             var authenticationHeader = Request?.Headers["Authorization"];
             var token = authenticationHeader?.FirstOrDefault().Split(' ')[1];
@@ -63,12 +64,13 @@ namespace PhotoGallery.Controllers
                 _loggingRepository.Commit();
             }
             
-            return messages;
+            return messages.Skip(offset).Take(20);
         }
 
+        // Get api/messages/chats?offset=20
         [Authorize]
         [HttpGet("chats")]
-        public IEnumerable<Chat> GetAllDialogs()
+        public async Task<IEnumerable<Chat>> GetAllDialogs(int offset = 0)
         {
             var authenticationHeader = Request?.Headers["Authorization"];
             var token = authenticationHeader?.FirstOrDefault().Split(' ')[1];
@@ -76,16 +78,18 @@ namespace PhotoGallery.Controllers
 
             var user = _userRepository.GetSingleByUsername(subject);
 
-            var chatIds = _chatUserRepository.FindBy(cu => cu.UserId == user.Id).Select(cu => cu.ChatId);
-            var chats = _chatRepository.FindBy(c => chatIds.Contains(c.Id));
+            var chatUsers = await _chatUserRepository.FindByAsync(cu => cu.UserId == user.Id);
+            var chatIds = chatUsers.Select(cu => cu.Id);
+            var chats = await _chatRepository.FindByAsync(c => chatIds.Contains(c.Id));
 
-            return chats;
+            return chats.Skip(offset).Take(20);
         }
 
 
+        // Get api/messages/getByChatId?chatId=1&offset=20
         [Authorize]
         [HttpGet("getByChatId")]
-        public async Task<IEnumerable<Message>> GetMessagesByChatId(int chatId)
+        public async Task<IEnumerable<Message>> GetMessagesByChatId(int chatId, int offset = 0)
         {
             IEnumerable<Message> messages = null;
 
@@ -127,11 +131,11 @@ namespace PhotoGallery.Controllers
                 _loggingRepository.Commit();
             }
 
-            return messages;
+            return messages.Skip(offset).Take(20);
         }
 
 
-
+        // Post api/messages
         [HttpPost]
         [Authorize]
         public IActionResult Send(MessageViewModel mVMessage)
@@ -185,6 +189,7 @@ namespace PhotoGallery.Controllers
             return result;
         }
 
+        // Delete api/messages
         [Authorize]
         [HttpDelete("delete")]
         public async Task<IActionResult> Delete(int id)
