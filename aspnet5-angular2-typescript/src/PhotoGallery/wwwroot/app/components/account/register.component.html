@@ -1,4 +1,4 @@
-﻿<div id="registerModal" class="modal show" tabindex="-1" role="dialog" aria-hidden="true">
+﻿<div id="registerModal" data-backdrop="static" class="modal show" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -20,13 +20,6 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <input type="email" class="form-control input-lg" placeholder="Email" [(ngModel)]="_newUser.Email" 
-                               name="email" #email="ngModel" required>
-                        <div [hidden]="email.valid || email.untouched" class="alert alert-danger">
-                            Email is required
-                        </div>
-                    </div>
-                    <div class="form-group">
                         <input type="password" class="form-control input-lg" placeholder="Password" [(ngModel)]="_newUser.Password" 
                                name="password" #password="ngModel" required>
                         <div [hidden]="password.valid || password.untouched" class="alert alert-danger">
@@ -34,7 +27,14 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <button class="btn btn-primary btn-lg btn-block" (click)="register()" [disabled]="!registerForm.form.valid">Register</button>
+                        <input type="email" class="form-control input-lg" placeholder="Email" [(ngModel)]="_newUser.Email" 
+                               name="email" #email="ngModel" required>
+                        <div [hidden]="email.valid || email.untouched" class="alert alert-danger">
+                            Email is required
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary btn-lg btn-block" (click)="register()"  [disabled]="!registerForm.form.valid">Register</button>
                     </div>
                 </form>
             </div>

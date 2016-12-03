@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class DataService {
-
+    private pathServer:string="http://localhost:5000/"
     public _pageSize: number;
     public _baseUri: string;
 
