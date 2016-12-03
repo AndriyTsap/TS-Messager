@@ -24,7 +24,7 @@ namespace PhotoGallery.Controllers
         private readonly IMembershipService _membershipService;
         private readonly IUserRepository _userRepository;
         private readonly ILoggingRepository _loggingRepository;
-
+        
         public AccountController(IMembershipService membershipService,
             IUserRepository userRepository,
             ILoggingRepository errorRepository)
@@ -33,7 +33,6 @@ namespace PhotoGallery.Controllers
             _userRepository = userRepository;
             _loggingRepository = errorRepository;
         }
-
 
         [HttpPost("authenticate")]
         public async Task<IActionResult> Login([FromBody] LoginViewModel user)

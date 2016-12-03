@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using ConsoleApp1.Contracts.Enities;
-using NUnit.Framework;
+using System.Linq;
+using System.Threading.Tasks;
 using PhotoGallery.Entities;
 
-namespace AdminkaTests2
+namespace APITests
 {
     public class MockData
     {
@@ -32,6 +32,21 @@ namespace AdminkaTests2
                 Username = "Ivan",
                 Email = "Ivan.Kogut@gmail.com",
                 BirthDate = "12.10.1993",
+                DateCreated = DateTime.Now,
+                HashedPassword = "9wsmLgYM5Gu4zA/BSpxK2GIBEWzqMPKs8wl2WDBzH/4=",
+                IsLocked = false,
+                Phone = "0666777333",
+                Salt = "GTtKxJA6xJuj3ifJtTXn9Q==",
+                ChatUsers = new List<ChatUser>(),
+                Messages = new List<Message>(),
+                UserRoles = new List<UserRole>(),
+            },
+            new User()
+            {
+                Id = 1,
+                Username = "IvanZ",
+                Email = "ivan.zyola@gmail.com",
+                BirthDate = "11.11.1995",
                 DateCreated = DateTime.Now,
                 HashedPassword = "9wsmLgYM5Gu4zA/BSpxK2GIBEWzqMPKs8wl2WDBzH/4=",
                 IsLocked = false,
@@ -100,8 +115,24 @@ namespace AdminkaTests2
             new ChatUser
             {
                 Id = 1,
-                UserId =1,
+                UserId = 1,
                 ChatId = 0,
+                User = new User(),
+                Chat = new Chat()
+            },
+            new ChatUser
+            {
+                Id = 2,
+                UserId = 2,
+                ChatId = 1,
+                User = new User(),
+                Chat = new Chat()
+            },
+            new ChatUser
+            {
+                Id = 3,
+                UserId = 1,
+                ChatId = 1,
                 User = new User(),
                 Chat = new Chat()
             }
@@ -114,7 +145,7 @@ namespace AdminkaTests2
                 Id = 0,
                 DateCreated = DateTime.Now,
                 Message = "Information message 1",
-                Severity = ConsoleApp1.Contracts.Enities.LoggingEventType.Information.ToString(),
+                Severity = LoggingEventType.Information.ToString(),
                 StackTrace = ""
             },
             new Error
@@ -122,7 +153,7 @@ namespace AdminkaTests2
                 Id = 1,
                 DateCreated = DateTime.Now,
                 Message = "Error message 1",
-                Severity = ConsoleApp1.Contracts.Enities.LoggingEventType.Error.ToString(),
+                Severity = LoggingEventType.Error.ToString(),
                 StackTrace = ""
             }
         };

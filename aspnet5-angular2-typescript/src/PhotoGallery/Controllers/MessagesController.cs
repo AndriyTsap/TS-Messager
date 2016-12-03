@@ -15,14 +15,12 @@ namespace PhotoGallery.Controllers
     [Route("api/[controller]")]
     public class MessagesController : Controller
     {
-        private readonly IMessageRepository _messageRepository;
+        private readonly IMessageRepository _messageRepository;     
         private readonly ILoggingRepository _loggingRepository;
         private readonly IChatRepository _chatRepository;
         private readonly IJwtFormater _jwtFormater;
         private readonly IChatUserRepository _chatUserRepository;
         private readonly IUserRepository _userRepository;
-
-
 
         public MessagesController(ILoggingRepository loggingRepository, IMessageRepository messageRepository,
             IChatRepository chatRepository, IChatUserRepository chatUserRepository, IUserRepository userRepository,

@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace PhotoGallery.Entities
 {
+    public enum LoggingEventType { Debug, Information, Warning, Error, Fatal };
+
     public class Error : IEntityBase
     {
         public int Id { get; set; }
