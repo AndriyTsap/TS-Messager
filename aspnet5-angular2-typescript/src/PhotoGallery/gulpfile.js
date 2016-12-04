@@ -1,6 +1,4 @@
-﻿Skip to content
-This repository
-var gulp = require('gulp'),
+﻿var gulp = require('gulp'),
     ts = require('gulp-typescript'),
     merge = require('merge'),
     fs = require("fs"),
