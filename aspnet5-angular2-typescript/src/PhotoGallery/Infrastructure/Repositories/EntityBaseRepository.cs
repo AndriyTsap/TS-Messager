@@ -85,6 +85,16 @@ namespace PhotoGallery.Infrastructure.Repositories
             return await _context.Set<T>().Where(predicate).ToListAsync();
         }
 
+        public virtual IEnumerable<T> GetRangeWithOffset(int offset)
+        {
+            return _context.Set<T>().Skip(offset).Take(20);
+        }
+
+        public virtual async Task<IEnumerable<T>> GetRangeWithOffsetAsync(int offset)
+        {
+            return await _context.Set<T>().Skip(offset).Take(20).ToListAsync();
+        }
+
         public virtual void Add(T entity)
         {
             EntityEntry dbEntityEntry = _context.Entry<T>(entity);

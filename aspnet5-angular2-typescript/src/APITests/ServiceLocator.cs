@@ -16,7 +16,6 @@ namespace APITests
 {
     public class ServiceLocator
     {
-        private IConfigurationRoot _configuration;
 
         private static ServiceLocator _instance;
         public static ServiceLocator Instance => _instance ?? (_instance = new ServiceLocator());
@@ -26,22 +25,15 @@ namespace APITests
 
         public ServiceLocator()
         {
-            var currentDirectory = Directory.GetCurrentDirectory();
-            Console.WriteLine(currentDirectory);
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(currentDirectory)
-                .AddJsonFile(@"appsettings.json");
-
-            builder.AddEnvironmentVariables();
-            _configuration = builder.Build();
             _services = new ServiceCollection();
             Load();
         }
 
         public void Load()
         {
+
             _services.AddDbContext<PhotoGalleryContext>(options =>
-                    options.UseSqlServer(_configuration["Data:DBConnection:ConnectionString"]));
+                    options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=PhotoGalery;Trusted_Connection=True;MultipleActiveResultSets=true"));
 
             //Repositories
             _services.AddScoped<IUserRepository, UserRepository>();
@@ -50,7 +42,8 @@ namespace APITests
             _services.AddScoped<IMessageRepository, MessageRepository>();
             _services.AddScoped<IRoleRepository, RoleRepository>();
             _services.AddScoped<ILoggingRepository, LoggingRepository>();
-
+            _services.AddScoped<IChatRepository, ChatRepository>();
+            _services.AddScoped<IChatUserRepository, ChatUserRepository>();
 
             //Services
             _services.AddScoped<IEncryptionService, EncryptionService>();

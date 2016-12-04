@@ -18,6 +18,8 @@ namespace PhotoGallery.Infrastructure.Repositories.Abstract
         Task<T> GetSingleAsync(int id);
         IEnumerable<T> FindBy(Expression<Func<T, bool>> predicate);
         Task<IEnumerable<T>> FindByAsync(Expression<Func<T, bool>> predicate);
+        IEnumerable<T> GetRangeWithOffset(int offset);
+        Task<IEnumerable<T>> GetRangeWithOffsetAsync(int offset);
         void Add(T entity);
         void Delete(T entity);
         void Edit(T entity);

@@ -33,52 +33,43 @@ namespace PhotoGallery.Controllers
             _friendsSearcher = friendsSearcher;
         }
 
-        // GET: api/users
+        // GET: api/users?offset=20
         [HttpGet]
-        public async Task<dynamic> GetAll()
+        public async Task<dynamic> GetAll(int offset = 0)
         {
-            var users = await _userRepository.GetAllAsync();
+            var users = await _userRepository.GetRangeWithOffsetAsync(offset);
             var dataForView = users.Select(u => new {u.Username, u.BirthDate, u.Phone, u.Photo});
             return dataForView;
         }
 
-        // GET api/users/2
-        [HttpGet("{id}")]
+        // GET api/users/getById?id=1
+        [HttpGet("getById")]
         public async Task<dynamic> Get(int id)
         {
-            /*var isFriend = false;
-
-            var authenticationHeader = Request?.Headers["Authorization"];
-            
-            if(authenticationHeader?.Count!=0)
-            {
-                var token = authenticationHeader?.FirstOrDefault().Split(' ')[1];
-                var jwt = new JwtSecurityToken(token);
-                var subject = jwt?.Subject;           
-                var subjectId = _userRepository.GetSingleByUsername(subject).Id;
-                isFriend = _friendsSearcher.ValidateFriend(subjectId, id);
-            }*/
-            
-            var authenticationHeader = Request?.Headers["Authorization"];
-            string subject = "someText";
-
-            if(authenticationHeader?.Count!=0)
-            {
-                var token = authenticationHeader?.FirstOrDefault().Split(' ')[1];
-                var jwt = new JwtSecurityToken(token);
-                subject = jwt?.Subject;           
-                /*var subjectId = _userRepository.GetSingleByUsername(subject).Id;
-                isFriend = _friendsSearcher.ValidateFriend(subjectId, id);*/
-            }
-            
-
             var repoUser = await _userRepository.FindByAsync(u => u.Id == id);
             var user = repoUser.FirstOrDefault();
-            var dataForView = new {user.Username, user.BirthDate, user.Phone, user.Photo, subject};
+            var dataForView = new {user.Id, user.Username, user.BirthDate, user.Phone, user.Photo};
             return dataForView;
         }
 
-        // Get api/users/search?
+        // Get api/users/checkOnFriendship?id=1
+        [Authorize]
+        [HttpGet("checkOnFriendship")]
+        public async Task<bool> CheckOnFriendship(int id)
+        {
+            var isFriend = false;
+
+            var authenticationHeader = Request.Headers["Authorization"];
+            var token = authenticationHeader.FirstOrDefault().Split(' ')[1];
+            var jwt = new JwtSecurityToken(token);
+            var subject = jwt.Subject;
+            var subjectId = _userRepository.GetSingleByUsername(subject).Id;
+            isFriend = await _friendsSearcher.ValidateFriend(subjectId, id);
+
+            return isFriend;
+        }
+
+        // Get api/users/search?username=Andriy
         [HttpGet("search")]
         public async Task<IEnumerable<dynamic>> SearchUsers(string username = "")
         {
@@ -88,7 +79,7 @@ namespace PhotoGallery.Controllers
         }
 
         [Authorize]
-        [HttpPost("editPersonalData")]
+        [HttpPut("editPersonalData")]
         public IActionResult Post([FromBody] User user)
         {
             IActionResult result = new ObjectResult(false);
