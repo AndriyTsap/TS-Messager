@@ -4,7 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR.Infrastructure;
 using PhotoGallery.Entities;
+using PhotoGallery.Hubs;
 using PhotoGallery.Infrastructure.Core;
 using PhotoGallery.Infrastructure.Repositories.Abstract;
 using PhotoGallery.Infrastructure.Services.Abstract;
@@ -13,7 +15,7 @@ using PhotoGallery.ViewModels;
 namespace PhotoGallery.Controllers
 {
     [Route("api/[controller]")]
-    public class MessagesController : Controller
+    public class MessagesController : ApiHubController<Broadcaster>
     {
         private readonly IMessageRepository _messageRepository;    
         private readonly ILoggingRepository _loggingRepository;
@@ -24,7 +26,7 @@ namespace PhotoGallery.Controllers
 
         public MessagesController(ILoggingRepository loggingRepository, IMessageRepository messageRepository,
             IChatRepository chatRepository, IChatUserRepository chatUserRepository, IUserRepository userRepository,
-            IJwtFormater jwtFormater)
+            IJwtFormater jwtFormater, IConnectionManager signalRConnectionManager): base(signalRConnectionManager)
         {
             _chatRepository = chatRepository;
             _loggingRepository = loggingRepository;
@@ -186,6 +188,7 @@ namespace PhotoGallery.Controllers
             }
 
             result = new ObjectResult(removeResult);
+            this.Clients.Group(message.ChatId.ToString()).AddChatMessage(message);
             return result;
         }
 

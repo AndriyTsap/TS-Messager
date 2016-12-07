@@ -1,6 +1,4 @@
-﻿Skip to content
-This repository
-var gulp = require('gulp'),
+﻿var gulp = require('gulp'),
     ts = require('gulp-typescript'),
     merge = require('merge'),
     fs = require("fs"),
@@ -99,7 +97,7 @@ gulp.task('compile-typescript', function (done) {
     var tsResult = gulp.src([
        "wwwroot/app/**/*.ts"
     ])
-     .pipe((tsProject()), undefined, ts.reporter.fullReporter());
+     .pipe(ts(tsProject), undefined, ts.reporter.fullReporter());
     return tsResult.js.pipe(gulp.dest(paths.tsOutput));
 });
 

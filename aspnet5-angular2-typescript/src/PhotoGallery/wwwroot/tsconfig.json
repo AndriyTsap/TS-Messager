@@ -8,7 +8,13 @@
         "noImplicitAny": false,
         "removeComments": false,
         "sourceMap": true,
+        "suppressImplicitAnyIndexErrors": true,
         "target": "es5"
+    },
+    "compileOnSave": true,
+    "angularCompilerOptions": {
+        "genDir": ".",
+        "debug": true
     },
     "exclude": [
         "node_modules/**/*.d.ts",
