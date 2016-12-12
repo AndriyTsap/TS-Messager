@@ -19,6 +19,20 @@ export class AppComponent implements OnInit {
                 public location: Location) { }
 
     ngOnInit() {
+        let userData = JSON.parse(localStorage.getItem('user'));
+        if(userData!=null){
+            if(userData.RememberMe==true){
+                this.membershipService.login(userData)
+                .then(data => {
+                    var tempData: any=data;
+                    let token=JSON.parse(tempData);
+                    localStorage.setItem('token', token.access_token);
+                },
+                err => { console.log("Error"+ err)})
+                
+            }
+            
+        }
         this.location.go('/');
     }
 
@@ -39,6 +53,7 @@ export class AppComponent implements OnInit {
         this.membershipService.logout()
             .subscribe(res => {
                 localStorage.removeItem('user');
+                localStorage.removeItem('token');
             },
             error => console.error('Error: ' + error),
             () => { });

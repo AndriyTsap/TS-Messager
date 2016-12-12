@@ -9,6 +9,9 @@ using AutoMapper;
 using PhotoGallery.Infrastructure.Repositories;
 using PhotoGallery.Infrastructure.Core;
 using PhotoGallery.Infrastructure.Repositories.Abstract;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -17,6 +20,7 @@ namespace PhotoGallery.Controllers
     [Route("api/[controller]")]
     public class PhotosController : Controller
     {
+
         IPhotoRepository _photoRepository;
         ILoggingRepository _loggingRepository;
         public PhotosController(IPhotoRepository photoRepository, ILoggingRepository loggingRepository)
@@ -99,6 +103,19 @@ namespace PhotoGallery.Controllers
 
             result = new ObjectResult(removeResult);
             return result;
+        }
+
+        [HttpPost("upload")]
+        public async Task Upload(IFormFile file)
+        {
+            var path="wwwroot/images";
+            if (file.Length > 0)
+            {
+                using (var fileStream = new FileStream((path+"/"+file.FileName), FileMode.Create))
+                {
+                    await file.CopyToAsync(fileStream);
+                }
+            }
         }
     }
 }

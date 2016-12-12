@@ -40,5 +40,5 @@ export class RegisterComponent implements OnInit {
                     this.notificationService.printErrorMessage(_registrationResult.Message);
                 }
             });
-    };
+        };
 }

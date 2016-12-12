@@ -25,7 +25,7 @@ export class AlbumsComponent extends Paginated implements OnInit {
     }
 
     getAlbums(): void {
-        this.albumsService.get(this._page)
+        this.albumsService.getAuthenticate(localStorage.getItem("token"), this._page)
             .subscribe(res => {
                 var data: any = res.json();
                 this._albums = data.Items;

@@ -2,7 +2,9 @@
 .navbar-inverse .navbar-brand {
     color: #ddd;
 }
-
+.navbar-fixed-top,.navbar-collapse{
+    max-height: 100%;
+}
 .navbar-inverse {
     border-color: #080808;
     background-color: #31708f;
@@ -56,13 +58,17 @@ footer {
 .pagination > li {
     cursor: pointer;
 }
-
-#loginModal {
-    margin-top: 80px;
+#editModal{
+    margin-top: 30px;
 }
+@media (min-width: 768px) {
+    #loginModal {
+        margin-top: 40px;
+    }
 
-#registerModal,#editModal {
-    margin-top: 40px;
+    #registerModal#detailModal {
+        margin-top: 40px;
+    }
 }
 
 .blue-thumb {

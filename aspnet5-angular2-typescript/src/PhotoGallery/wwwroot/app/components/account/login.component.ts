@@ -20,24 +20,17 @@ export class LoginComponent implements OnInit {
         this._user = new User('', '');
     }
 
-    login(): void {
-        var _authenticationResult: OperationResult = new OperationResult(false, '');
-
+    login() {
         this.membershipService.login(this._user)
-            .subscribe(res => {
-                _authenticationResult.Succeeded = res.Succeeded;
-                _authenticationResult.Message = res.Message;
-            },
-            error => console.error('Error: ' + error),
-            () => {
-                if (_authenticationResult.Succeeded) {
-                    this.notificationService.printSuccessMessage('Welcome back ' + this._user.Username + '!');
-                    localStorage.setItem('user', JSON.stringify(this._user));
-                    this.router.navigate(['home']);
-                }
-                else {
-                    this.notificationService.printErrorMessage(_authenticationResult.Message);
-                }
-            });
-    };
+            .then(data => { this.storeJWT(data);},
+                err => { this.notificationService.printErrorMessage("Invalid username or password!");})
+    }
+
+    storeJWT(data: any) {
+        let token=JSON.parse(data);
+        localStorage.setItem('token', token.access_token);
+        localStorage.setItem('user', JSON.stringify(this._user));
+        this.notificationService.printSuccessMessage('Welcome back ' + this._user.Username + '!');
+        this.router.navigate(['home']);
+    }
 }

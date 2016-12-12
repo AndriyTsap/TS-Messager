@@ -1,76 +1,110 @@
-<div id="profile-container" class="row">
-    <div class="col-sm-6 col-md-6 col-lg-6">
-        <img [src]="photoPath" alt="User's photo" />
-    </div>
-    <div class="details col-sm-6 col-md-6 col-lg-6">
-        <span>Username: {{username}}</span>
-        <span>Phone: {{phone}}</span>
-        <span>Email: {{email}}</span>
-        <span>Date of Birthday: {{birthDate}}</span>
-        <button id="edit" type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#editModal">
-            Edit
-        </button>      
-    </div>
-    <div id="editModal" class="modal" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="col-xs-12 col-sm-8 col-md-8 col-lg-8 col-xs-offset-0 col-sm-offset-2 col-md-offset-2 col-lg-offset-2 toppad" >
+	<div class="panel panel-info">
+		<div class="panel-heading">
+			<h3 class="panel-title">{{user.Username}}</h3>
+		</div>
+		<div class="panel-body">
+			<div class="row">
+				<div class="col-sm-4 col-md-4 col-lg-4 " align="center">
+                    <a class="fancybox" rel="gallery" href="{{user.Photo}}">
+                        <img alt="User's photo" src="{{user.Photo}}" class="img-responsive thumbnail"> 
+                    </a>
+					<!--<img alt="User's photo" src="{{photo}}" class="img-responsive thumbnail"> -->
+                </div>
+				<div class="col-sm-8 col-md-8 col-lg-8 ">
+					<table class="table table-user-information">
+						<tbody>
+							<tr>
+								<td>FirstName: </td>
+								<td>{{user.FirstName}}</td>
+							</tr>
+							<tr>
+								<td>LastName: </td>
+								<td>{{user.LastName}}</td>
+							</tr>
+							<tr>
+								<td>Phone: </td>
+								<td>{{user.Phone}}</td>
+							</tr>
+							
+							<tr>
+								<td>Email</td>
+								<td><a href="mailto:{{user.Email}}">{{user.Email}}</a></td>
+							</tr>
+							<tr>
+								<td>Date of Birthday: </td>
+								<td>{{user.BirthDate}}</td>
+							</tr>
+							<tr>
+								<td>About:</td>
+								<td>{{user.About}} </td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="panel-footer">
+			<button class="btn btn-sm btn-primary">
+                <i class="glyphicon glyphicon-envelope"></i>
+            </button>
+			<span class="pull-right">
+				<button  data-toggle="modal" data-target="#editModal" type="button" class="btn btn-sm btn-warning">
+                    <i class="glyphicon glyphicon-edit"></i>
+                </button>
+				<button (click)="delete()" class="btn btn-sm btn-danger">
+                    <i class="glyphicon glyphicon-remove"></i>
+                </button>
+			</span>
+		</div>
+	</div>
+</div>
+
+<div id="editModal" class="modal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">x</span> <!--&times;-->
-                        </button>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                     <h1 class="text-center">
                         Profile
                     </h1>
                 </div>
                 <div class="modal-body">
-                    <form class="form col-md-12 center-block" #registerForm="ngForm">
+                    <form class="form col-md-12 center-block" #editForm="ngForm">
                         <div class="form-group">
-                            <input type="text" class="form-control input-lg" placeholder="Username"  
-                                name="username"  required> <!--[(ngModel)]="_newUser.Username" #username="ngModel" -->
-                            <!--can't find valid 
-                            <div [hidden]="username.valid || username.untouched" class="alert alert-danger">
-                                Username is required
+                            <input type="email" class="form-control input-lg" placeholder="Email"  [(ngModel)]="user.Email"
+                                name="email" #email="ngModel">
+                            <div [hidden]="email.valid || email.untouched || email==''" class="alert alert-danger">
+                                Email is not valid
                             </div>
-                            -->
-                        </div>
-                        <div class="form-group">
-                            <input type="password" class="form-control input-lg" placeholder="New password"  
-                                name="password"  required> <!--[(ngModel)]="_newUser.Password" #password="ngModel" -->
-                             <!--can't find valid <!--can't find valid 
-                            <div [hidden]="password.valid || password.untouched" class="alert alert-danger">
-                                Password is required
-                            </div>
-                            -->
-                        </div>
-                        <div class="form-group">
-                            <input type="email" class="form-control input-lg" placeholder="Email" 
-                                name="email"  required><!--[(ngModel)]="_newUser.Email"  #email="ngModel" -->
-                            <!--
-                            <div [hidden]="email.valid || email.untouched" class="alert alert-danger">
-                                Email is required
-                            </div>
-                            -->
                         </div>
              
                         <div class="form-group">
-                            <input type="text" class="form-control input-lg" placeholder="FirstName"  
-                                name="firstName" > <!--[(ngModel)]="_newUser.FirstName" #firstName="ngModel"  -->
+                            <input type="text" class="form-control input-lg" placeholder="FirstName"  [(ngModel)]="user.FirstName"
+                                name="firstName" #firstName="ngModel">
                         </div>
                         <div class="form-group">
-                            <input type="text" class="form-control input-lg" placeholder="LastName"  
-                                name="lastName"  > <!--[(ngModel)]="_newUser.LastName" #lastName="ngModel" -->
+                            <input type="text" class="form-control input-lg" placeholder="LastName"  [(ngModel)]="user.LastName"
+                                name="lastName" #lastName="ngModel">
                         </div>
                         <div class="form-group">
-                            <input type="date" class="form-control input-lg" 
-                                name="birthDate"  > <!--[(ngModel)]="_newUser.BirthDate" #birthDate="ngModel"    -->
+                            <input type="file" (change)="addFile()" accept="image/*" class="form-control input-lg" placeholder="Photo" 
+                                name="photo" #photo>
                         </div>
                         <div class="form-group">
-                            <input type="tel" class="form-control input-lg" placeholder="Phone"  
-                                name="phone" > <!--[(ngModel)]="_newUser.Phone"  #phone="ngModel"-->
+                            <input type="date" class="form-control input-lg" placeholder="BirthDate" [(ngModel)]="user.BirthDate"
+                                name="birthDate" #birthdate="ngModel">
                         </div>
                         <div class="form-group">
-                            <textarea class="form-control input-lg" placeholder="About"  
-                                name="about"  ></textarea> <!--[(ngModel)]="_newUser.About" #about="ngModel"-->
+                            <input type="tel" pattern='[\+]\d{12}' class="form-control input-lg" placeholder="Phone"  [(ngModel)]="user.Phone"
+                                name="phone" #phone="ngModel">
+                            <div [hidden]="phone.valid || phone.untouched || phone==''" class="alert alert-danger">
+                                Phone is not valid
+                            </div>    
+                        </div>
+                        <div class="form-group">
+                            <textarea class="form-control input-lg" placeholder="About"  [(ngModel)]="user.About"
+                                name="about" #about="ngModel" ></textarea>
                         </div>
                      
                     </form>
@@ -80,11 +114,11 @@
                         <button type="button" class="btn btn-primary pull-left" data-dismiss="modal">Close</button>
                     </div>
                     <div>
-                        <button type="button" class="btn btn-primary pull-right" >Save</button>
+                        <button (click)="save()" type="button" class="btn btn-primary pull-right " [disabled]="!editForm.form.valid">
+                            Save
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-</div>

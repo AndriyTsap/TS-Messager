@@ -1,23 +1,13 @@
-
-@media (min-width: 768px) {
-    #profile-container{
-        margin: 90px auto 0 auto;
-        display: table;
-    }
+#profile-container{
+    margin: 90px auto 0 auto;
 }
+
 img{
     display: block;
-    margin: 0 auto;
-    max-height: 55vh;
+    margin: 0 auto; 
+    max-height: 55vh; 
 }
-span{
-    font-size: 20px;
-    margin: 5px;
-    display: block;
-}
-
-@media (max-width: 768px) {
-    #edit{
-        width: 100%;
-    }
+.panel-heading{
+    background-color: #31708f;
+    color: #ddd;
 }

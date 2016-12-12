@@ -30,7 +30,7 @@ namespace PhotoGallery.Controllers
             _loggingRepository = loggingRepository;
         }
 
-        [Authorize(Policy = "AdminOnly")]
+        [Authorize]
         [HttpGet("{page:int=0}/{pageSize=12}")]
         public async Task<IActionResult> Get(int? page, int? pageSize)
         {
@@ -38,8 +38,6 @@ namespace PhotoGallery.Controllers
 
             try
             {
-                if (await _authorizationService.AuthorizeAsync(User, "AdminOnly"))
-                {
                     int currentPage = page.Value;
                     int currentPageSize = pageSize.Value;
 
@@ -65,12 +63,6 @@ namespace PhotoGallery.Controllers
                         TotalPages = (int)Math.Ceiling((decimal)_totalAlbums / currentPageSize),
                         Items = _albumsVM
                     };
-                }
-                else
-                {
-                    CodeResultStatus _codeResult = new CodeResultStatus(401);
-                    return new ObjectResult(_codeResult);
-                }
             }
             catch (Exception ex)
             {

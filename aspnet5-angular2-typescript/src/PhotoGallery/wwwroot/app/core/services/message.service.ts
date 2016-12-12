@@ -21,5 +21,12 @@ export class MessageService {
         _result = this.dataService.postAuthenticate(this._token, {text, chat});
         return _result;
     }
-    
+    //not try yet
+    public getChats(){
+        var _result: any;
+
+        this.dataService.set(this._userGetAllAPI);
+        _result = this.dataService.getAuthenticate(this._token);
+        return _result;
+    }
 }

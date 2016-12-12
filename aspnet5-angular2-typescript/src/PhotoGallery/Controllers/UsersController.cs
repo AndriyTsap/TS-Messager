@@ -38,7 +38,7 @@ namespace PhotoGallery.Controllers
         public async Task<dynamic> GetAll(int offset = 0)
         {
             var users = await _userRepository.GetRangeWithOffsetAsync(offset);
-            var dataForView = users.Select(u => new {u.Username, u.BirthDate, u.Phone, u.Photo});
+            var dataForView = users.Select(u => new {u.Username, u.FirstName, u.Email, u.LastName, u.BirthDate, u.Phone, u.Photo, u.About});
             return dataForView;
         }
 
@@ -48,7 +48,22 @@ namespace PhotoGallery.Controllers
         {
             var repoUser = await _userRepository.FindByAsync(u => u.Id == id);
             var user = repoUser.FirstOrDefault();
-            var dataForView = new {user.Id, user.Username, user.BirthDate, user.Phone, user.Photo};
+            var dataForView = new {user.Id, user.Username, user.Email, user.FirstName, user.LastName, user.BirthDate, user.Phone, user.Photo, user.About};
+            return dataForView;
+        }
+
+        // GET api/users/getByToken
+        [Authorize]
+        [HttpGet("getByToken")]
+        public async Task<dynamic> GetByToken()
+        {
+            var authenticationHeader = Request?.Headers["Authorization"];
+            var token = authenticationHeader?.FirstOrDefault().Split(' ')[1];
+            var jwt = new JwtSecurityToken(token);
+            var subject = jwt.Subject;
+            var repoUser = await _userRepository.FindByAsync(u => u.Username == subject);
+            var user = repoUser.FirstOrDefault();
+            var dataForView = new {user.Id, user.Username, user.Email, user.FirstName, user.LastName, user.BirthDate, user.Phone, user.Photo, user.About};
             return dataForView;
         }
 
@@ -84,17 +99,16 @@ namespace PhotoGallery.Controllers
         {
             IActionResult result = new ObjectResult(false);
             GenericResult editResult = null;
-
+            
             var authenticationHeader = Request?.Headers["Authorization"];
             var token = authenticationHeader?.FirstOrDefault().Split(' ')[1];
             var jwt = new JwtSecurityToken(token);
             var subject = jwt.Subject;
             var dbUser = _userRepository.GetSingleByUsername(subject);
-
-            user.Username = subject;
+           
             user.HashedPassword = dbUser.HashedPassword;
             user.Salt = dbUser.Salt;
-
+            
             try
             {
                 _userRepository.Edit(user);
@@ -103,7 +117,7 @@ namespace PhotoGallery.Controllers
                 editResult = new GenericResult()
                 {
                     Succeeded = true,
-                    Message = "Message removed."
+                    Message = "User updated."
                 };
             }
             catch (Exception ex)
@@ -130,7 +144,7 @@ namespace PhotoGallery.Controllers
         
         [HttpDelete("delete")]
         [Authorize]
-        public IActionResult Delete([FromBody] int id)
+        public IActionResult Delete()
         {
             IActionResult result = new ObjectResult(false);
             GenericResult removeResult = null;
@@ -150,7 +164,7 @@ namespace PhotoGallery.Controllers
                 removeResult = new GenericResult()
                 {
                     Succeeded = true,
-                    Message = "Message removed."
+                    Message = "User removed."
                 };
             }
             catch (Exception ex)
