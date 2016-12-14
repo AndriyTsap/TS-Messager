@@ -17,12 +17,25 @@
 
 <photogallery-app>
     <div class="loading">Loading</div>
-</photogallery-app>
+</photogallery-app>d
 
 @section scripts
 {
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+	<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+
+    <script src="~/lib/signalr/jquery.signalR.js"></script>
+
     <script src="~/lib/js/jquery.fancybox.pack.js"></script>
     <script src="~/lib/js/alertify.min.js"></script>
+
+     <script src="~/lib/core-js/client/shim.js"></script>
+    <script src="~/lib/zone.js/dist/zone.js"></script>
+    <script src="~/lib/reflect-metadata/Reflect.js"></script>
+    <script src="~/lib/systemjs/dist/system.src.js"></script>              
+
+    <script src="/signalr/js"></script>
+    <script src="~/js/systemjs.config.js"></script>
 }
 
 @section customScript
