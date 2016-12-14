@@ -23,13 +23,13 @@
                     </a>
                 </li>
                 <li *ngIf="isUserLoggedIn()">
-                    <a [routerLink]="['/messages']" data-target="#bs-navbar-collapse" data-toggle="collapse">
-                        <i class="fa fa-envelope fa-fw"></i>&nbsp;Messages
+                    <a [routerLink]="['/friends']" data-target="#bs-navbar-collapse" data-toggle="collapse">
+                        <i class="fa  fa-users fa-fw"></i>&nbsp;Friends
                     </a>
                 </li>
-                <li>
-                    <a [routerLink]="['/test']" data-target="#bs-navbar-collapse" data-toggle="collapse">
-                        <i class="fa fa-picture-o fa-fw"></i>&nbsp;Test
+                <li *ngIf="isUserLoggedIn()">
+                    <a [routerLink]="['/messages']" data-target="#bs-navbar-collapse" data-toggle="collapse">
+                        <i class="fa fa-envelope fa-fw"></i>&nbsp;Messages
                     </a>
                 </li>
                 <li class="dropdown">

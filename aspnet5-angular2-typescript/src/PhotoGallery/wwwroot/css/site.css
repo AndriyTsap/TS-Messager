@@ -41,7 +41,41 @@ footer {
 
 
 /* END */
+/*custom search */
+#custom-search-input {
+    background: #e8e6e7 none repeat scroll 0 0;
+    margin: 0;
+    border-radius: 5px;
+}
+#custom-search-input .search-query {
+    background: #fff none repeat scroll 0 0 !important;
+    border-radius: 5px;
+    height: 33px;
+    margin-bottom: 0;
+    padding-left: 7px;
+    padding-right: 7px;
+    width: 100%;
+}
+#custom-search-input button {
+    background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+    border: 0 none;
+    border-radius: 3px;
+    color: #666666;
+    left: auto;
+    margin-bottom: 0;
+    margin-top: 7px;
+    padding: 2px 5px;
+    position: absolute;
+    right: 0;
+    z-index: 9999;
+}
+.search-query:focus + button {
+    z-index: 3;   
+}
 
+.input-group{
+    width: 100%;
+}
 /**/
 .picture-box {
     margin-bottom: 30px;
@@ -61,14 +95,8 @@ footer {
 #editModal{
     margin-top: 30px;
 }
-@media (min-width: 768px) {
-    #loginModal {
-        margin-top: 40px;
-    }
-
-    #registerModal#detailModal {
-        margin-top: 40px;
-    }
+.modad-dialog{
+    margin:0px auto;
 }
 
 .blue-thumb {

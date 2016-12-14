@@ -35,25 +35,33 @@ export class ProfileComponent implements OnInit{
             });   
     }
     onChangePhoto(event){
-        console.log(event.target.files); 
+        console.log(event.target.files.name); 
         console.log(event);
     }
 
 
-    addFile(): void {
+    addPhoto(): string {
         let photo = this.photo.nativeElement;
         if (photo.files && photo.files[0]) {
-            let photoToUpload = photo.files[0];
             this.userService
-                .uploadPhoto(photoToUpload)
+                .uploadPhoto(photo.files[0])
                 .subscribe(res => {
-                    console.log(res);
+                    if(res.status==200){
+                        this.user.Photo="images/"+photo.files[0].name;
+                        console.log(name)
+                    }
+                    err=>{
+                        this.notificationService.printSuccessMessage('Dear ' + this.user.Username + ', your photo not upload'); 
+                    }
                 });
+            return "images/"+photo.files[0].name;
         }
     }
 
     save(){
         var _updateResult: OperationResult = new OperationResult(false, '');
+        this.user.Photo=this.addPhoto();
+        console.log(this.user.Photo);
         this.userService.update(localStorage.getItem("token"),this.user)
             .subscribe(res => {
                 _updateResult.Succeeded = res.Succeeded;
@@ -63,13 +71,12 @@ export class ProfileComponent implements OnInit{
             () => {
                 if (_updateResult.Succeeded) {
                     this.notificationService.printSuccessMessage('Dear ' + this.user.Username + ', your date updated');
-                    
                 }
                 else {
                     console.log(_updateResult.Message)
                     this.notificationService.printErrorMessage(_updateResult.Message);
-                }
-            });
+                 }
+            }); 
     }
 
     delete(){

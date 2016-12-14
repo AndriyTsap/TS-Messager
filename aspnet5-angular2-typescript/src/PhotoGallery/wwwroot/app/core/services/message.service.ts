@@ -25,8 +25,8 @@ export class MessageService {
     public getChats(){
         var _result: any;
 
-        this.dataService.set(this._userGetAllAPI);
-        _result = this.dataService.getAuthenticate(this._token);
-        return _result;
+        this.dataService.set(this._userGetAllAPI+"/chats");
+        return this.dataService.getAuthenticate(this._token);
+       
     }
 }

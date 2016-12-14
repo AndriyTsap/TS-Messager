@@ -11,7 +11,7 @@ namespace PhotoGallery.Entities
         {
             UserRoles = new List<UserRole>();
             ChatUsers = new List<ChatUser>();
-            Messages = new List<Message>();
+            //Messages = new List<Message>();
         }
         public int Id { get; set; }
         public string Username { get; set; }
@@ -29,7 +29,7 @@ namespace PhotoGallery.Entities
 
         public virtual List<UserRole> UserRoles { get; set; }
         public virtual List<ChatUser> ChatUsers { get; set; }
-        public virtual List<Message> Messages { get; set; }
+        //public virtual List<Message> Messages { get; set; }
 
         public override bool Equals(object obj)
         {

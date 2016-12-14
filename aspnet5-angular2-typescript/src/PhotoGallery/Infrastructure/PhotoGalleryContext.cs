@@ -55,7 +55,7 @@ namespace PhotoGallery.Infrastructure
             modelBuilder.Entity<User>().Property(u => u.HashedPassword).IsRequired().HasMaxLength(200);
             modelBuilder.Entity<User>().Property(u => u.Salt).IsRequired().HasMaxLength(200);
             modelBuilder.Entity<User>().HasMany(u => u.ChatUsers).WithOne(gu => gu.User);
-            modelBuilder.Entity<User>().HasMany(u => u.Messages).WithOne(m => m.User);
+            //modelBuilder.Entity<User>().HasMany(u => u.Messages).WithOne(m => m.User);
 
             //Message
             modelBuilder.Entity<Message>().Property(m => m.Text).IsRequired().HasMaxLength(500);

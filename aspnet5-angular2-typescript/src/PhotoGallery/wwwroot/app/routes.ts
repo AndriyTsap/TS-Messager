@@ -5,8 +5,8 @@ import { HomeComponent } from './components/home.component';
 import { PhotosComponent } from './components/photos.component';
 import { AlbumsComponent } from './components/albums.component';
 import { AlbumPhotosComponent } from './components/album-photos.component';
-import { TestComponent } from './components/test.component';
 import { ProfileComponent } from './components/profile.component';
+import { FriendsComponent } from './components/friends.component';
 import { MessagesComponent } from './components/messages/messages.component';
 import { accountRoutes, accountRouting } from './components/account/routes';
 
@@ -22,12 +22,12 @@ const appRoutes: Routes = [
         component: HomeComponent
     },
     {
-        path: 'photos',
-        component: PhotosComponent
+        path: 'friends',
+        component: FriendsComponent
     },
     {
-        path: 'test',
-        component: TestComponent
+        path: 'photos',
+        component: PhotosComponent
     },
     {
         path: 'profile',

@@ -9,7 +9,8 @@ export class UserService {
     private _userGetAllAPI: string = 'api/users/';
     private _userGetByIdAPI: string =  'api/users/getById?id=';
     private _userGetByTokenAPI: string =  'api/users/getByToken';
-    private _userDelete: string =  'api/users/delete'
+    private _userDelete: string =  'api/users/delete';
+    private _friendsGetAPI: string =  'api/users/getFriends';
     private _userEditPersonalDataAPI: string =  'api/users/editPersonalData';
    
 
@@ -21,6 +22,12 @@ export class UserService {
         this.dataService.set(this._userGetAllAPI);
         _users = this.dataService.get();
         return _users;
+    }
+
+    public getFriends(){
+        
+        this.dataService.set(this._friendsGetAPI);
+        return this.dataService.get();
     }
     
     public getById(id: number){

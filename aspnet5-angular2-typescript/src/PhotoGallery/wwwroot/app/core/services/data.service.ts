@@ -30,6 +30,7 @@ export class DataService {
     getAuthenticate(token:string,page?: number) {
         var headers = new Headers();
         headers.append("Authorization", "Bearer "+token)
+        headers.append("Content-Type", "application/json")
         if(page!=undefined){
             var uri = this._baseUri + page.toString() + '/' + this._pageSize.toString();
         }
@@ -128,13 +129,12 @@ export class DataService {
 
     upload(photo: any) {
         let input = new FormData();
-        input.append("enctype", "multipart/form-data");
+        let headers= new Headers()
+        headers.append("enctype", "multipart/form-data");
         input.append("file", photo);
-        console.log(photo);
-        console.log(input);
         return this.http
-            .post("api/photos/upload", {
-                headers:input
+            .post("api/photos/upload",input,{
+                headers:headers
             })
     }
 }

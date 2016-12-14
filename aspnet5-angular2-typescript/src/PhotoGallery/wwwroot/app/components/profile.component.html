@@ -45,10 +45,8 @@
 			</div>
 		</div>
 		<div class="panel-footer">
-			<button class="btn btn-sm btn-primary">
-                <i class="glyphicon glyphicon-envelope"></i>
-            </button>
-			<span class="pull-right">
+
+			<span class="right">
 				<button  data-toggle="modal" data-target="#editModal" type="button" class="btn btn-sm btn-warning">
                     <i class="glyphicon glyphicon-edit"></i>
                 </button>
@@ -88,7 +86,7 @@
                                 name="lastName" #lastName="ngModel">
                         </div>
                         <div class="form-group">
-                            <input type="file" (change)="addFile()" accept="image/*" class="form-control input-lg" placeholder="Photo" 
+                            <input type="file" accept="image/*" class="form-control input-lg" placeholder="Photo"
                                 name="photo" #photo>
                         </div>
                         <div class="form-group">

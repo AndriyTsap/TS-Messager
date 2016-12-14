@@ -11,11 +11,10 @@ import { AlbumPhotosComponent } from './components/album-photos.component';
 import { HomeComponent } from './components/home.component';
 import { PhotosComponent } from './components/photos.component';
 import { AlbumsComponent } from './components/albums.component';
-import { TestComponent } from './components/test.component';
 import { ProfileComponent } from './components/profile.component';
+import { FriendsComponent } from './components/friends.component';
 import { MessagesComponent } from './components/messages/messages.component';
-import { ChatsListComponent } from './components/messages/chats-list/chats-list.component';
-import { ChatsListItemComponent } from './components/messages/chats-list/chats-list-item.component';
+
 import { routing } from './routes';
 
 import { DataService } from './core/services/data.service';
@@ -44,8 +43,8 @@ class AppBaseRequestOptions extends BaseRequestOptions {
         routing,
         AccountModule
     ],
-    declarations: [AppComponent, AlbumPhotosComponent, HomeComponent, TestComponent, ProfileComponent,
-    MessagesComponent, ChatsListComponent, ChatsListItemComponent, PhotosComponent, AlbumsComponent],
+    declarations: [AppComponent, AlbumPhotosComponent, HomeComponent, ProfileComponent,
+    MessagesComponent,  PhotosComponent, FriendsComponent, AlbumsComponent],
     providers: [DataService, MembershipService, UtilityService, NotificationService, UserService, MessageService,
         { provide: LocationStrategy, useClass: HashLocationStrategy },
         { provide: RequestOptions, useClass: AppBaseRequestOptions }],

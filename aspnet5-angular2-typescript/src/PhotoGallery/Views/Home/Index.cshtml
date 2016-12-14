@@ -9,6 +9,7 @@
     <link href="~/css/site.css" rel="stylesheet" />
     <link href="~/lib/css/alertify.core.css" rel="stylesheet" />
     <link href="~/lib/css/alertify.bootstrap.css" rel="stylesheet" />
+    <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
     @*<link href="~/lib/css/alertify.default.css" rel="stylesheet" />*@
 }
 
@@ -30,4 +31,15 @@
     $(document).ready(function() {
         $('.fancybox').fancybox();
     });
+    $(function () {
+    var broadcaster = $.connection.broadcaster;
+ 
+    broadcaster.client.message = function (text) {
+        alert(text);
+    };
+ 
+    $.connection.hub.start().done(function () {
+        broadcaster.server.broadcast('hello from client');
+    });
+  });
 }
