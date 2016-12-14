@@ -31,25 +31,21 @@ namespace PhotoGallery
     {
         private static string _applicationPath = string.Empty;
         private static string _contentRootPath = string.Empty;
+        private static string API_URL = string.Empty;
+
         public Startup(IHostingEnvironment env)
         {
             _applicationPath = env.WebRootPath;
             _contentRootPath = env.ContentRootPath;
-            // Setup configuration sources.
 
             var builder = new ConfigurationBuilder()
-                .SetBasePath(_contentRootPath)
-                .AddJsonFile("appsettings.json")
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
-
-            if (env.IsDevelopment())
-            {
-                // This reads the configuration keys from the secret store.
-                // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
-                builder.AddUserSecrets();
-            }
-            builder.AddEnvironmentVariables();
+                .SetBasePath(env.ContentRootPath)
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+                .AddEnvironmentVariables();
             Configuration = builder.Build();
+
+            API_URL = Configuration["apiURL"];
         }
 
         public IConfigurationRoot Configuration { get; set; }
@@ -59,7 +55,6 @@ namespace PhotoGallery
         {
             services.AddDbContext<PhotoGalleryContext>(options =>
                 options.UseSqlServer(Configuration["Data:PhotoGalleryConnection:ConnectionString"]));
-
 
             // Repositories
             services.AddScoped<IPhotoRepository, PhotoRepository>();
@@ -77,10 +72,12 @@ namespace PhotoGallery
             services.AddScoped<IMembershipService, MembershipService>();
             services.AddScoped<IEncryptionService, EncryptionService>();
             services.AddScoped<IJwtFormater, JwtFormater>();
-
+            
             services.AddAuthentication();
 
             // Polices
+            services.AddCors();
+
             services.AddAuthorization(options =>
             {
                 // inline policies
@@ -102,6 +99,8 @@ namespace PhotoGallery
                     res.NamingStrategy = null;
                 }
             });
+
+            services.AddSignalR(options => options.Hubs.EnableDetailedErrors = true);
         }
 
         private static string secretKey = "mysupersecret_secretkey!123";
@@ -109,6 +108,11 @@ namespace PhotoGallery
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             app.UseStaticFiles();
+
+            app.UseCors(builder =>
+                builder.AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod());
 
             var signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secretKey));
 
