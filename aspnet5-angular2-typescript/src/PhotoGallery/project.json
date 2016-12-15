@@ -82,11 +82,12 @@
       ]
     }
   },
+  /*
   "buildOptions": {
     "emitEntryPoint": true,
     "preserveCompilationContext": true,
     "debugType": "portable"
-  },
+  },*/
   "runtimeOptions": {
     "configProperties": {
       "System.GC.Server": true

@@ -1,4 +1,4 @@
-﻿/* TOP BAR - Footer Styles */
+﻿/* navbar and footer styles */
 .navbar-inverse .navbar-brand {
     color: #ddd;
 }
@@ -10,17 +10,19 @@
     background-color: #31708f;
 }
 
-    .navbar-inverse .navbar-nav > li > a {
-        color: #ddd;
-    }
+.navbar-inverse .navbar-nav > li > a {
+    color: #ddd;
+}
 
 #nav-separator {
     margin-top: 60px;
 }
 .nav li a{
-    padding: 15px 5px;
+    padding: 15px 3px;
 }
-
+.navbar-right{
+    margin-right: 15px;
+}
 @media (min-width: 768px) {
     .collapsing {
         overflow: inherit;
@@ -38,10 +40,9 @@ footer {
 #account-menu {
     margin-right: 35px;
 }
+/* end navbar and footer styles */
 
-
-/* END */
-/*custom search */
+/* custom search styles */
 #custom-search-input {
     background: #e8e6e7 none repeat scroll 0 0;
     margin: 0;
@@ -67,7 +68,7 @@ footer {
     padding: 2px 5px;
     position: absolute;
     right: 0;
-    z-index: 9999;
+    z-index: 5;
 }
 .search-query:focus + button {
     z-index: 3;   
@@ -76,6 +77,7 @@ footer {
 .input-group{
     width: 100%;
 }
+/* end custom search style */
 /**/
 .picture-box {
     margin-bottom: 30px;
@@ -105,11 +107,11 @@ footer {
 
 /* validation form controls */
 .ng-valid[required] {
-    border-left: 5px solid #42A948; /* green */
+    border-left: 5px solid #42A948;
 }
 
 .ng-invalid {
-    border-left: 5px solid #a94442; /* red */
+    border-left: 5px solid #a94442; 
 }
 
 .img-caption {
@@ -130,7 +132,7 @@ footer {
 .buttonCaption {
     padding: 0 !important;
 }
-
+/* end validation form controls */
 /*loader*/
 /* Absolute Center Spinner */
 .loading {

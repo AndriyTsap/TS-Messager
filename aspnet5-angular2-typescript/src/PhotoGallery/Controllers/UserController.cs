@@ -74,6 +74,19 @@ namespace PhotoGallery.Controllers
             isFriend = await _friendsSearcher.ValidateFriend(subjectId, id);
             return isFriend;
         }
+        // Get api/users/getFriends
+        [Authorize]
+        [HttpGet("getFriends")]
+        public async Task<dynamic> GetFriends()
+        {
+            var authenticationHeader = Request.Headers["Authorization"];
+            var token = authenticationHeader.FirstOrDefault().Split(' ')[1];
+            var jwt = new JwtSecurityToken(token);
+            var subject = jwt.Subject;
+            var subjectId = _userRepository.GetSingleByUsername(subject).Id;
+            var friends = await _friendsSearcher.GetFriends(subjectId);
+            return friends;
+        }
         // Get api/users/search?username=Andriy
         [HttpGet("search")]
         public async Task<IEnumerable<dynamic>> SearchUsers(string username = "")
@@ -97,7 +110,9 @@ namespace PhotoGallery.Controllers
            
             user.HashedPassword = dbUser.HashedPassword;
             user.Salt = dbUser.Salt;
-            
+            /*if(user.Photo=="images/"){
+                user.Photo=dbUser.Photo;
+            }*/
             try
             {
                 _userRepository.Edit(user);

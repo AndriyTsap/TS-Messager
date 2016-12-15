@@ -1,0 +1,46 @@
+<div class="container">
+	<div class=" colFriends">
+		<ul class="list-group">
+			<li class="list-group-item title">
+				Friends
+				<div id="custom-search-input">
+					<div class="input-group">
+						<input type="text" class=" search-query form-control" id="findFriends" placeholder="Friends" />
+						<button class="btn" type="button">
+							<span class=" glyphicon glyphicon-search"></span>
+						</button>
+					</div>
+				</div>
+			</li>
+			<li *ngFor="let user of randomPeople" class="list-group-item text-left">
+				<a class="fancybox" rel="gallery" href="{{user.Photo}}">
+					<img class="img-thumbnail" src="{{user.Photo}}">
+				</a>
+				<label class="name">{{user.FirstName}} {{user.LastName}}({{user.Username}})<br>
+				</label>
+				<label class="pull-right">
+					<a type="button" class="btn btn-success btn-xs" data-toggle="collapse" href="#{{user.Username}}">
+                        <i class="fa fa-toggle-down fa-2x"></i>
+                    </a>
+					<button  class="btn btn-info btn-xs " title="Send message">
+						<i class="fa fa-envelope fa-2x"></i>
+					</button>
+				</label>
+				<div class="collapse" id="{{user.Username}}">
+					<span>Phone: {{user.Phone}}</span>
+					<span>Email: {{user.Email}}</span>
+					<span>Date of Birthday: {{user.BirthDate}}</span>
+					<span>About: {{user.About}} </span>
+				</div>
+				<div class="break"></div>
+			</li>
+			
+			<li *ngIf="tenOrMoreFriends" class="list-group-item text-left">
+				<a class="btn btn-block btn-primary">
+					<i class="glyphicon glyphicon-refresh"></i>
+					Load more...
+				</a>
+			</li>
+		</ul>
+	</div>
+</div>

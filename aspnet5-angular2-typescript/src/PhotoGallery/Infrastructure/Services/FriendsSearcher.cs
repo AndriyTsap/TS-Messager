@@ -22,12 +22,14 @@ namespace PhotoGallery.Infrastructure.Services
         public async Task<IEnumerable<User>> GetFriends(int userId)
         {
             var chatsUsers = await _chatUserRepository.FindByAsync(cu => cu.UserId == userId);
+
             var chatIds = chatsUsers.Select(cu => cu .ChatId).ToList();
             var chats = await _chatRepository.FindByAsync(c => chatIds.Contains(c.Id));
                 
             var dialogs = chats.Where(c => c.Type.Equals("dialog")).Select(d => d.Id);
             var friendIds = chatsUsers.Where(cu => dialogs.Contains(cu.ChatId)).Select(c => c.UserId);
-
+            //var connectionChats = await _chatUserRepository.FindByAsync(cu => dialogs.Contains(cu.ChatId));
+            //var friendIds = connectionChats.Select(c => c.UserId).ToList();
             var friends = await _userRepository.FindByAsync(u => friendIds.Contains(u.Id));
 
             return friends;

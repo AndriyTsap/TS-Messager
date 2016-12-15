@@ -7,6 +7,7 @@ import { AlbumsComponent } from './components/albums.component';
 import { AlbumPhotosComponent } from './components/album-photos.component';
 import { ProfileComponent } from './components/profile.component';
 import { FriendsComponent } from './components/friends.component';
+import { FriendsSearchComponent } from './components/friends-search.component';
 import { MessagesComponent } from './components/messages/messages.component';
 import { accountRoutes, accountRouting } from './components/account/routes';
 
@@ -20,6 +21,10 @@ const appRoutes: Routes = [
     {
         path: 'home',
         component: HomeComponent
+    },
+    {
+        path: 'search',
+        component: FriendsSearchComponent
     },
     {
         path: 'friends',

@@ -116,6 +116,7 @@ namespace PhotoGallery.Controllers
                     await file.CopyToAsync(fileStream);
                 }
             }
+            
         }
     }
 }

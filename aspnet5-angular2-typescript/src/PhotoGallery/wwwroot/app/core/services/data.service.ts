@@ -27,6 +27,7 @@ export class DataService {
         return this.http.get(uri)
             .map(response => (<Response>response));
     }
+    
     getAuthenticate(token:string,page?: number) {
         var headers = new Headers();
         headers.append("Authorization", "Bearer "+token)
@@ -37,7 +38,6 @@ export class DataService {
         else
             var uri = this._baseUri;
         
-
         return this.http.get(uri, { headers:headers })
             .map(response => (<Response>response));
     }

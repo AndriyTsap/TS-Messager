@@ -29,6 +29,7 @@ gulp.task('setup-vendors', function (done) {
       'bower_components/bootstrap/dist/js/bootstrap*.js',
       'node_modules/fancybox/dist/js/jquery.fancybox.pack.js',
       'bower_components/alertify.js/lib/alertify.min.js',
+      'bower_components/signalr/jquery.signalR.js',
       'systemjs.config.js'
     ]).pipe(gulp.dest(paths.jsVendors));
 

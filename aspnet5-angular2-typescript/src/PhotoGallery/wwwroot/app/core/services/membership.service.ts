@@ -7,9 +7,9 @@ import { User } from '../domain/user';
 @Injectable()
 export class MembershipService {
 
-    private _accountRegisterAPI: string = 'api/account/register/';
+    private _accountRegisterAPI: string = 'api/account/register';
     private _accountLoginAPI: string = 'token';
-    private _accountLogoutAPI: string = 'api/account/logout/';
+    private _accountLogoutAPI: string = 'api/account/logout';
 
     constructor(public accountService: DataService) { }
 

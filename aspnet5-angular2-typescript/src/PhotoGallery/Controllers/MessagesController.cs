@@ -86,7 +86,62 @@ namespace PhotoGallery.Controllers
 
             return chats.Skip(offset).Take(20);
         }
+        /*
+        // Get api/messages/createChat
+        [Authorize]
+        [HttpGet("createChat")]//don't work yet
+        public async Task<IEnumerable<Chat>> CreateChat(int offset = 0)
+        {
+            IActionResult result = new ObjectResult(false);
+            GenericResult removeResult = null;
 
+            var authenticationHeader = Request?.Headers["Authorization"];
+            var token = authenticationHeader?.FirstOrDefault().Split(' ')[1];
+            var subject = _jwtFormater.GetSubject(token);
+
+            var user = _userRepository.GetSingleByUsername(subject);
+            /*
+            var message = new Message()
+            {
+                Text = mVMessage.Text,
+                SenderId = user.Id,
+                ChatId = mVMessage.ChatId
+            };
+
+            try
+            {
+                _messageRepository.Add(message);
+                _messageRepository.Commit();
+
+                removeResult = new GenericResult()
+                {
+                    Succeeded = true,
+                    Message = "Message sended."
+                };
+            }
+            catch (Exception ex)
+            {
+                removeResult = new GenericResult()
+                {
+                    Succeeded = false,
+                    Message = ex.Message
+                };
+
+                _loggingRepository.Add(new Error()
+                {
+                    Severity = "Error",
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace,
+                    DateCreated = DateTime.Now
+                });
+                _loggingRepository.Commit();
+            }
+            
+            result = new ObjectResult(removeResult);
+            this.Clients.Group(message.ChatId.ToString()).AddChatMessage(message);
+            return result;
+        }
+        */
 
         // Get api/messages/getByChatId?chatId=1&offset=20
         [Authorize]
@@ -155,7 +210,8 @@ namespace PhotoGallery.Controllers
             {
                 Text = mVMessage.Text,
                 SenderId = user.Id,
-                ChatId = mVMessage.ChatId
+                ChatId = mVMessage.ChatId,
+                Date=DateTime.Now.ToString()
             };
 
             try
@@ -188,7 +244,7 @@ namespace PhotoGallery.Controllers
             }
 
             result = new ObjectResult(removeResult);
-            this.Clients.Group(message.ChatId.ToString()).AddChatMessage(message);
+            //this.Clients.Group(message.ChatId.ToString()).AddChatMessage(message);
             return result;
         }
 

@@ -25,58 +25,59 @@ export class ProfileComponent implements OnInit{
     }
 
     ngOnInit() {
-        this.userService.getByToken(localStorage.getItem("token")).subscribe(res => {
-            this.user= res.json();
-            },
-            error => {
-                if (error.status == 401 || error.status == 404) {
-                    this.notificationService.printErrorMessage('User don\'t exist');
-                }
-            });   
+        this.userService.getByToken(localStorage.getItem("token"))
+            .subscribe(res => {
+                    this.user= res.json();
+                },
+                error => {
+                    if (error.status == 401 || error.status == 404) {
+                        this.notificationService.printErrorMessage('User don\'t exist');
+                    }
+                });   
     }
-    onChangePhoto(event){
-        console.log(event.target.files.name); 
-        console.log(event);
-    }
-
 
     addPhoto(): string {
+
         let photo = this.photo.nativeElement;
         if (photo.files && photo.files[0]) {
-            this.userService
-                .uploadPhoto(photo.files[0])
+            this.userService.uploadPhoto(photo.files[0])
                 .subscribe(res => {
                     if(res.status==200){
-                        this.user.Photo="images/"+photo.files[0].name;
-                        console.log(name)
-                    }
+                        console.log("images/"+photo.files[0].name)
+                        }
+                    },
                     err=>{
                         this.notificationService.printSuccessMessage('Dear ' + this.user.Username + ', your photo not upload'); 
-                    }
-                });
+                    });
             return "images/"+photo.files[0].name;
         }
+        return "images/";
     }
 
     save(){
-        var _updateResult: OperationResult = new OperationResult(false, '');
-        this.user.Photo=this.addPhoto();
-        console.log(this.user.Photo);
-        this.userService.update(localStorage.getItem("token"),this.user)
-            .subscribe(res => {
-                _updateResult.Succeeded = res.Succeeded;
-                _updateResult.Message = res.Message;
-            },
-            error => console.error('Error: ' + error),
-            () => {
-                if (_updateResult.Succeeded) {
-                    this.notificationService.printSuccessMessage('Dear ' + this.user.Username + ', your date updated');
-                }
-                else {
-                    console.log(_updateResult.Message)
-                    this.notificationService.printErrorMessage(_updateResult.Message);
-                 }
-            }); 
+        let _updateResult: OperationResult = new OperationResult(false, '');
+        let tempPhotoPath=this.addPhoto();
+        console.log("outside")
+        if(tempPhotoPath){
+            console.log("inside");
+            this.user.Photo=tempPhotoPath;
+            this.userService.update(localStorage.getItem("token"),this.user)
+                .subscribe(res => {
+                    _updateResult.Succeeded = res.Succeeded;
+                    _updateResult.Message = res.Message;
+                },
+                error => console.error('Error: ' + error),
+                () => {
+                    if (_updateResult.Succeeded) {
+                        this.notificationService.printSuccessMessage('Dear ' + this.user.Username + ', your date updated');
+                    }
+                    else {
+                        console.log(_updateResult.Message)
+                        this.notificationService.printErrorMessage(_updateResult.Message);
+                    }
+                }); 
+        }
+       
     }
 
     delete(){

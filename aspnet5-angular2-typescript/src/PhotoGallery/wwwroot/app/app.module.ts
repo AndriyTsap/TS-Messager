@@ -13,6 +13,7 @@ import { PhotosComponent } from './components/photos.component';
 import { AlbumsComponent } from './components/albums.component';
 import { ProfileComponent } from './components/profile.component';
 import { FriendsComponent } from './components/friends.component';
+import { FriendsSearchComponent } from './components/friends-search.component';
 import { MessagesComponent } from './components/messages/messages.component';
 
 import { routing } from './routes';
@@ -44,7 +45,7 @@ class AppBaseRequestOptions extends BaseRequestOptions {
         AccountModule
     ],
     declarations: [AppComponent, AlbumPhotosComponent, HomeComponent, ProfileComponent,
-    MessagesComponent,  PhotosComponent, FriendsComponent, AlbumsComponent],
+    MessagesComponent,  PhotosComponent, FriendsComponent, FriendsSearchComponent, AlbumsComponent],
     providers: [DataService, MembershipService, UtilityService, NotificationService, UserService, MessageService,
         { provide: LocationStrategy, useClass: HashLocationStrategy },
         { provide: RequestOptions, useClass: AppBaseRequestOptions }],

@@ -5,7 +5,9 @@ import { User } from '../domain/user';
 
 @Injectable()
 export class MessageService {
-    private _userGetAllAPI: string = 'api/messages';
+    private _messagesGetAllAPI: string = 'api/messages';
+    private _chatsGetAllAPI: string = 'api/messages/chats';
+
     private _token: string;
     
     constructor(@Inject(DataService) public dataService: DataService) { }
@@ -15,18 +17,14 @@ export class MessageService {
     }
 
     public send(text:string, chat:number){
-        var _result: any;
-
-        this.dataService.set(this._userGetAllAPI);
-        _result = this.dataService.postAuthenticate(this._token, {text, chat});
-        return _result;
+        this.dataService.set(this._messagesGetAllAPI);
+        console.log(" in message service");
+        return this.dataService.postAuthenticate(this._token,{text, chat});
+        
     }
     //not try yet
     public getChats(){
-        var _result: any;
-
-        this.dataService.set(this._userGetAllAPI+"/chats");
+        this.dataService.set(this._chatsGetAllAPI);
         return this.dataService.getAuthenticate(this._token);
-       
     }
 }

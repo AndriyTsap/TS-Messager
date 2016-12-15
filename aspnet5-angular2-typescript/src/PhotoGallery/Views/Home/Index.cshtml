@@ -17,25 +17,22 @@
 
 <photogallery-app>
     <div class="loading">Loading</div>
-</photogallery-app>d
+</photogallery-app>
 
 @section scripts
 {
-    <script src="~/lib/jquery/dist/jquery.js"></script>
-	<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-
-    <script src="~/lib/signalr/jquery.signalR.js"></script>
+    <script src="~/lib/js/jquery.js"></script>
+	<!--<script src="~/lib/js/bootstrap.js"></script>-->
+    <script src="~/lib/js/jquery.signalR.js"></script>
 
     <script src="~/lib/js/jquery.fancybox.pack.js"></script>
     <script src="~/lib/js/alertify.min.js"></script>
-
-     <script src="~/lib/core-js/client/shim.js"></script>
-    <script src="~/lib/zone.js/dist/zone.js"></script>
+    <!--<script src="~/lib/core-js/client/shim.js"></script>-->
     <script src="~/lib/reflect-metadata/Reflect.js"></script>
     <script src="~/lib/systemjs/dist/system.src.js"></script>              
 
-    <script src="/signalr/js"></script>
-    <script src="~/js/systemjs.config.js"></script>
+    <!--<script src="/signalr/js"></script>-->
+    <script src="~/lib/js/systemjs.config.js"></script>
 }
 
 @section customScript
@@ -44,7 +41,7 @@
     $(document).ready(function() {
         $('.fancybox').fancybox();
     });
-    $(function () {
+    /*$(function () {
     var broadcaster = $.connection.broadcaster;
  
     broadcaster.client.message = function (text) {
@@ -54,5 +51,6 @@
     $.connection.hub.start().done(function () {
         broadcaster.server.broadcast('hello from client');
     });
-  });
+
+  }); */
 }

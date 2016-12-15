@@ -10,24 +10,22 @@ export class UserService {
     private _userGetByIdAPI: string =  'api/users/getById?id=';
     private _userGetByTokenAPI: string =  'api/users/getByToken';
     private _userDelete: string =  'api/users/delete';
-    private _friendsGetAPI: string =  'api/users/getFriends';
+    private _friendsGetAPI: string =  'api/users/getFriends/';
     private _userEditPersonalDataAPI: string =  'api/users/editPersonalData';
-   
+    private _searchAPI: string =  'api/users/search?username=';
+    private _checkOnFriendshipAPI: string =  'api/users/checkOnFriendship?id=';
+
 
     constructor(@Inject(DataService) public dataService: DataService) { }
 
     public getAll(){
-        var _users;
-        
         this.dataService.set(this._userGetAllAPI);
-        _users = this.dataService.get();
-        return _users;
+        return this.dataService.get();
     }
 
-    public getFriends(){
-        
+    public getFriends(token:string){
         this.dataService.set(this._friendsGetAPI);
-        return this.dataService.get();
+        return this.dataService.getAuthenticate(token)
     }
     
     public getById(id: number){
@@ -51,10 +49,19 @@ export class UserService {
         
         this.dataService.set(this._userDelete);
         return this.dataService.delete(token); 
-
     }
 
     public uploadPhoto(photo: any){
         return this.dataService.upload(photo); 
+    }
+
+    public search(token:string,username:string){
+        this.dataService.set(this._searchAPI+username);
+        return this.dataService.getAuthenticate(token);
+    }
+
+    public checkOnFriendship(token:string,id :number){
+        this.dataService.set(this._searchAPI+id);
+        return this.dataService.getAuthenticate(token);
     }
 }
