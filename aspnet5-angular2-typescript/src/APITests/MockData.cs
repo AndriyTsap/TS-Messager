@@ -23,7 +23,6 @@ namespace APITests
                 Phone = "0990920654",
                 Salt = "/E3qadielrSMtyT7YEpb2w==",
                 ChatUsers = new List<ChatUser>(),
-                Messages = new List<Message>(),
                 UserRoles = new List<UserRole>()
             },
             new User()
@@ -38,7 +37,6 @@ namespace APITests
                 Phone = "0666777333",
                 Salt = "GTtKxJA6xJuj3ifJtTXn9Q==",
                 ChatUsers = new List<ChatUser>(),
-                Messages = new List<Message>(),
                 UserRoles = new List<UserRole>(),
             },
             new User()
@@ -53,7 +51,6 @@ namespace APITests
                 Phone = "0666777333",
                 Salt = "GTtKxJA6xJuj3ifJtTXn9Q==",
                 ChatUsers = new List<ChatUser>(),
-                Messages = new List<Message>(),
                 UserRoles = new List<UserRole>(),
             }
         };
@@ -87,8 +84,7 @@ namespace APITests
                 Date = DateTime.Now.ToString(CultureInfo.InvariantCulture),
                 ChatId = 0,
                 SenderId = 0,
-                Chat = new Chat(),
-                User = new User()
+                Chat = new Chat()
             },
             new Message
             {
@@ -97,8 +93,7 @@ namespace APITests
                 Date = DateTime.Now.ToString(CultureInfo.InvariantCulture),
                 ChatId = 0,
                 SenderId = 1,
-                Chat = new Chat(),
-                User = new User()
+                Chat = new Chat()
             }
         };
 
