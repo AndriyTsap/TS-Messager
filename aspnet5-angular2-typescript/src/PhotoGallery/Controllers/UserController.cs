@@ -72,20 +72,29 @@ namespace PhotoGallery.Controllers
             var subject = jwt.Subject;
             var subjectId = _userRepository.GetSingleByUsername(subject).Id;
             isFriend = await _friendsSearcher.ValidateFriend(subjectId, id);
-            return isFriend;
+
+            return isFriend;            
         }
         // Get api/users/getFriends
         [Authorize]
-        [HttpGet("getFriends")]
-        public async Task<dynamic> GetFriends()
+        [HttpGet("friends")]
+        public async Task<IEnumerable<dynamic>> GetFriends()
         {
             var authenticationHeader = Request.Headers["Authorization"];
             var token = authenticationHeader.FirstOrDefault().Split(' ')[1];
             var jwt = new JwtSecurityToken(token);
             var subject = jwt.Subject;
             var subjectId = _userRepository.GetSingleByUsername(subject).Id;
+
             var friends = await _friendsSearcher.GetFriends(subjectId);
-            return friends;
+            List<dynamic> res = new List<dynamic>();
+
+            foreach (var f in friends)
+            {
+                res.Add(new { f.Id, f.Username, f.Email, f.FirstName, f.LastName, f.BirthDate, f.Phone, f.Photo, f.About });
+            }
+
+            return res; 
         }
         // Get api/users/search?username=Andriy
         [HttpGet("search")]

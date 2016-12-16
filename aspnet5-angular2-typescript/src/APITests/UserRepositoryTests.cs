@@ -14,20 +14,20 @@ namespace APITests
         public class FriendsSearcherTests
         {
             [Test]
-            public async Task ShouldChangePhone_AfterEditMethod()
+            public void ShouldChangePhone_AfterEditMethod()
             {
                 var data = new MockData();
                 var userRepo = ServiceLocator.Instance.Resolve<IUserRepository>();
 
-                userRepo.Add(data.Users[0]); 
+                userRepo.Add(data.Users[0]);
                 userRepo.Commit();
 
                 data.Users[0].Phone = "newPhone";
                 userRepo.Edit(data.Users[0]);
-                userRepo.Commit();
+                //userRepo.Commit();
                 userRepo.GetSingle(data.Users[0].Id);
 
-                Assert.That(userRepo.GetSingle(data.Users[0].Id).Phone== "newPhone");
+                Assert.That(userRepo.GetSingle(data.Users[0].Id).Phone == "newPhone");
             }
         }
     }
