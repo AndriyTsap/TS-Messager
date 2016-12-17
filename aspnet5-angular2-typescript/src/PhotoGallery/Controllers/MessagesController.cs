@@ -11,6 +11,7 @@ using PhotoGallery.Infrastructure.Core;
 using PhotoGallery.Infrastructure.Repositories.Abstract;
 using PhotoGallery.Infrastructure.Services.Abstract;
 using PhotoGallery.ViewModels;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace PhotoGallery.Controllers
 {
@@ -44,7 +45,6 @@ namespace PhotoGallery.Controllers
             var authenticationHeader = Request?.Headers["Authorization"];
             var token = authenticationHeader?.FirstOrDefault().Split(' ')[1];
             var subject = _jwtFormater.GetSubject(token);
-
             var user = _userRepository.GetSingleByUsername(subject);
 
             IEnumerable<Message> messages = new List<Message>();
@@ -53,6 +53,7 @@ namespace PhotoGallery.Controllers
                 var chats = await _chatUserRepository.FindByAsync(cu => cu.UserId == user.Id);
                 var chatIds = chats.Select(cu => cu.ChatId);
                 messages = await _messageRepository.FindByAsync(message => chatIds.Contains(message.ChatId));
+                messages = messages.ToList();
             }
             catch (Exception ex)
             {
@@ -66,7 +67,7 @@ namespace PhotoGallery.Controllers
                 _loggingRepository.Commit();
             }
             
-            return messages.Skip(offset).Take(20);
+            return messages.Skip(messages.Count()-offset-20).Take(20);
         }
 
         // Get api/messages/chats?offset=20
@@ -76,15 +77,16 @@ namespace PhotoGallery.Controllers
         {
             var authenticationHeader = Request?.Headers["Authorization"];
             var token = authenticationHeader?.FirstOrDefault().Split(' ')[1];
-            var subject = _jwtFormater.GetSubject(token);
+            var jwt = new JwtSecurityToken(token);
+            var subject = jwt.Subject;
 
             var user = _userRepository.GetSingleByUsername(subject);
 
             var chatUsers = await _chatUserRepository.FindByAsync(cu => cu.UserId == user.Id);
-            var chatIds = chatUsers.Select(cu => cu.Id);
+            var chatIds = chatUsers.Select(cu => cu.ChatId);
             var chats = await _chatRepository.FindByAsync(c => chatIds.Contains(c.Id));
 
-            return chats.Skip(chats.Count()-offset-20).Take(20);
+            return chats.Skip(chats.Count() - offset - 20).Take(20);
         }
 
         
@@ -292,7 +294,7 @@ namespace PhotoGallery.Controllers
             }
 
             result = new ObjectResult(removeResult);
-            //this.Clients.Group(message.ChatId.ToString()).AddChatMessage(message);
+            this.Clients.Group(message.ChatId.ToString()).AddChatMessage(message);
             return result;
         }
 

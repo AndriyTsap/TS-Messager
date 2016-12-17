@@ -11,6 +11,7 @@ using PhotoGallery.Infrastructure.Services;
 using PhotoGallery.Infrastructure.Services.Abstract;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.SignalR.Infrastructure;
 
 namespace APITests
 {
@@ -47,8 +48,9 @@ namespace APITests
 
             //Services
             _services.AddScoped<IEncryptionService, EncryptionService>();
-            _services.AddScoped<IEncryptionService, EncryptionService>();
-
+            _services.AddScoped<IJwtFormater, JwtFormater>();
+            _services.AddSignalR(options => options.Hubs.EnableDetailedErrors = true);
+            
             _provider = _services.BuildServiceProvider();
         }
 
