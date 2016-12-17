@@ -29,13 +29,19 @@ namespace PhotoGallery.Controllers
             _loggingRepository = loggingRepository;
             _friendsSearcher = friendsSearcher;
         }
+
+        public dynamic templeteViewUser(dynamic user)
+        {
+            return new { user.Id, user.Username, user.Email, user.FirstName, user.LastName, user.BirthDate, user.Phone, user.Photo, user.About };
+        }
+
         // GET: api/users?offset=20
         [HttpGet]
         public async Task<dynamic> GetAll(int offset = 0)
         {
             var users = await _userRepository.GetRangeWithOffsetAsync(offset);
-            var dataForView = users.Select(u => new {u.Username, u.FirstName, u.Email, u.LastName, u.BirthDate, u.Phone, u.Photo, u.About});
-            return dataForView;
+            var dataForView = users.Select(u => templeteViewUser(u)).ToList();
+            return dataForView.Skip(dataForView.Count-20-offset).Take(20);
         }
         // GET api/users/getById?id=1
         [HttpGet("getById")]
@@ -43,7 +49,7 @@ namespace PhotoGallery.Controllers
         {
             var repoUser = await _userRepository.FindByAsync(u => u.Id == id);
             var user = repoUser.FirstOrDefault();
-            var dataForView = new {user.Id, user.Username, user.Email, user.FirstName, user.LastName, user.BirthDate, user.Phone, user.Photo, user.About};
+            var dataForView = templeteViewUser(user);
             return dataForView;
         }
         // GET api/users/getByToken
@@ -57,7 +63,7 @@ namespace PhotoGallery.Controllers
             var subject = jwt.Subject;
             var repoUser = await _userRepository.FindByAsync(u => u.Username == subject);
             var user = repoUser.FirstOrDefault();
-            var dataForView = new {user.Id, user.Username, user.Email, user.FirstName, user.LastName, user.BirthDate, user.Phone, user.Photo, user.About};
+            var dataForView = templeteViewUser(user);
             return dataForView;
         }
         // Get api/users/checkOnFriendship?id=1
@@ -72,29 +78,39 @@ namespace PhotoGallery.Controllers
             var subject = jwt.Subject;
             var subjectId = _userRepository.GetSingleByUsername(subject).Id;
             isFriend = await _friendsSearcher.ValidateFriend(subjectId, id);
-            return isFriend;
+
+            return isFriend;            
         }
         // Get api/users/getFriends
         [Authorize]
-        [HttpGet("getFriends")]
-        public async Task<dynamic> GetFriends()
+        [HttpGet("friends")]
+        public async Task<IEnumerable<dynamic>> GetFriends(int offset = 0)
         {
             var authenticationHeader = Request.Headers["Authorization"];
             var token = authenticationHeader.FirstOrDefault().Split(' ')[1];
             var jwt = new JwtSecurityToken(token);
             var subject = jwt.Subject;
             var subjectId = _userRepository.GetSingleByUsername(subject).Id;
+
             var friends = await _friendsSearcher.GetFriends(subjectId);
-            return friends;
+            List<dynamic> res = new List<dynamic>();
+
+            foreach (var f in friends)
+            {
+                res.Add(templeteViewUser(f));
+            }
+
+            return res.Skip(res.Count - 20 - offset).Take(20); 
         }
         // Get api/users/search?username=Andriy
         [HttpGet("search")]
-        public async Task<IEnumerable<dynamic>> SearchUsers(string username = "")
+        public async Task<IEnumerable<dynamic>> SearchUsers(string username = "", int offset = 0)
         {
             var repoUsers = await _userRepository.FindByAsync(u => u.Username.StartsWith(username));
-            var users = repoUsers.Select(u => new {u.Username, u.Phone, u.Photo, u.BirthDate});
-            return users;
+            var users = repoUsers.Select(u => templeteViewUser(u)).ToList();
+            return users.Skip(users.Count - 20 - offset).Take(20);
         }
+
         [Authorize]
         [HttpPut("editPersonalData")]
         public IActionResult Post([FromBody] User user)
