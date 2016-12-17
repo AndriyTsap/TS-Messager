@@ -6,11 +6,11 @@ import { UserFull } from '../domain/user-full';
 
 @Injectable()
 export class UserService {
-    private _userGetAllAPI: string = 'api/users/';
+    private _userGetAllAPI: string = 'api/users?offset=';
     private _userGetByIdAPI: string =  'api/users/getById?id=';
     private _userGetByTokenAPI: string =  'api/users/getByToken';
     private _userDelete: string =  'api/users/delete';
-    private _friendsGetAPI: string =  'api/users/getFriends/';
+    private _friendsGetAPI: string =  'api/users/friends?offset=';
     private _userEditPersonalDataAPI: string =  'api/users/editPersonalData';
     private _searchAPI: string =  'api/users/search?username=';
     private _checkOnFriendshipAPI: string =  'api/users/checkOnFriendship?id=';
@@ -18,13 +18,13 @@ export class UserService {
 
     constructor(@Inject(DataService) public dataService: DataService) { }
 
-    public getAll(){
-        this.dataService.set(this._userGetAllAPI);
+    public getAll(offset:number){
+        this.dataService.set(this._userGetAllAPI+offset);
         return this.dataService.get();
     }
 
-    public getFriends(token:string){
-        this.dataService.set(this._friendsGetAPI);
+    public getFriends(token:string,offset:number){
+        this.dataService.set(this._friendsGetAPI+offset);
         return this.dataService.getAuthenticate(token)
     }
     
@@ -55,9 +55,9 @@ export class UserService {
         return this.dataService.upload(photo); 
     }
 
-    public search(token:string,username:string){
+    public search(username:string){
         this.dataService.set(this._searchAPI+username);
-        return this.dataService.getAuthenticate(token);
+        return this.dataService.get();
     }
 
     public checkOnFriendship(token:string,id :number){

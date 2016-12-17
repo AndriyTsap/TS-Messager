@@ -81,7 +81,7 @@ namespace PhotoGallery.Controllers
 
             return isFriend;            
         }
-        // Get api/users/getFriends
+        // Get api/users/friends?offset=20
         [Authorize]
         [HttpGet("friends")]
         public async Task<IEnumerable<dynamic>> GetFriends(int offset = 0)
@@ -126,9 +126,9 @@ namespace PhotoGallery.Controllers
            
             user.HashedPassword = dbUser.HashedPassword;
             user.Salt = dbUser.Salt;
-            /*if(user.Photo=="images/"){
+            if(user.Photo=="images/" || user.Photo==""){
                 user.Photo=dbUser.Photo;
-            }*/
+            }
             try
             {
                 _userRepository.Edit(user);
@@ -144,7 +144,7 @@ namespace PhotoGallery.Controllers
                 editResult = new GenericResult()
                 {
                     Succeeded = false,
-                    Message = ex.Message
+                    Message = ex.Message+user.Photo
                 };
                 _loggingRepository.Add(new Error()
                 {

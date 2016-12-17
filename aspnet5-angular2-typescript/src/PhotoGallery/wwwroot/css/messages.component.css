@@ -71,11 +71,11 @@
     float: left;
     height: calc(100vh - 248px);
     overflow-x: hidden;
-    overflow-y: auto;
+    overflow-y: scroll;
     width: 100%;
 }
 .chat_area li {
-    padding: 14px 14px 0;
+    padding: 4px 14px 0;
 }
 .chat_area li .chat-img1 img {
     height: 40px;
@@ -128,4 +128,8 @@
 
 .container,.message_section{
     height: calc(100vh - 100px);;
+}
+
+.chat_area p{
+    margin: 0;
 }

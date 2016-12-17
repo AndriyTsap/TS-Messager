@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { MessageService } from '../../core/services/message.service';
 import { NotificationService } from '../../core/services/notification.service';
 import { OperationResult } from "../../core/domain/operationResult";
 import { Message } from "../../core/domain/message";
 import { Chat } from "../../core/domain/chat";
-
+import { Angular2AutoScroll } from "angular2-auto-scroll/lib/angular2-auto-scroll.directive";
 //import { SignalRConnectionStatus, Message, Chat } from '../../interfaces';
 
 @Component({
@@ -17,6 +17,8 @@ export class MessagesComponent{
     chats:Chat[];
     messages:Message[];
     currentChatId:number;
+    messageOffset:number;
+    @ViewChild('chat') private chatForScroll: ElementRef;
 
     subscribed: boolean;
     connectionId: string;
@@ -25,6 +27,7 @@ export class MessagesComponent{
                 public notificationService: NotificationService){
         this.chats=[];
         this.messages=[];
+        this.messageOffset=0;
     }
 
     ngOnInit() {
@@ -77,30 +80,47 @@ export class MessagesComponent{
 
     getMessage(){
         //temp
-        this.currentChatId=2;
-        this.messageService.getMessageByChatId(this.currentChatId)
+        this.currentChatId=2; //take from localStorage
+        this.messageService.getMessageByChatId(this.currentChatId,this.messageOffset)
             .subscribe(res => {
-                var data= res.json();
-                data.forEach((message) => { 
-                        this.messages.push({
-                            Id: message.Id,
-                            ChatId: message.ChatId,
-                            Date: message.Date,
-                            SenderId: message.SenderId,
-                            Text: message.Text                            
-                        });
+                let data= res.json();
+                let theSameSenderInLine=false;
+                this.messages.push({
+                            Id: data[0].Id,
+                            ChatId: data[0].ChatId,
+                            Date: data[0].Date,
+                            SenderId: data[0].SenderId,
+                            Text: data[0].Text,
+                            SenderFirstName: data[0].FirstName,
+                            SenderLastName: data[0].LastName,
+                            Photo: data[0].Photo
+                }); 
+                for(let i=1;i<data.length;i++){
+                    theSameSenderInLine=(data[i-1].SenderId==data[i].SenderId);
+                    this.messages.push({
+                            Id: data[i].Id,
+                            ChatId: data[i].ChatId,
+                            Date: theSameSenderInLine ? null : data[i].Date,
+                            SenderId: data[i].SenderId,
+                            Text: data[i].Text,
+                            SenderFirstName: theSameSenderInLine ? null : data[i].FirstName,
+                            SenderLastName: theSameSenderInLine ? null :data[i].LastName,
+                            Photo:  theSameSenderInLine ? null : data[i].Photo 
                     })
-                    console.log(this.messages);
+                }
+                this.goToBottom()
+                console.log(this.messages);
                 },
                 error => {
                     if (error.status == 401 || error.status == 404) {
                         console.log(error)
                     }
             });  
+         
     }
     
-    searchChat(username:string){
-        this.messageService.searchChat(username)
+    searchChat(name:string){
+        this.messageService.searchChat(name)
                 .subscribe(res => {
                     var data = res.json();
                     this.chats=[];
@@ -111,7 +131,7 @@ export class MessagesComponent{
                         });
                     })
                 })
-        
+        console.log(this.chats)
     }
 
     sendMessage(newMessage:string){
@@ -130,6 +150,16 @@ export class MessagesComponent{
                         this.notificationService.printErrorMessage(_sendResult.Message);
                     }
                 }); 
+    }
+
+    goToBottom(){
+        this.chatForScroll.nativeElement.scrollTop = -10000;
+        console.log("new " +this.chatForScroll.nativeElement.scrollTop);
+    }
+    
+    getMoreMessages(){
+        this.messageOffset+=20;
+        this.getMessage();
     }
 
 
@@ -163,9 +193,4 @@ export class MessagesComponent{
             }
         )
     }
-
-
-
-
-
 }

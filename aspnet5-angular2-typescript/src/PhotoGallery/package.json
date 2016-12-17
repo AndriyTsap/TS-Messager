@@ -27,6 +27,7 @@
     "@angular/router": "~3.1.1",
     "@angular/upgrade": "~2.1.1",
     "angular-in-memory-web-api": "~0.1.13",
+    "angular2-auto-scroll": "",
     "bower": "1.8.0",
     "body-parser": "1.14.1",
     "bootstrap": "3.3.5",

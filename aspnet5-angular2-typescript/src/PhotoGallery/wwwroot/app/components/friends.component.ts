@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { UserFull } from "../core/domain/user-full";
 import { UserService } from "../core/services/user.service";
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'friends',
@@ -10,45 +11,50 @@ import { UserService } from "../core/services/user.service";
 
 export class FriendsComponent {
     friends: UserFull[];
-    tenOrMoreFriends:boolean ;
-    constructor( @Inject(UserService) public userService: UserService) {
+    twentyOrMoreFriends:boolean ;
+    offset:number;
+    constructor(@Inject(UserService) public userService: UserService,
+                public router: Router) {
         this.friends = []
-        this.tenOrMoreFriends=false;
+        this.twentyOrMoreFriends=false;
+        this.offset=0;
     }
 
     ngOnInit() {
-        this.getFriends();
+        this.getFriends(this.offset);
     }
 
-    getFriends(){
-        this.userService.getFriends(localStorage.getItem("token")).subscribe(res => {
-            var data = res.json();
-            this.tenOrMoreFriends=(data.length>=10);
-            data.forEach((user) => {
-                this.friends.push({
-                    Id: user.Id,
-                    Username: user.Username,
-                    Password: "",
-                    Email: user.Email,
-                    FirstName: user.FirstName,
-                    LastName: user.LastName,
-                    Phone: user.Phone,
-                    BirthDate: user.BirthDate,
-                    Photo: user.Photo,
-                    About: user.About
-                });
-            })
+    getFriends(offset:number){
+        this.userService.getFriends(localStorage.getItem("token"),offset)
+            .subscribe(res => {
+                var data = res.json();
+                this.twentyOrMoreFriends=(data.length>=20);
+                data.forEach((user) => {
+                    this.friends.push({
+                        Id: user.Id,
+                        Username: user.Username,
+                        Password: "",
+                        Email: user.Email,
+                        FirstName: user.FirstName,
+                        LastName: user.LastName,
+                        Phone: user.Phone,
+                        BirthDate: user.BirthDate,
+                        Photo: user.Photo,
+                        About: user.About
+                    });
+
+                })
         })
     }
     search(username:string ){
         if(username==""){
-            this.getFriends()
+            this.getFriends(this.offset)
         }
         else{
-            this.userService.search(localStorage.getItem("token"),username).subscribe(res => {
+            this.userService.search(username).subscribe(res => {
                 var data = res.json();
                 this.friends=[];
-                this.tenOrMoreFriends=(data.length>=10);
+                this.twentyOrMoreFriends=(data.length>=20);
                 data.forEach((user) => {
                     this.friends.push({
                         Id: user.Id,
@@ -65,5 +71,16 @@ export class FriendsComponent {
                 })
             })
         }
+    }
+
+    getMoreFriends(){
+        this.offset+=20;
+        this.getFriends(this.offset)
+    }
+
+    goToChat(id:number){
+         if(localStorage.getItem("currentChatId")){
+             this.router.navigate(['messages']);
+         }
     }
 }

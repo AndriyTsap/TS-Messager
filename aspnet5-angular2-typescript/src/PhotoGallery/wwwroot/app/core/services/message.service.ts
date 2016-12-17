@@ -14,7 +14,8 @@ export class MessageService {
     private _messagesGetAllAPI: string = 'api/messages';
     private _chatsGetAllAPI: string = 'api/messages/chats';
     private _messagesGetByChatIdAPI:string= "api/messages/getByChatId?chatId=";//1&offset=20
-    private _searchChatAPI: string = 'api/messages/';//change
+    private _searchChatAPI: string = 'api/messages/chats/search?name=';
+    private _createChatAPI:string ='api/messages/createChat?id='
     private _token: string;
     
     //for signalR
@@ -50,9 +51,12 @@ export class MessageService {
 
     public send(text:string, chat:number){
         this.dataService.set(this._messagesGetAllAPI);
-        console.log(" in message service");
-        return this.dataService.postAuthenticate(this._token,{text, chat});
-        
+        return this.dataService.postAuthenticate(this._token,{text, chat});    
+    }
+
+    public createChat(id:number,name:string,type:string){
+        this.dataService.set(this._createChatAPI+id+"&name="+name+"&type="+type);
+        return this.dataService.postAuthenticate(this._token);
     }
     //not try yet
     public getChats(){
@@ -65,10 +69,9 @@ export class MessageService {
         return this.dataService.getAuthenticate(this._token);
     }
 
-    public getMessageByChatId(id:number){
-        this.dataService.set(this._messagesGetByChatIdAPI+id);//1&offset=20
+    public getMessageByChatId(id:number,offset:number){
+        this.dataService.set(this._messagesGetByChatIdAPI+id+"&offset="+offset);//1&offset=20
         return this.dataService.getAuthenticate(this._token);
-        //1&offset=20
     }
 
     //for signalR

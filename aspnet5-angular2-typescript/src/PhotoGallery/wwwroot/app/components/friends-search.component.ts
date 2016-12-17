@@ -1,6 +1,10 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { UserFull } from "../core/domain/user-full";
 import { UserService } from "../core/services/user.service";
+import { MessageService } from "../core/services/message.service";
+import { NotificationService } from "../core/services/notification.service";
+import { OperationResult } from "../core/domain/operationResult";
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'friends-search',
@@ -10,27 +14,32 @@ import { UserService } from "../core/services/user.service";
 
 export class FriendsSearchComponent {
     randomPeople: UserFull[];
-    tenOrMorePeople:boolean;
+    twentyOrMorePeople:boolean;
+    offset:number;
 
-    constructor( @Inject(UserService) public userService: UserService) {
+    constructor( @Inject(UserService) public userService: UserService,
+                public messageService: MessageService,
+                public notificationService: NotificationService,
+                public router: Router) {
         this.randomPeople = [];
-        this.tenOrMorePeople=false;
+        this.twentyOrMorePeople=false;
+        this.offset=0;
     }
 
     ngOnInit() {
-        this.getPeople();
+        this.getPeople(this.offset);
     }
 
     search(username:string ){;
         if(username==""){
-            this.getPeople()
+            this.getPeople(this.offset)
         }
         else{
-            this.userService.search(localStorage.getItem("token"),username)
+            this.userService.search(username)
                 .subscribe(res => {
                     var data = res.json();
                     this.randomPeople=[];
-                    this.tenOrMorePeople=(data.length>=10);
+                    this.twentyOrMorePeople=(data.length>=20+this.offset);
                     data.forEach((user) => { 
                         this.randomPeople.push({
                             Id: user.Id,
@@ -49,16 +58,12 @@ export class FriendsSearchComponent {
         }
     }
 
-    getPeople(){
-        this.userService.getAll().subscribe(res => {
+    getPeople(offset: number){
+        this.userService.getAll(offset).subscribe(res => {
             var data = res.json();
             var user: any;
-
-            //this.loadedPeople+=10;
-            this.tenOrMorePeople=(data.length>=10);
-            for (let i=0;i<10;i++){//change to previous version after fixing API
-                user=data[i];
-            //data.forEach((user) => {
+            this.twentyOrMorePeople=(data.length>=20+this.offset);
+            data.forEach((user) => {
                 this.randomPeople.push({
                     Id: user.Id,
                     Username: user.Username,
@@ -71,12 +76,38 @@ export class FriendsSearchComponent {
                     Photo: user.Photo,
                     About: user.About
                 });
-            }//)
+            })
         })
     }
 
-    createChat(){
-       
+    getMorePeople(){
+        this.offset+=20;
+        this.getPeople(this.offset)
+    }
+
+    createChat(id:number, name: string/*event */){
+        console.log("num="+id+" name="+name)
+        this.messageService.setToken(localStorage.getItem("token"));
+        let _updateResult: OperationResult = new OperationResult(false, '');
+        this.messageService.createChat(id,name,"dialog")
+                .subscribe(res => {
+                    _updateResult.Succeeded = res.Succeeded;
+                    _updateResult.Message = res.Message;
+                },
+                error => console.error('Error: ' + error),
+                () => {
+                    if (_updateResult.Succeeded) {
+                        this.notificationService.printSuccessMessage('Chat with ' + name + ' created!');
+                        localStorage.setItem("currentChatId", id.toString())//change to chatid,which will be returned
+                    }
+                    else {
+                        console.log(_updateResult.Message)
+                        this.notificationService.printErrorMessage("Chat isn't created!");
+                    }
+                });
+         if(localStorage.getItem("currentChatId")){
+             this.router.navigate(['messages']);
+         }
     }
 
 

@@ -1,57 +1,45 @@
 <div class="main_section">
 	<div class="container">
 		<div class="chat_container">
+			<!--chats section-->
 			<div class="col-sm-3 chat_sidebar">
 				<div class="row">
 					<div id="custom-search-input">
 						<div class="input-group">
-							<input type="text" class=" search-query form-control" placeholder="Chat" />
-							<button class="btn btn-danger" type="button">
+							<input type="text" class=" search-query form-control" placeholder="Chat" #chat/>
+							<button (click)="searchChat(chat.value)" class="btn btn-danger" type="button">
 								<span class=" glyphicon glyphicon-search"></span>
 							</button>
 						</div>
 					</div>
 					
 					<div class="member_list">
-						<ul class="list-unstyled">
-							
+						<ul class="list-unstyled">			
 							<li class="left clearfix">
-								<span class="chat-img pull-left">
-									<img src="https://lh6.googleusercontent.com/-y-MY2satK-E/AAAAAAAAAAI/AAAAAAAAAJU/ER_hFddBheQ/photo.jpg" alt="User Avatar" class="img-circle">
-								</span>
-								<div class="chat-body clearfix">
-									<div class="header_sec">
-										<strong class="primary-font">Jack Sparrow</strong> <strong class="pull-right">
-										09:45AM</strong>
-									</div>
-									<div class="contact_sec">
-										<strong class="primary-font">(123) 123-456</strong> <span class="badge pull-right">3</span>
-									</div>
-								</div>
-							</li>
-						
+								<strong class="primary-font">Ihor Vasylechko</strong>
+							</li>	
 						</ul>
 					</div>
 				</div>
 			</div>
-			<!--chat_sidebar-->
-			
+			<!--messages section -->
 			<div class="col-sm-9 message_section">
 				<div class="row">
-					<!--new_message_head-->
-				<div class="chat_area">
-					<ul class="list-unstyled">
-						 <li class="left clearfix" *ngFor="let message of messages">
-							<span class="chat-img1 pull-left">
-								<img src="https://lh6.googleusercontent.com/-y-MY2satK-E/AAAAAAAAAAI/AAAAAAAAAJU/ER_hFddBheQ/photo.jpg" alt="User Avatar" class="img-circle">
-							</span>
-							<div class="chat-body1 clearfix">
-								<p>{{message.Text}}</p>
-								<div class="chat_time pull-right">{{message.Date}}</div>
-							</div>
-						</li>
-					</ul>
-					</div><!--chat_area-->
+					<div class="chat_area" #chat angular2-auto-scroll lock-y-offset="10" observe-attributes>
+						<a *ngIf="messages.length>=20" (click)="getMoreMessages()" >Load more...</a>
+						<ul class="list-unstyled">
+							<li class="left clearfix" *ngFor="let message of messages">
+								<span *ngIf="message.Photo" class="chat-img1 pull-left">
+									<img  [src]="message.Photo" alt="" class="img-circle">
+								</span>
+								<div class="chat-body1 clearfix">
+									<strong *ngIf="message.SenderFirstName" class="primary-font">{{message.SenderFirstName}} {{message.SenderLastName}}</strong>
+									<div *ngIf="message.Date" class="chat_time pull-right">{{message.Date}}</div>
+									<p>{{message.Text}}</p>
+								</div>
+							</li>
+						</ul>
+					</div>
 					<div class="message_write">
 						<textarea class="form-control" placeholder="type a message" #message></textarea>
 						<div class="chat_bottom">
@@ -60,7 +48,7 @@
 						</div>
 					</div>
 				</div>
-			</div> <!--message_section-->
+			</div>
 		</div>
 	</div>
 </div>

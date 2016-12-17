@@ -86,12 +86,37 @@ namespace PhotoGallery.Controllers
 
             return chats.Skip(chats.Count()-offset-20).Take(20);
         }
+        // Get api/messages/chats/search?name=NameChat&offset=20
+        [Authorize]
+        [HttpGet("chats/search")]
+        public async Task<IEnumerable<dynamic>> SearchDialogs(string name,int offset)
+        {
+            var authenticationHeader = Request?.Headers["Authorization"];
+            var token = authenticationHeader?.FirstOrDefault().Split(' ')[1];
+            var subject = _jwtFormater.GetSubject(token);
+
+            var user = _userRepository.GetSingleByUsername(subject);
+
+            var chatUsers = await _chatUserRepository.FindByAsync(cu => cu.UserId == user.Id);
+            var chatIds = chatUsers.Select(cu => cu.Id);
+            var chats = await _chatRepository.FindByAsync(c => chatIds.Contains(c.Id));
+             List<dynamic> res = new List<dynamic>();
+            
+            foreach (var chat in chats)
+            {
+                if(chat.Name==name){
+                    res.Add(chat);
+                }
+            }
+
+            return res.Skip(chats.Count()-offset-20).Take(20);
+        }
 
         
-        //Get api/messages/createChat?name=SomeChat&type=dialog
+        //Get api/messages/createChat?id=receiver&name=SomeChat&type=dialog
         [Authorize]
         [HttpPost("createChat")]//now work work yet
-        public IActionResult CreateChat(string name, string type)
+        public IActionResult CreateChat(int id,string name, string type)
         {
             IActionResult result = new ObjectResult(false);
             GenericResult createResult = null;
@@ -118,13 +143,19 @@ namespace PhotoGallery.Controllers
                     ChatId = chat.Id,
                     UserId = user.Id
                 };
+                var cu1 = new ChatUser()
+                {
+                    ChatId = chat.Id,
+                    UserId = id
+                };
                 _chatUserRepository.Add(cu);
+                _chatUserRepository.Add(cu1);
                 _chatUserRepository.Commit();
 
                 createResult = new GenericResult()
                 {
                     Succeeded = true,
-                    Message = "Success!!!"
+                    Message = "Chat created!"
                 };
             }
             catch (Exception e)

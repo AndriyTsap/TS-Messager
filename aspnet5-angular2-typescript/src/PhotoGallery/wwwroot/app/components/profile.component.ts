@@ -57,27 +57,24 @@ export class ProfileComponent implements OnInit{
     save(){
         let _updateResult: OperationResult = new OperationResult(false, '');
         let tempPhotoPath=this.addPhoto();
-        console.log("outside")
-        if(tempPhotoPath){
-            console.log("inside");
+        if(tempPhotoPath!="images/"){
             this.user.Photo=tempPhotoPath;
-            this.userService.update(localStorage.getItem("token"),this.user)
-                .subscribe(res => {
-                    _updateResult.Succeeded = res.Succeeded;
-                    _updateResult.Message = res.Message;
-                },
-                error => console.error('Error: ' + error),
-                () => {
-                    if (_updateResult.Succeeded) {
-                        this.notificationService.printSuccessMessage('Dear ' + this.user.Username + ', your date updated');
-                    }
-                    else {
-                        console.log(_updateResult.Message)
-                        this.notificationService.printErrorMessage(_updateResult.Message);
-                    }
-                }); 
         }
-       
+        this.userService.update(localStorage.getItem("token"),this.user)
+            .subscribe(res => {
+                _updateResult.Succeeded = res.Succeeded;
+                _updateResult.Message = res.Message;
+            },
+            error => console.error('Error: ' + error),
+            () => {
+                if (_updateResult.Succeeded) {
+                    this.notificationService.printSuccessMessage('Dear ' + this.user.Username + ', your date updated');
+                }
+                else {
+                    console.log(_updateResult.Message)
+                    //this.notificationService.printErrorMessage(_updateResult.Message);
+                }
+            });        
     }
 
     delete(){

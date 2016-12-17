@@ -6,8 +6,8 @@
 		<div class="panel-body">
 			<div class="row">
 				<div class="col-sm-4 col-md-4 col-lg-4 " align="center">
-                    <a class="fancybox" rel="gallery" href="{{user.Photo}}">
-                        <img alt="User's photo" src="{{user.Photo}}" class="img-responsive thumbnail"> 
+                    <a *ngIf="user.Photo" class="fancybox" rel="gallery" [href]="user.Photo">
+                        <img  [src]="user.Photo" class="img-responsive thumbnail"> 
                     </a>
 
                 </div>
