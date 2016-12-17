@@ -84,69 +84,112 @@ namespace PhotoGallery.Controllers
             var chatIds = chatUsers.Select(cu => cu.Id);
             var chats = await _chatRepository.FindByAsync(c => chatIds.Contains(c.Id));
 
-            return chats.Skip(offset).Take(20);
+            return chats.Skip(chats.Count()-offset-20).Take(20);
         }
-        /*
-        // Get api/messages/createChat
+
+        
+        //Get api/messages/createChat?name=SomeChat&type=dialog
         [Authorize]
-        [HttpGet("createChat")]//don't work yet
-        public async Task<IEnumerable<Chat>> CreateChat(int offset = 0)
+        [HttpPost("createChat")]//now work work yet
+        public IActionResult CreateChat(string name, string type)
         {
             IActionResult result = new ObjectResult(false);
-            GenericResult removeResult = null;
+            GenericResult createResult = null;
 
             var authenticationHeader = Request?.Headers["Authorization"];
             var token = authenticationHeader?.FirstOrDefault().Split(' ')[1];
             var subject = _jwtFormater.GetSubject(token);
 
             var user = _userRepository.GetSingleByUsername(subject);
-            /*
-            var message = new Message()
-            {
-                Text = mVMessage.Text,
-                SenderId = user.Id,
-                ChatId = mVMessage.ChatId
-            };
 
             try
             {
-                _messageRepository.Add(message);
-                _messageRepository.Commit();
+                var chat = new Chat()
+                {
+                    Name = name,
+                    DateCreated = DateTime.Now.ToString(),
+                    Type = type
+                };
+                _chatRepository.Add(chat);
+                _chatRepository.Commit();
 
-                removeResult = new GenericResult()
+                var cu = new ChatUser()
+                {
+                    ChatId = chat.Id,
+                    UserId = user.Id
+                };
+                _chatUserRepository.Add(cu);
+                _chatUserRepository.Commit();
+
+                createResult = new GenericResult()
                 {
                     Succeeded = true,
-                    Message = "Message sended."
+                    Message = "Success!!!"
                 };
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                removeResult = new GenericResult()
+                createResult = new GenericResult()
                 {
                     Succeeded = false,
-                    Message = ex.Message
+                    Message = e.Message
                 };
-
-                _loggingRepository.Add(new Error()
-                {
-                    Severity = "Error",
-                    Message = ex.Message,
-                    StackTrace = ex.StackTrace,
-                    DateCreated = DateTime.Now
-                });
-                _loggingRepository.Commit();
             }
-            
-            result = new ObjectResult(removeResult);
-            this.Clients.Group(message.ChatId.ToString()).AddChatMessage(message);
+
+            result = new ObjectResult(createResult);
             return result;
         }
-        */
+
+        [Authorize]
+        [HttpPost("addUserToChat")]//now work
+        public async Task<IActionResult> AddUserToChat(int chatId, int userId)
+        {
+            IActionResult result = new ObjectResult(false);
+            GenericResult addingResult = null;
+
+            var authenticationHeader = Request?.Headers["Authorization"];
+            var token = authenticationHeader?.FirstOrDefault().Split(' ')[1];
+            var subject = _jwtFormater.GetSubject(token);
+
+            var user = _userRepository.GetSingleByUsername(subject);
+
+            try
+            {
+                var userChats = await _chatUserRepository.FindByAsync(cu => cu.UserId == user.Id);
+                var chatIds = userChats.Select(c => c.ChatId);
+                if (chatIds.Contains(chatId))
+                {
+                    var cu = new ChatUser()
+                    {
+                        ChatId = chatId,
+                        UserId = userId
+                    };
+                    _chatUserRepository.Add(cu);
+                    _chatUserRepository.Commit();
+                }
+                addingResult = new GenericResult()
+                {
+                    Succeeded = true,
+                    Message = "Success!!!"
+                };
+            }
+            catch (Exception e)
+            {
+                addingResult = new GenericResult()
+                {
+                    Succeeded = false,
+                    Message = e.Message
+                };
+            }
+
+            result = new ObjectResult(addingResult);
+            return result;
+        }
 
         // Get api/messages/getByChatId?chatId=1&offset=20
         [Authorize]
         [HttpGet("getByChatId")]
-        public async Task<IEnumerable<Message>> GetMessagesByChatId(int chatId, int offset = 0)
+        public async Task<IEnumerable<dynamic>> GetMessagesByChatId(int chatId, int offset = 0)
         {
             IEnumerable<Message> messages = null;
 
@@ -188,9 +231,14 @@ namespace PhotoGallery.Controllers
                 _loggingRepository.Commit();
             }
 
-            return messages.Skip(offset).Take(20);
+            User sender;
+            var res = messages.Select(m =>
+            {
+                sender = _userRepository.GetSingle(u => u.Id == m.SenderId);
+                return new { m.Id, m.ChatId, m.SenderId, m.Text, m.Date, sender.FirstName, sender.LastName, sender.Photo };
+            }).ToList();
+            return res.Skip(messages.Count() - offset -20).Take(20);
         }
-
 
         // Post api/messages
         [HttpPost]
