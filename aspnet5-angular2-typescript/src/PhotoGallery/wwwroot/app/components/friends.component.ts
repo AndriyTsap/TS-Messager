@@ -26,6 +26,7 @@ export class FriendsComponent {
             this.tenOrMoreFriends=(data.length>=10);
             data.forEach((user) => {
                 this.friends.push({
+                    Id: user.Id,
                     Username: user.Username,
                     Password: "",
                     Email: user.Email,
@@ -50,6 +51,7 @@ export class FriendsComponent {
                 this.tenOrMoreFriends=(data.length>=10);
                 data.forEach((user) => {
                     this.friends.push({
+                        Id: user.Id,
                         Username: user.Username,
                         Password: "",
                         Email: user.Email,

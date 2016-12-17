@@ -21,7 +21,7 @@ export class ProfileComponent implements OnInit{
                 public membershipService: MembershipService,
                 public notificationService: NotificationService,
                 public router: Router) {
-        this.user=new UserFull('','','','','','','','','');
+        this.user=new UserFull(null,'','','','','','','','','');
     }
 
     ngOnInit() {

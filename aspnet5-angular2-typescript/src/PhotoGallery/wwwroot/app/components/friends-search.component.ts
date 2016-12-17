@@ -33,6 +33,7 @@ export class FriendsSearchComponent {
                     this.tenOrMorePeople=(data.length>=10);
                     data.forEach((user) => { 
                         this.randomPeople.push({
+                            Id: user.Id,
                             Username: user.Username,
                             Password: "",
                             Email: user.Email,
@@ -52,11 +53,14 @@ export class FriendsSearchComponent {
         this.userService.getAll().subscribe(res => {
             var data = res.json();
             var user: any;
+
+            //this.loadedPeople+=10;
             this.tenOrMorePeople=(data.length>=10);
-            for (let i=0;i<10;i++){
+            for (let i=0;i<10;i++){//change to previous version after fixing API
                 user=data[i];
             //data.forEach((user) => {
                 this.randomPeople.push({
+                    Id: user.Id,
                     Username: user.Username,
                     Password: "",
                     Email: user.Email,
@@ -70,4 +74,10 @@ export class FriendsSearchComponent {
             }//)
         })
     }
+
+    createChat(){
+       
+    }
+
+
 }
