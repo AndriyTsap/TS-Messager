@@ -120,10 +120,9 @@
     width:100%;
 }
 .member_list li:hover {
-    background: #428bca none repeat scroll 0 0;
+    background: #31708f none repeat scroll 0 0;
     color: #fff;
     cursor:pointer;
-    
 }
 
 .container,.message_section{
@@ -132,4 +131,9 @@
 
 .chat_area p{
     margin: 0;
+}
+
+.customActive{
+     background: #31708f ;
+     color: white;
 }

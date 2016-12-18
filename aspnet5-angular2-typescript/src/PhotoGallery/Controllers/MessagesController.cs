@@ -73,7 +73,7 @@ namespace PhotoGallery.Controllers
         // Get api/messages/chats?offset=20
         [Authorize]
         [HttpGet("chats")]
-        public async Task<IEnumerable<Chat>> GetAllDialogs(int offset = 0)
+        public async Task<IEnumerable<dynamic>> GetAllDialogs(int offset = 0)
         {
             var authenticationHeader = Request?.Headers["Authorization"];
             var token = authenticationHeader?.FirstOrDefault().Split(' ')[1];
@@ -85,8 +85,12 @@ namespace PhotoGallery.Controllers
             var chatUsers = await _chatUserRepository.FindByAsync(cu => cu.UserId == user.Id);
             var chatIds = chatUsers.Select(cu => cu.ChatId);
             var chats = await _chatRepository.FindByAsync(c => chatIds.Contains(c.Id));
-
-            return chats.Skip(chats.Count() - offset - 20).Take(20);
+            List<dynamic> res = new List<dynamic>();
+            foreach (var chat in chats)
+            {
+                res.Add(new {chat.Id,chat.Name});
+            }
+            return res.Skip(chats.Count() - offset - 20).Take(20);
         }
         // Get api/messages/chats/search?name=NameChat&offset=20
         [Authorize]
@@ -100,14 +104,14 @@ namespace PhotoGallery.Controllers
             var user = _userRepository.GetSingleByUsername(subject);
 
             var chatUsers = await _chatUserRepository.FindByAsync(cu => cu.UserId == user.Id);
-            var chatIds = chatUsers.Select(cu => cu.Id);
+            var chatIds = chatUsers.Select(cu => cu.ChatId);
             var chats = await _chatRepository.FindByAsync(c => chatIds.Contains(c.Id));
-             List<dynamic> res = new List<dynamic>();
+            List<dynamic> res = new List<dynamic>();
             
             foreach (var chat in chats)
             {
-                if(chat.Name==name){
-                    res.Add(chat);
+                if(chat.Name.ToLower().StartsWith(name.ToLower())){
+                    res.Add(new {chat.Id,chat.Name});
                 }
             }
 
@@ -157,7 +161,7 @@ namespace PhotoGallery.Controllers
                 createResult = new GenericResult()
                 {
                     Succeeded = true,
-                    Message = "Chat created!"
+                    Message = chat.Id+""
                 };
             }
             catch (Exception e)
@@ -311,7 +315,7 @@ namespace PhotoGallery.Controllers
                 removeResult = new GenericResult()
                 {
                     Succeeded = false,
-                    Message = ex.Message
+                    Message = ex.Message+message.Text
                 };
 
                 _loggingRepository.Add(new Error()

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MessageService } from '../../core/services/message.service';
 import { NotificationService } from '../../core/services/notification.service';
 import { OperationResult } from "../../core/domain/operationResult";
@@ -18,7 +18,6 @@ export class MessagesComponent{
     messages:Message[];
     currentChatId:number;
     messageOffset:number;
-    @ViewChild('chat') private chatForScroll: ElementRef;
 
     subscribed: boolean;
     connectionId: string;
@@ -28,12 +27,13 @@ export class MessagesComponent{
         this.chats=[];
         this.messages=[];
         this.messageOffset=0;
+        this.currentChatId=+localStorage.getItem("currentChatId");
     }
 
     ngOnInit() {
         this.messageService.setToken(localStorage.getItem("token"));
         this.getChats();
-        this.getMessage();
+        this.getMessage(this.currentChatId);
         //for signalR
        
          /* 
@@ -58,30 +58,25 @@ export class MessagesComponent{
             error => {
                 console.log(error);
             });*/
-        //
-
-
-         
+        //    
     }
 
     getChats(){
-        this.messageService.getChats().subscribe(res => {
-            this.chats= res.json();
-                console.log(res);
-                console.log(this.chats+"щось прийшло")
-            },
-            error => {
-                if (error.status == 401 || error.status == 404) {
-                    console.log(error)
-                }
-            });  
-
+        this.messageService.getChats()
+            .subscribe(res => {
+                this.chats= res.json().reverse();
+                console.log(this.chats)
+                },
+                error => {
+                    if (error.status == 401 || error.status == 404) {
+                        console.log(error)
+                    }
+                });  
     }
 
-    getMessage(){
-        //temp
-        this.currentChatId=2; //take from localStorage
-        this.messageService.getMessageByChatId(this.currentChatId,this.messageOffset)
+    getMessage(currentChatId:number){
+        this.messages=[];
+        this.messageService.getMessageByChatId(currentChatId,this.messageOffset)
             .subscribe(res => {
                 let data= res.json();
                 let theSameSenderInLine=false;
@@ -108,8 +103,6 @@ export class MessagesComponent{
                             Photo:  theSameSenderInLine ? null : data[i].Photo 
                     })
                 }
-                this.goToBottom()
-                console.log(this.messages);
                 },
                 error => {
                     if (error.status == 401 || error.status == 404) {
@@ -120,18 +113,17 @@ export class MessagesComponent{
     }
     
     searchChat(name:string){
-        this.messageService.searchChat(name)
+        console.log("serach"+name)
+        if(name!=""){
+            this.messageService.searchChat(name)
                 .subscribe(res => {
-                    var data = res.json();
-                    this.chats=[];
-                    data.forEach((chat) => { 
-                        this.chats.push({
-                            Id: chat.Id,
-                            Name: chat.Name
-                        });
-                    })
+                    this.chats = res.json();
                 })
-        console.log(this.chats)
+        }
+        else{
+            this.getChats()
+        }
+        
     }
 
     sendMessage(newMessage:string){
@@ -151,15 +143,14 @@ export class MessagesComponent{
                     }
                 }); 
     }
-
-    goToBottom(){
-        this.chatForScroll.nativeElement.scrollTop = -10000;
-        console.log("new " +this.chatForScroll.nativeElement.scrollTop);
-    }
     
     getMoreMessages(){
         this.messageOffset+=20;
-        this.getMessage();
+        this.getMessage(this.currentChatId);
+    }
+
+    onSelect(chatId: number) { 
+        this.currentChatId = chatId;
     }
 
 

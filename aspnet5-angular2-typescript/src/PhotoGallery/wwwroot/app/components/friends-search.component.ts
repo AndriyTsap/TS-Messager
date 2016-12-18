@@ -98,17 +98,13 @@ export class FriendsSearchComponent {
                 () => {
                     if (_updateResult.Succeeded) {
                         this.notificationService.printSuccessMessage('Chat with ' + name + ' created!');
-                        localStorage.setItem("currentChatId", id.toString())//change to chatid,which will be returned
+                        localStorage.setItem("currentChatId", _updateResult.Message)
+                        this.router.navigate(['messages']);
                     }
                     else {
                         console.log(_updateResult.Message)
                         this.notificationService.printErrorMessage("Chat isn't created!");
                     }
                 });
-         if(localStorage.getItem("currentChatId")){
-             this.router.navigate(['messages']);
-         }
     }
-
-
 }
