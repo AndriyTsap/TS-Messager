@@ -22,6 +22,7 @@
 								</div>
 							</li>	
 						</ul>
+						<a *ngIf="chats.length>=20+chatOffset" (click)="getMoreChats()" class="loadMore">Load more...</a>
 					</div>
 				</div>
 			</div>
@@ -29,7 +30,7 @@
 			<div class="col-sm-9 message_section">
 				<div class="row">
 					<div class="chat_area" angular2-auto-scroll lock-y-offset="10" observe-attributes>
-						<a *ngIf="messages.length>=20" (click)="getMoreMessages()" >Load more...</a>
+						<a *ngIf="messages.length>=20+messageOffset" (click)="getMoreMessages()" class="loadMore">Load more...</a>
 						<ul class="list-unstyled">
 							<li class="left clearfix" *ngFor="let message of messages">
 								<span *ngIf="message.Photo" class="chat-img1 pull-left">

@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { MessageService } from '../../core/services/message.service';
+import { UserService } from '../../core/services/user.service';
 import { NotificationService } from '../../core/services/notification.service';
 import { OperationResult } from "../../core/domain/operationResult";
 import { Message } from "../../core/domain/message";
 import { Chat } from "../../core/domain/chat";
-import { Angular2AutoScroll } from "angular2-auto-scroll/lib/angular2-auto-scroll.directive";
 //import { SignalRConnectionStatus, Message, Chat } from '../../interfaces';
 
 @Component({
@@ -18,16 +18,19 @@ export class MessagesComponent{
     messages:Message[];
     currentChatId:number;
     messageOffset:number;
+    chatOffset:number;
 
     subscribed: boolean;
     connectionId: string;
     
     constructor(public messageService: MessageService,
+                public userService: UserService,
                 public notificationService: NotificationService){
         this.chats=[];
         this.messages=[];
         this.messageOffset=0;
         this.currentChatId=+localStorage.getItem("currentChatId");
+        this.chatOffset=0;
     }
 
     ngOnInit() {
@@ -62,7 +65,7 @@ export class MessagesComponent{
     }
 
     getChats(){
-        this.messageService.getChats()
+        this.messageService.getChats(this.chatOffset)
             .subscribe(res => {
                 this.chats= res.json().reverse();
                 console.log(this.chats)
@@ -128,29 +131,35 @@ export class MessagesComponent{
 
     sendMessage(newMessage:string){
         var _sendResult: OperationResult = new OperationResult(false, '');
-        this.currentChatId=2;
-        console.log("in message controller")
-        this.messageService.send(newMessage,this.currentChatId)
+        this.messageService.send(newMessage,+this.currentChatId)
             .subscribe(res => {
                     _sendResult.Succeeded = res.Succeeded;
                     _sendResult.Message = res.Message;
-                },
-                error => console.error('Error: ' + error),
-                () => {
-                    if (!_sendResult.Succeeded) {
+                    
+                    if (_sendResult.Succeeded) {
+                        this.getMessage(this.currentChatId)  
+                    }
+                    else {
                         console.log(_sendResult.Message)
                         this.notificationService.printErrorMessage(_sendResult.Message);
                     }
-                }); 
+                },
+                error => console.error('Error: ' + error)); 
     }
     
     getMoreMessages(){
         this.messageOffset+=20;
         this.getMessage(this.currentChatId);
     }
+    getMoreChats(){
+        this.chatOffset+=20;
+        this.getChats();
+    }
 
     onSelect(chatId: number) { 
+        console.log(chatId)
         this.currentChatId = chatId;
+        console.log(this.currentChatId);
     }
 
 

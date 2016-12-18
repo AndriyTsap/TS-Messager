@@ -54,6 +54,7 @@ export class AppComponent implements OnInit {
             .subscribe(res => {
                 localStorage.removeItem('user');
                 localStorage.removeItem('token');
+                localStorage.removeItem('currentChatId');
             },
             error => console.error('Error: ' + error),
             () => { });

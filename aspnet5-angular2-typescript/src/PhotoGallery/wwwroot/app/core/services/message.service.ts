@@ -13,7 +13,7 @@ import { FeedSignalR, Proxy, Client/*, Server*/, SignalRConnectionStatus, Chat, 
 export class MessageService {
     private _messagesGetAllAPI: string = 'api/messages';
     private _chatsGetAllAPI: string = 'api/messages/chats';
-    private _messagesGetByChatIdAPI:string= "api/messages/getByChatId?chatId=";//1&offset=20
+    private _messagesGetByChatIdAPI:string= "api/messages/getByChatId?chatId=";
     private _searchChatAPI: string = 'api/messages/chats/search?name=';
     private _createChatAPI:string ='api/messages/createChat?id='
     private _token: string;
@@ -49,9 +49,9 @@ export class MessageService {
         this._token = token;
     }
 
-    public send(text:string, chat:number){
+    public send(text:string, ChatId:number){
         this.dataService.set(this._messagesGetAllAPI);
-        return this.dataService.postAuthenticate(this._token,{text, chat});    
+        return this.dataService.postAuthenticate(this._token,{text, ChatId });    
     }
 
     public createChat(id:number,name:string,type:string){
@@ -59,8 +59,8 @@ export class MessageService {
         return this.dataService.postAuthenticate(this._token);
     }
     //not try yet
-    public getChats(){
-        this.dataService.set(this._chatsGetAllAPI);
+    public getChats(offset:number){
+        this.dataService.set(this._chatsGetAllAPI+"?offset="+offset);
         return this.dataService.getAuthenticate(this._token);
     }
 
@@ -70,7 +70,7 @@ export class MessageService {
     }
 
     public getMessageByChatId(id:number,offset:number){
-        this.dataService.set(this._messagesGetByChatIdAPI+id+"&offset="+offset);//1&offset=20
+        this.dataService.set(this._messagesGetByChatIdAPI+id+"&offset="+offset);
         return this.dataService.getAuthenticate(this._token);
     }
 

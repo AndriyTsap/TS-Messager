@@ -137,3 +137,7 @@
      background: #31708f ;
      color: white;
 }
+.loadMore{
+    display: block;
+    text-align :center;
+}

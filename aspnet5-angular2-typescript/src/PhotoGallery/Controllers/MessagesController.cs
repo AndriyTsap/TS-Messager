@@ -280,7 +280,7 @@ namespace PhotoGallery.Controllers
         // Post api/messages
         [HttpPost]
         [Authorize]
-        public IActionResult Send(MessageViewModel mVMessage)
+        public IActionResult Send([FromBody] MessageViewModel mVMessage)
         {
             IActionResult result = new ObjectResult(false);
             GenericResult removeResult = null;
@@ -307,7 +307,7 @@ namespace PhotoGallery.Controllers
                 removeResult = new GenericResult()
                 {
                     Succeeded = true,
-                    Message = "Message sended."
+                    Message = message.SenderId.ToString()
                 };
             }
             catch (Exception ex)
@@ -315,7 +315,7 @@ namespace PhotoGallery.Controllers
                 removeResult = new GenericResult()
                 {
                     Succeeded = false,
-                    Message = ex.Message+message.Text
+                    Message = ex.Message
                 };
 
                 _loggingRepository.Add(new Error()

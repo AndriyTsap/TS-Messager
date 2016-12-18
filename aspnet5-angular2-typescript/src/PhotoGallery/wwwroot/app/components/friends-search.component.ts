@@ -85,8 +85,7 @@ export class FriendsSearchComponent {
         this.getPeople(this.offset)
     }
 
-    createChat(id:number, name: string/*event */){
-        console.log("num="+id+" name="+name)
+    createChat(id:number, name: string){
         this.messageService.setToken(localStorage.getItem("token"));
         let _updateResult: OperationResult = new OperationResult(false, '');
         this.messageService.createChat(id,name,"dialog")
