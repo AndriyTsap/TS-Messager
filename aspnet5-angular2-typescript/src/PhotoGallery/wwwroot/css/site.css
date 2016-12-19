@@ -2,8 +2,10 @@
 .navbar-inverse .navbar-brand {
     color: #ddd;
 }
-.navbar-fixed-top,.navbar-collapse{
-    max-height: 100%;
+.navbar-fixed-bottom .navbar-collapse,
+#bs-navbar-collapse,
+.navbar-fixed-top .navbar-collapse{
+    max-height: 600px !important;
 }
 .navbar-inverse {
     border-color: #080808;

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { MessageService } from '../../core/services/message.service';
 import { UserService } from '../../core/services/user.service';
 import { NotificationService } from '../../core/services/notification.service';
@@ -14,11 +14,17 @@ import { Chat } from "../../core/domain/chat";
 })
 
 export class MessagesComponent{
+    @ViewChild('scrollChat') private chatScrollContainer: ElementRef;
+    @ViewChild("attachment") private attachment;
+    imageFormats=["jpg", "jpeg", "png","gif" ];
+    musicFormats=["mp3","ogg","wav"];
+    videoFormats=["mp4","webm","avi","3gp"]
     chats:Chat[];
     messages:Message[];
     currentChatId:number;
     messageOffset:number;
     chatOffset:number;
+    cleanVar:string="";
 
     subscribed: boolean;
     connectionId: string;
@@ -64,11 +70,20 @@ export class MessagesComponent{
         //    
     }
 
+    ngAfterViewChecked() {        
+        this.scrollToBottom();        
+    } 
+
+    scrollToBottom(): void {
+        try {
+            this.chatScrollContainer.nativeElement.scrollTop = 100000000;//this.chatScrollContainer.nativeElement.scrollHeight;
+        } catch(err) { }                 
+    }
+
     getChats(){
         this.messageService.getChats(this.chatOffset)
             .subscribe(res => {
                 this.chats= res.json().reverse();
-                console.log(this.chats)
                 },
                 error => {
                     if (error.status == 401 || error.status == 404) {
@@ -88,7 +103,7 @@ export class MessagesComponent{
                             ChatId: data[0].ChatId,
                             Date: data[0].Date,
                             SenderId: data[0].SenderId,
-                            Text: data[0].Text,
+                            Text: (!data[0].Text.includes("/#/")) ? data[0].Text :this.parse(data[0].Text),
                             SenderFirstName: data[0].FirstName,
                             SenderLastName: data[0].LastName,
                             Photo: data[0].Photo
@@ -100,7 +115,7 @@ export class MessagesComponent{
                             ChatId: data[i].ChatId,
                             Date: theSameSenderInLine ? null : data[i].Date,
                             SenderId: data[i].SenderId,
-                            Text: data[i].Text,
+                            Text: (!data[i].Text.includes("/#/")) ? data[i].Text : this.parse(data[i].Text),
                             SenderFirstName: theSameSenderInLine ? null : data[i].FirstName,
                             SenderLastName: theSameSenderInLine ? null :data[i].LastName,
                             Photo:  theSameSenderInLine ? null : data[i].Photo 
@@ -116,7 +131,6 @@ export class MessagesComponent{
     }
     
     searchChat(name:string){
-        console.log("serach"+name)
         if(name!=""){
             this.messageService.searchChat(name)
                 .subscribe(res => {
@@ -130,21 +144,28 @@ export class MessagesComponent{
     }
 
     sendMessage(newMessage:string){
-        var _sendResult: OperationResult = new OperationResult(false, '');
-        this.messageService.send(newMessage,+this.currentChatId)
-            .subscribe(res => {
-                    _sendResult.Succeeded = res.Succeeded;
-                    _sendResult.Message = res.Message;
-                    
-                    if (_sendResult.Succeeded) {
-                        this.getMessage(this.currentChatId)  
-                    }
-                    else {
-                        console.log(_sendResult.Message)
-                        this.notificationService.printErrorMessage(_sendResult.Message);
-                    }
-                },
-                error => console.error('Error: ' + error)); 
+        let pathToAttachment=this.addAttachment();
+        if(pathToAttachment){
+            newMessage+="/#/"+pathToAttachment;
+        }
+        if(newMessage.length>=1 && newMessage!=" "){
+            var _sendResult: OperationResult = new OperationResult(false, '');
+            this.messageService.send(newMessage,+this.currentChatId)
+                .subscribe(res => {
+                        _sendResult.Succeeded = res.Succeeded;
+                        _sendResult.Message = res.Message;
+                        
+                        if (_sendResult.Succeeded) {
+                            this.getMessage(this.currentChatId)
+                        }
+                        else {
+                            console.log(_sendResult.Message)
+                            this.notificationService.printErrorMessage(_sendResult.Message);
+                        }
+                    },
+                    error => console.error('Error: ' + error)); 
+            this.cleanVar=" ";
+        }
     }
     
     getMoreMessages(){
@@ -157,9 +178,48 @@ export class MessagesComponent{
     }
 
     onSelect(chatId: number) { 
-        console.log(chatId)
         this.currentChatId = chatId;
-        console.log(this.currentChatId);
+    }
+
+    addAttachment(): string {
+        let attachment = this.attachment.nativeElement;
+        if (attachment.files && attachment.files[0]) {
+            this.messageService.uploadFile(attachment.files[0])
+                .subscribe(res => {},
+                    err=>{
+                        this.notificationService.printSuccessMessage('Dear ' + ""+ ', your photo not upload'); 
+                    });
+            return "attachments/"+attachment.files[0].size+"!!!"+attachment.files[0].name;
+        }
+    }
+
+    parse(message:string){
+        let splitedMessage=message.split("/#/");
+        let output="";
+        if(splitedMessage[0]){
+            output+="<span>"+splitedMessage[0]+"</span><br>";
+        }
+        let format = splitedMessage[1].substr(splitedMessage[1].length - 5).split(".")[1];
+        console.log()
+        if(this.imageFormats.includes(format.toLowerCase())){
+            output+="<a class='fancybox' rel='gallery' href='"+splitedMessage[1]+"'>"+
+                        "<img class='img-responsive thumbnail' src='"+ splitedMessage[1]+"'></a>";
+        }else if(this.musicFormats.includes(format.toLowerCase())){
+
+             output+="<span>"+splitedMessage[1].split("!!!")[1]+"</span><br>"+
+                     "<audio style='width:100%'  controls>"+
+                        "<source src='"+splitedMessage[1]+"'></audio>";
+        }
+        else if(this.videoFormats.includes(format.toLowerCase())){
+
+             output+="<span>"+splitedMessage[1].split("!!!")[1]+"</span><br>"+
+                     "<video width='100%' controls>"+
+                        "<source src='"+splitedMessage[1]+"'></video>";
+        }
+        else{
+            output+=" <a href='"+ splitedMessage[1]+"' download>"+splitedMessage[1].split("!!!")[1]+"</a>";
+        } 
+        return output
     }
 
 

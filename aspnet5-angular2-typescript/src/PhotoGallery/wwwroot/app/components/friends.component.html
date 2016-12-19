@@ -22,18 +22,12 @@
 					<a type="button" class="btn btn-success btn-xs" data-toggle="collapse" href="#{{user.Username}}">
                         <i class="fa fa-toggle-down fa-2x"></i>
                     </a>
-					<!--<div style="display:none">костиль)))
-						<input #id [value]="user.Id">
-					</div>
-					<button (click)="goToChat(id.value)" class="btn btn-info btn-xs " title="Send message">
-						<i class="fa fa-envelope fa-2x"></i>
-					</button>-->
 				</label>
 				<div class="collapse" id="{{user.Username}}">
-					<span>Phone: {{user.Phone}}</span>
-					<span>Email: {{user.Email}}</span>
-					<span>Date of Birthday: {{user.BirthDate}}</span>
-					<span>About: {{user.About}} </span>
+					<span *ngIf="user.Phone"><b>Phone:</b> {{user.Phone}}</span>
+					<span *ngIf="user.Email"><b>Email:</b> {{user.Email}}</span>
+					<span *ngIf="user.Birthdate"><b>Date of Birthday:</b> {{user.BirthDate}}</span>
+					<span *ngIf="user.About"><b>About:</b> {{user.About}} </span>
 				</div>
 				<div class="break"></div>
 			</li>

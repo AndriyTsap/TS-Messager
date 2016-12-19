@@ -14,6 +14,7 @@ export class UserService {
     private _userEditPersonalDataAPI: string =  'api/users/editPersonalData';
     private _searchAPI: string =  'api/users/search?username=';
     private _checkOnFriendshipAPI: string =  'api/users/checkOnFriendship?id=';
+    private _uploadPhotoAPI:string = "api/photos/upload";
 
 
     constructor(@Inject(DataService) public dataService: DataService) { }
@@ -52,6 +53,7 @@ export class UserService {
     }
 
     public uploadPhoto(photo: any){
+        this.dataService.set(this._uploadPhotoAPI);
         return this.dataService.upload(photo); 
     }
 

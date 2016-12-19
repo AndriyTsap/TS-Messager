@@ -97,7 +97,7 @@
                             <input type="tel" pattern='[\+]\d{12}' class="form-control input-lg" placeholder="Phone"  [(ngModel)]="user.Phone"
                                 name="phone" #phone="ngModel">
                             <div [hidden]="phone.valid || phone.untouched || phone==''" class="alert alert-danger">
-                                Phone is not valid
+                                Phone is not valid! Right format +380973243295
                             </div>    
                         </div>
                         <div class="form-group">

@@ -127,13 +127,13 @@ export class DataService {
             .map(response => <any>(<Response>response).json())
     }
 
-    upload(photo: any) {
+    upload(file: any) {
         let input = new FormData();
         let headers= new Headers()
         headers.append("enctype", "multipart/form-data");
-        input.append("file", photo);
+        input.append("file", file);
         return this.http
-            .post("api/photos/upload",input,{
+            .post(this._baseUri,input,{
                 headers:headers
             })
     }

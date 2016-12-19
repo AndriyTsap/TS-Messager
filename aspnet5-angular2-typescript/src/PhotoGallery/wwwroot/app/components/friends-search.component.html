@@ -16,8 +16,6 @@
 				<a class="fancybox" rel="gallery" href="{{user.Photo}}">
 					<img class="img-thumbnail" src="{{user.Photo}}">
 				</a>
-				<label class="name">{{user.FirstName}} {{user.LastName}}({{user.Username}})<br>
-				</label>
 				<label class="pull-right">
 					<a type="button" class="btn btn-success btn-xs" data-toggle="collapse" href="#{{user.Username}}">
                         <i class="fa fa-toggle-down fa-2x"></i>
@@ -30,11 +28,14 @@
 						<i class="fa fa-envelope fa-2x"></i>
 					</button>
 				</label>
+				<label class="name">{{user.FirstName}} {{user.LastName}}({{user.Username}})<br>
+				</label>
+				
 				<div class="collapse" [id]="user.Username">
-					<span>Phone: {{user.Phone}}</span>
-					<span>Email: {{user.Email}}</span>
-					<span>Date of Birthday: {{user.BirthDate}}</span>
-					<span>About: {{user.About}} </span>
+					<span *ngIf="user.Phone"><b>Phone:</b> {{user.Phone}}</span>
+					<span *ngIf="user.Email"><b>Email:</b> {{user.Email}}</span>
+					<span *ngIf="user.Birthdate"><b>Date of Birthday:</b> {{user.BirthDate}}</span>
+					<span *ngIf="user.About"><b>About:</b> {{user.About}} </span>
 				</div>
 				<div class="break"></div>
 			</li>

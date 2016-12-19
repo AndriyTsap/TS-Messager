@@ -29,7 +29,7 @@
 			<!--messages section -->
 			<div class="col-sm-9 message_section">
 				<div class="row">
-					<div class="chat_area" angular2-auto-scroll lock-y-offset="10" observe-attributes>
+					<div class="chat_area" #scrollChat>
 						<a *ngIf="messages.length>=20+messageOffset" (click)="getMoreMessages()" class="loadMore">Load more...</a>
 						<ul class="list-unstyled">
 							<li class="left clearfix" *ngFor="let message of messages">
@@ -39,18 +39,15 @@
 								<div class="chat-body1 clearfix">
 									<strong *ngIf="message.SenderFirstName" class="primary-font">{{message.SenderFirstName}} {{message.SenderLastName}}</strong>
 									<div *ngIf="message.Date" class="chat_time pull-right">{{message.Date}}</div>
-									<p>{{message.Text}}</p>
+									<p [innerHTML]="message.Text"></p>
 								</div>
 							</li>
 						</ul>
 					</div>
 					<div class="message_write">
-						<textarea class="form-control" placeholder="type a message" #message></textarea>
+						<textarea class="form-control" placeholder="type a message" [value]="cleanVar" #message></textarea>
 						<div class="chat_bottom">
-							<input id="file-upload" type="file"  />
-							<!--<label for="file-upload" class="pull-left upload_btn"><a>
-									<i class="fa fa-cloud-upload" aria-hidden="true"></i>Add Files</a>
-								</label>-->
+							<input class="pull-left upload_btn" id="file-upload" type="file"  #attachment/>
 							<button (click)="sendMessage(message.value)" class="pull-right btn btn-success">Send</button>
 						</div>
 					</div>

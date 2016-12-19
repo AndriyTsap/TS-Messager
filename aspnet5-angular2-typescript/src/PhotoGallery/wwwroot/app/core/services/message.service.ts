@@ -16,6 +16,7 @@ export class MessageService {
     private _messagesGetByChatIdAPI:string= "api/messages/getByChatId?chatId=";
     private _searchChatAPI: string = 'api/messages/chats/search?name=';
     private _createChatAPI:string ='api/messages/createChat?id='
+    private _addAttachmentAPI:string ='api/attachments'
     private _token: string;
     
     //for signalR
@@ -72,6 +73,11 @@ export class MessageService {
     public getMessageByChatId(id:number,offset:number){
         this.dataService.set(this._messagesGetByChatIdAPI+id+"&offset="+offset);
         return this.dataService.getAuthenticate(this._token);
+    }
+
+     public uploadFile(file: any){
+        this.dataService.set(this._addAttachmentAPI);
+        return this.dataService.upload(file); 
     }
 
     //for signalR

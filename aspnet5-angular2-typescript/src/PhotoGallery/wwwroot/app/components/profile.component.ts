@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 })
 
 export class ProfileComponent implements OnInit{
-    //public photo:string = "https://drive.google.com/uc?id=0B9BOAdwQ-aZRYU41c2dRREFrRFE";
+
     @ViewChild("photo") photo;
     user:UserFull ;
 
@@ -37,7 +37,6 @@ export class ProfileComponent implements OnInit{
     }
 
     addPhoto(): string {
-
         let photo = this.photo.nativeElement;
         if (photo.files && photo.files[0]) {
             this.userService.uploadPhoto(photo.files[0])
