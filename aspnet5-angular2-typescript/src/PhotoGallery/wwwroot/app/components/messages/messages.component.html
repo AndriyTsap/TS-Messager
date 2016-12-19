@@ -14,8 +14,11 @@
 					</div>
 					
 					<div class="member_list">
-						<ul class="list-unstyled">			
-							<li class="active" class="left clearfix" *ngFor="let chat of chats"  [ngClass]="{customActive: chat.Id === currentChatId}" (click)="onSelect(chat.Id)">
+						<ul class="list-unstyled">		
+							<li class="btn btn-primary updateChat"  (click)="getChats()">
+								<strong class="primary-font">Update</strong>
+							</li>	
+							<li  class="left clearfix" *ngFor="let chat of chats"  [ngClass]="{customActive: chat.Id === currentChatId}" (click)="onSelect(chat.Id)">
 								<input #id [value]="chat.Id" style="display:none">
 								<div  (click)="getMessage(id.value)">
 									<strong class="primary-font">{{chat.Name}}</strong>
@@ -45,10 +48,12 @@
 						</ul>
 					</div>
 					<div class="message_write">
-						<textarea class="form-control" placeholder="type a message" [value]="cleanVar" #message></textarea>
+						<textarea class="form-control" placeholder="type a message" ([value])="cleanVar" #message></textarea>
 						<div class="chat_bottom">
 							<input class="pull-left upload_btn" id="file-upload" type="file"  #attachment/>
+							
 							<button (click)="sendMessage(message.value)" class="pull-right btn btn-success">Send</button>
+							<button (click)="updateMessage()" class="pull-right btn btn-success">Update</button>
 						</div>
 					</div>
 				</div>

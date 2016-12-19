@@ -86,9 +86,10 @@ export class FriendsSearchComponent {
     }
 
     createChat(id:number, name: string){
+        var chatName=JSON.parse(localStorage.getItem("user")).Username+"-"+name;
         this.messageService.setToken(localStorage.getItem("token"));
         let _updateResult: OperationResult = new OperationResult(false, '');
-        this.messageService.createChat(id,name,"dialog")
+        this.messageService.createChat(id,chatName,"dialog")
                 .subscribe(res => {
                     _updateResult.Succeeded = res.Succeeded;
                     _updateResult.Message = res.Message;

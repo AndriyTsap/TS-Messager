@@ -7,7 +7,7 @@ import 'rxjs/add/operator/toPromise';
 import { Observable } from "rxjs/Observable";
 import { Subject } from "rxjs/Subject";
 
-import { FeedSignalR, Proxy, Client/*, Server*/, SignalRConnectionStatus, Chat, Message } from '../../interfaces';
+//import { FeedSignalR, Proxy, Client, Server, SignalRConnectionStatus, ChatR, MessageR } from '../../interfaces';
 
 @Injectable()
 export class MessageService {
@@ -20,28 +20,28 @@ export class MessageService {
     private _token: string;
     
     //for signalR
-
+    /*
     currentState = SignalRConnectionStatus.Disconnected;
     connectionState: Observable<SignalRConnectionStatus>;
 
-    setConnectionId: Observable<string>;
-    addChat: Observable<Chat>;
-    addMessage: Observable<Message>;
+        setConnectionId: Observable<string>;
+    addChat: Observable<ChatR>;
+    addMessage: Observable<MessageR>;
 
     private connectionStateSubject = new Subject<SignalRConnectionStatus>();
     
     private setConnectionIdSubject = new Subject<string>();
-    private addChatSubject = new Subject<Chat>();
-    private addMessageSubject = new Subject<Message>();
+    private addChatSubject = new Subject<ChatR>();
+    private addMessageSubject = new Subject<MessageR>();
     //private server: Server;
-
+    */
     constructor(@Inject(DataService) public dataService: DataService,
                 private http: Http) {
-        this.connectionState = this.connectionStateSubject.asObservable();
+        /*this.connectionState = this.connectionStateSubject.asObservable();
 
         this.setConnectionId = this.setConnectionIdSubject.asObservable();
         this.addChat = this.addChatSubject.asObservable();
-        this.addMessage = this.addMessageSubject.asObservable();
+        this.addMessage = this.addMessageSubject.asObservable();*/
     
     }
 
@@ -59,7 +59,7 @@ export class MessageService {
         this.dataService.set(this._createChatAPI+id+"&name="+name+"&type="+type);
         return this.dataService.postAuthenticate(this._token);
     }
-    //not try yet
+
     public getChats(offset:number){
         this.dataService.set(this._chatsGetAllAPI+"?offset="+offset);
         return this.dataService.getAuthenticate(this._token);
@@ -79,10 +79,10 @@ export class MessageService {
         this.dataService.set(this._addAttachmentAPI);
         return this.dataService.upload(file); 
     }
-
-    //for signalR
     /*
-
+    //for signalR
+    
+    
     start(debug: boolean): Observable<SignalRConnectionStatus> {
 
         $.connection.hub.logging = debug;
@@ -119,11 +119,11 @@ export class MessageService {
         this.setConnectionIdSubject.next(id);
     }
 
-    private onAddChat(chat: Chat) {
+    private onAddChat(chat: ChatR) {
         this.addChatSubject.next(chat);
     }
 
-    private onAddMessage(message: Message) {
+    private onAddMessage(message: MessageR) {
         this.addMessageSubject.next(message);
     }
     /*

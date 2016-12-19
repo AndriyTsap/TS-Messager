@@ -141,3 +141,15 @@
     display: block;
     text-align :center;
 }
+
+.updateChat{
+    background: #01708f;
+    width: 100%;
+}
+.updateChat{
+    /*background: #31708f;*/
+    width: 100%;
+}
+.btn-success{
+    margin:5px;
+}

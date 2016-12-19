@@ -5,7 +5,7 @@ import { NotificationService } from '../../core/services/notification.service';
 import { OperationResult } from "../../core/domain/operationResult";
 import { Message } from "../../core/domain/message";
 import { Chat } from "../../core/domain/chat";
-//import { SignalRConnectionStatus, Message, Chat } from '../../interfaces';
+//import { SignalRConnectionStatus, MessageR, ChatR } from './../../core/interfaces';
 
 @Component({
     selector: 'messages',
@@ -26,8 +26,8 @@ export class MessagesComponent{
     chatOffset:number;
     cleanVar:string="";
 
-    subscribed: boolean;
-    connectionId: string;
+    //subscribed: boolean;
+    //connectionId: string;
     
     constructor(public messageService: MessageService,
                 public userService: UserService,
@@ -45,7 +45,7 @@ export class MessagesComponent{
         this.getMessage(this.currentChatId);
         //for signalR
        
-         /* 
+         /*
         this.messageService.start(true).subscribe(
             null,
             error => console.log('Error on init: ' + error));
@@ -76,7 +76,7 @@ export class MessagesComponent{
 
     scrollToBottom(): void {
         try {
-            this.chatScrollContainer.nativeElement.scrollTop = 100000000;//this.chatScrollContainer.nativeElement.scrollHeight;
+            this.chatScrollContainer.nativeElement.scrollTop = 10000000000;//this.chatScrollContainer.nativeElement.scrollHeight;
         } catch(err) { }                 
     }
 
@@ -157,6 +157,7 @@ export class MessagesComponent{
                         
                         if (_sendResult.Succeeded) {
                             this.getMessage(this.currentChatId)
+                            this.cleanVar=" ";
                         }
                         else {
                             console.log(_sendResult.Message)
@@ -222,7 +223,11 @@ export class MessagesComponent{
         return output
     }
 
+    updateMessage(){
+        this.getMessage(this.currentChatId);
+    }
 
+    /*
     //for signalR
     listenForConnection() {
         // Listen for connected / disconnected events
@@ -252,5 +257,5 @@ export class MessagesComponent{
                 //update view
             }
         )
-    }
+    }*/
 }

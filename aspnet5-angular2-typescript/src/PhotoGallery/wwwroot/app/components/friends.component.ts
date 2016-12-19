@@ -42,7 +42,7 @@ export class FriendsComponent {
                         Photo: user.Photo,
                         About: user.About
                     });
-
+                    this.friends.reverse();
                 })
         })
     }
@@ -69,6 +69,7 @@ export class FriendsComponent {
                         About: user.About
                     });
                 })
+                this.friends.reverse();
             })
         }
     }
