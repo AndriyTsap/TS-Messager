@@ -32,6 +32,7 @@ export class FriendsSearchComponent {
 
     search(username:string ){;
         if(username==""){
+            this.randomPeople=[];
             this.getPeople(this.offset)
         }
         else{

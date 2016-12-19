@@ -48,6 +48,7 @@ export class FriendsComponent {
     }
     search(username:string ){
         if(username==""){
+            this.friends=[];
             this.getFriends(this.offset)
         }
         else{
