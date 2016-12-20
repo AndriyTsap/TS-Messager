@@ -102,6 +102,30 @@ namespace PhotoGallery.Controllers
 
             return res.Skip(res.Count - 20 - offset).Take(20); 
         }
+
+        // Get api/users/friends/search?name=Andriy&offset=20
+        [Authorize]
+        [HttpGet("friends/search")]
+        public async Task<IEnumerable<dynamic>> SearhFriends(string username ="",int offset = 0)
+        {
+            var authenticationHeader = Request.Headers["Authorization"];
+            var token = authenticationHeader.FirstOrDefault().Split(' ')[1];
+            var jwt = new JwtSecurityToken(token);
+            var subject = jwt.Subject;
+            var subjectId = _userRepository.GetSingleByUsername(subject).Id;
+
+            var friends = await _friendsSearcher.GetFriends(subjectId);
+            List<dynamic> res = new List<dynamic>();
+            var searchedFriends=friends.Where(f => f.Username.StartsWith(username));
+            foreach (var f in searchedFriends)
+            {
+                //if(f.Username.StartsWith(username)){
+                    res.Add(templeteViewUser(f));
+                //}
+            }
+
+            return res.Skip(res.Count - 20 - offset).Take(20); 
+        }
         // Get api/users/search?username=Andriy
         [HttpGet("search")]
         public async Task<IEnumerable<dynamic>> SearchUsers(string username = "", int offset = 0)

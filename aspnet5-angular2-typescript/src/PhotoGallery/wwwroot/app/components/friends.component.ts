@@ -52,7 +52,7 @@ export class FriendsComponent {
             this.getFriends(this.offset)
         }
         else{
-            this.userService.search(username).subscribe(res => {
+            this.userService.searchFriends(username,localStorage.getItem("token")).subscribe(res => {
                 var data = res.json();
                 this.friends=[];
                 this.twentyOrMoreFriends=(data.length>=20);

@@ -13,6 +13,7 @@ export class UserService {
     private _friendsGetAPI: string =  'api/users/friends?offset=';
     private _userEditPersonalDataAPI: string =  'api/users/editPersonalData';
     private _searchAPI: string =  'api/users/search?username=';
+    private _searchFriendsAPI: string =  'api/users/friends/search?username=';
     private _checkOnFriendshipAPI: string =  'api/users/checkOnFriendship?id=';
     private _uploadPhotoAPI:string = "api/photos/upload";
 
@@ -60,6 +61,11 @@ export class UserService {
     public search(username:string){
         this.dataService.set(this._searchAPI+username);
         return this.dataService.get();
+    }
+
+    public searchFriends(username:string,token:string){
+        this.dataService.set(this._searchFriendsAPI+username);
+        return this.dataService.getAuthenticate(token);
     }
 
     public checkOnFriendship(token:string,id :number){

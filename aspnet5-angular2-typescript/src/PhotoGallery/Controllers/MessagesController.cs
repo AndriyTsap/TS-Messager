@@ -110,7 +110,7 @@ namespace PhotoGallery.Controllers
             
             foreach (var chat in chats)
             {
-                if(chat.Name.ToLower().StartsWith(name.ToLower())){
+                if(chat.Name.ToLower().Contains(name.ToLower())){
                     res.Add(new {chat.Id,chat.Name});
                 }
             }

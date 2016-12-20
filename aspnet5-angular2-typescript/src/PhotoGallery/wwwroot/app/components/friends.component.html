@@ -6,14 +6,14 @@
 				<div id="custom-search-input">
 					<div class="input-group">
 						<input type="text" class=" search-query form-control" id="findFriends" placeholder="Friends" #searchUsername />
-						<button  (click)="search(searchUsername.value)"class="btn" type="button">
+						<button  (click)="searchFriends(searchUsername.value)"class="btn" type="button">
 							<span class=" glyphicon glyphicon-search"></span>
 						</button>
 					</div>
 				</div>
 			</li>
 			<li *ngFor="let user of friends" class="list-group-item text-left">
-				<a class="fancybox" rel="gallery" href="{{user.Photo}}">
+				<a *ngIf="user.Photo" class="fancybox" rel="gallery" href="{{user.Photo}}">
 					<img class="img-thumbnail" src="{{user.Photo}}">
 				</a>
 				<label class="name">{{user.FirstName}} {{user.LastName}}({{user.Username}})<br>
